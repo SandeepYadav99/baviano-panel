@@ -25,7 +25,7 @@ if (localStorage.jwt_token) {
         type: AUTH_USER,
         payload: { ...(JSON.parse(localStorage.user)), token: localStorage.jwt_token }
     });
-    store.dispatch(actionGetProfile());
+    // store.dispatch(actionGetProfile());
     store.dispatch(actionGetDashboard());
     store.dispatch(actionGetAppSettings());
     connectToSocket(localStorage.jwt_token);

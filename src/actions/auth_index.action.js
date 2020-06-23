@@ -21,7 +21,7 @@ export function actionLoginUser(data) {
             localStorage.setItem('user', JSON.stringify({ name: data.name,  id: data.user_id }));
             setAuthorizationToken(data.token);
             dispatch({ type: AUTH_USER, payload: { token: data.token, name: data.name, id: data.user_id } });
-            dispatch(actionGetProfile());
+            // dispatch(actionGetProfile());
             history.push(`/info`);
         }
     };

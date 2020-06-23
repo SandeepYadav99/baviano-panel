@@ -90,26 +90,21 @@ class VehicleUR extends Component{
                     {/*</div>*/}
                     <div className={'formGroup'}>
                         <label>Name</label>
-                        <div>
+                        <div style={{ textTransform: 'capitalize' }}>
                             {data.name}
                         </div>
                     </div>
-                    <div className={'formGroup'}>
-                        <label>Email</label>
-                        <div>
-                            {data.email}
-                        </div>
-                    </div>
-                </div>
-
-                <div className={'formFlex'}>
-
                     <div className={'formGroup'}>
                         <label>Contact</label>
                         <div>
                             {data.country_code}-{data.contact}
                         </div>
                     </div>
+                </div>
+
+                <div className={'formFlex'}>
+
+
                     <div className={'formGroup'}>
                         <label>OTP</label>
                         <div>
@@ -134,7 +129,7 @@ class VehicleUR extends Component{
                         <label>Address</label>
                         <div>
                             {/*{data.address}*/}
-                            <Table tempData={data.addresses}/>
+                            <Table data={data.address}/>
                         </div>
                     </div>
                 </div>

@@ -252,7 +252,7 @@ class TourTypeList extends Component {
                 key: 'valid_till',
                 label: 'Valid Till',
                 sortable: false,
-                render: (temp, all) => <div >{DateUtils.changeTimeStamp(all.valid_till,'DD-MM-YYYY')}</div>,
+                render: (temp, all) => <div>{DateUtils.changeTimeStamp(all.valid_till,'DD-MM-YYYY')}</div>,
             },
             // {
             //     key: 'representative_name',

@@ -157,7 +157,6 @@ class CustomerList extends Component {
     }
 
     renderFirstCell(user) {
-        const tempEmailRender = (<span style={{textTransform: 'lowercase'}}>{(user.email)}</span>);
         return (
             <div className={styles.firstCellFlex}>
                 <div>
@@ -165,8 +164,7 @@ class CustomerList extends Component {
                 </div>
                 <div className={classNames(styles.firstCellInfo, 'openSans')}>
                     <span><strong>{user.name}</strong></span> <br/>
-                    <span><strong>{user.address.address}</strong></span>
-                   {tempEmailRender}
+                    <span>{user.address.address}</span>
                 </div>
             </div>
         );
@@ -225,17 +223,19 @@ class CustomerList extends Component {
             <div>
                 {all.country_code}-{all.contact}
                 <br/>
+                <div style={{ fontSize: '11px' }}>
                 OTP-
                 <span style={{
-                    fontSize: '12px',
+                    marginLeft: '5px',
                     color: 'white',
-                    background: '#607D8B',
-                    padding: '3px 10px',
-                    borderRadius: '20px',
+                    background: '#2c3f8b',
+                    padding: '2px 7px',
+                    borderRadius: '10px',
                     textTransform: 'capitalize'
                 }}>
                     {all.verification_code}
                 </span>
+                </div>
             </div>
         )
     }

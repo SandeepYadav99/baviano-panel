@@ -30,30 +30,30 @@ const rows = [
 
 class TableTask extends Component {
     render(){
-        const {handleSubmit,classes} = this.props;
+        const {handleSubmit,classes, data} = this.props;
         return (
             <TableContainer component={Paper}><br/>
                 <Table className={classes.table} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Address</TableCell>
-                            <TableCell align="right">Address 2</TableCell>
+                            <TableCell align="right">Area</TableCell>
                             <TableCell align="right">Landmark</TableCell>
-                            <TableCell align="right">Type</TableCell>
+                            <TableCell align="right">City</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.props.tempData.map(row => (
+                        {/*{this.props.tempData.map(row => (*/}
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    {row.address}
+                                    {data.address}
                                 </TableCell>
-                                <TableCell align="right">{row.address2}</TableCell>
-                                <TableCell align="right">{row.landmark}</TableCell>
-                                <TableCell align="right">{row.type}</TableCell>
+                                <TableCell align="right">{data.area}</TableCell>
+                                <TableCell align="right">{data.landmark}</TableCell>
+                                <TableCell align="right">{data.city}</TableCell>
                                 {/*<TableCell align="right">{row.protein}</TableCell>*/}
                             </TableRow>
-                        ))}
+                        {/*))}*/}
                     </TableBody>
                 </Table>
             </TableContainer>
