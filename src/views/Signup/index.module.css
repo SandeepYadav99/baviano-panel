@@ -1,0 +1,236 @@
+
+.mainLoginView {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../assets/img/background.jpg');
+    background-size: contain;
+}
+.loginFlex1 {
+    flex: 1.5;
+    /*background: #006FC8;*/
+    display: block;
+    position: relative;
+    /*width: 100%;*/
+    padding: 40px;
+    /*background-color: #006fc8;*/
+    color: #ffffff;
+    box-sizing: border-box;
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: right -10px bottom;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 60px;
+}
+
+.loginFlex2 {
+    background-color: #ffffff;
+    /*-webkit-box-flex: 1;*/
+    /*-ms-flex: 1 0 100%;*/
+    /*flex: 1 0 100%;*/
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    padding: 32px;
+    box-sizing: border-box;
+    flex: 1;
+    padding: 40px;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+
+}
+
+.loginFlex2:after {
+    position:absolute;
+    top:0;
+    left:-99px;
+    content:'';
+    height:0vh;
+    width:0;
+    border-right: 100px solid white;
+    border-bottom:0vh solid transparent;
+    border-top:100vh solid transparent;
+    overflow:hidden;
+}
+
+.container {
+    width: 70%;
+    max-width: 700px;
+}
+
+.subText {
+    margin:20px 0px;
+    font-weight: 400;
+    /*font-size: 18px;*/
+    text-align: justify;
+
+}
+
+.textInfo {
+    margin-top: 30px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    /*line-height: 16px;*/
+    /*text-align: justify;*/
+    /*margin-left: 7px;*/
+}
+
+.bottomContainer {
+    position: absolute;
+    bottom: 40px;
+}
+
+.loginSignupText {
+    text-align: left;
+}
+.headingText {
+    margin: 0px;
+    margin-left: 10px;
+    font-weight: 600;
+    color: #2196F3
+}
+
+.explore {
+    color: #2196F3;
+    margin-left:15px;
+    font-size: 20px;
+}
+
+.textCenter {
+    text-align: center;
+}
+.flexContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flexContainer > .flex {
+    flex: 1;
+    /*padding-right: 5px;*/
+}
+
+.googlePlaceContainer {
+    margin-top: 15px;
+}
+.Demo__map_maker_icon {
+    color: #FD6C6C;
+}
+
+.Demo__github_icon {
+    font-size: 24px;
+}
+
+.Demo__github_link {
+    color: #262626;
+    font-size: 20px;
+}
+
+.Demo__github_link:hover,
+.Demo__github_link:active {
+    color: #4078c0;
+    text-decoration: none;
+}
+
+.Demo__suggestion_icon {
+    margin-right: 8px;
+}
+
+.Demo__search_bar_container {
+    /*width: 100%;*/
+    /*max_width: 500px;*/
+    /*margin: 40px auto 0;*/
+}
+
+.Demo__search_input_container {
+    position: relative;
+}
+
+.Demo__search_input,
+.Demo__search_input:focus,
+.Demo__search_input:active {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+    border: honeydew;
+    display: block;
+    width: calc(100% - 32px);
+    padding: 16px;
+    font-size: 16px;
+    /*border-radius: 2px;*/
+    outline: none;
+}
+.inputWaiting {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+    border: honeydew;
+    display: block;
+    width: 80px;
+    padding: 16px;
+    font-size: 16px;
+    /*border-radius: 2px;*/
+    outline: none;
+}
+.Demo__clear_button,
+.Demo__clear_button:active,
+.Demo__clear_button:focus {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    outline: none;
+    font-weight: 600;
+    color: black;
+}
+
+.Demo__autocomplete_container {
+    border-bottom: honeydew;
+    border-left: honeydew;
+    border-right: honeydew;
+    border-top: 1px solid #e6e6e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 0 0 2px 2px;
+    position: absolute;
+    z-index: 2;
+}
+
+.Demo__suggestion_item {
+    padding: 8px;
+    text-align: left;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.Demo__suggestion_item__active {
+    background-color: #fafafa;
+}
+
+.Demo__dropdown_footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px;
+}
+
+.Demo__dropdown_footer_image {
+    display: inline_block;
+    width: 150px;
+}
+
+.Demo__spinner {
+    color: #18bc9c;
+    font-size: 30px;
+}
+
+.Demo__error_message {
+    color: red;
+}
+
+.Demo__geocode_result_header {
+    font-size: 20px;
+    color: #222222;
+}

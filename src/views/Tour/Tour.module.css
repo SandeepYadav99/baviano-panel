@@ -1,0 +1,50 @@
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.headerContainer .title {
+    font-size: 16px;
+}
+.flexWrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+.imgContainer {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+.img {
+    width: 80px;
+    height: 80px;
+
+}
+.imgBtn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+}
+.imgLikeBtn {
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    background: white;
+}
+
+.formHeading {
+    font-size: 16px;
+    font-weight: 700;
+
+}
+
+.bottomLine {
+    opacity: 0.4;
+    color: grey;
+    margin-bottom: 20px;
+}

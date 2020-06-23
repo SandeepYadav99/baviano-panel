@@ -1,0 +1,42 @@
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.headerContainer .title {
+    font-size: 16px;
+}
+.bottomLine {
+    opacity: 0.4;
+    color: grey;
+    margin-bottom: 5px;
+}
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.firstCellFlex {
+    display: flex;
+    align-items: center;
+}
+.firstCellFlex .driverImgCont {
+    width: 40px;
+    height: 40px;
+    border: 3px solid;
+    border-radius: 50%;
+}
+.firstCellFlex img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.firstCellInfo {
+    margin-left: 10px;
+}
+
+.headerFlex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

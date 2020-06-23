@@ -1,0 +1,24 @@
+.vehicleHeading {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.bottomLine {
+    opacity: 0.4;
+    color: grey;
+    margin-bottom: 20px;
+}
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.headerContainer .title {
+    font-size: 16px;
+}
+
+.documentsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}

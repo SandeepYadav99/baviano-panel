@@ -1,0 +1,76 @@
+.profileCard {
+    display: flex;
+    align-items: center;
+}
+.profileCard .image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.totalInfo hr {
+    /*margin: 0px;*/
+}
+.totalInfo h3{
+    margin: 0px;
+    margin-bottom: 5px;
+    margin-top: 25px;
+    color: gray;
+}
+.nameInfo {
+    margin-left: 15px;
+}
+.nameInfo .name {
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.nameInfo .city {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.formFlex {
+    display: flex;
+}
+.formGroup {
+    flex: 1;
+    padding: 10px 15px
+}
+
+.totalInfo .formGroup > label {
+    font-size: 13px;
+    font-weight: 500;
+    color: grey;
+}
+
+.totalInfo .formGroup > div {
+    margin-left: 5px;
+}
+
+
+
+table.commissionTable {
+    border-collapse: collapse;
+    margin: 2rem 0 0;
+    text-align: left;
+    width: 50%;
+}
+
+.commissionTable tbody {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.commissionTable thead {
+    background-color: rgba(240, 241, 245, 0.9);
+}
+.commissionTable thead th, .commissionTable thead td {
+    border-bottom-width: 2px;
+}
+
+.commissionTable th,
+.commissionTable td {
+    border: 1px solid #c2c9d6;
+    border-color: transparent transparent #c2c9d6 transparent;
+    padding: 1rem;
+}

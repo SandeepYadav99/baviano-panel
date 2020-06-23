@@ -1,0 +1,29 @@
+.header {
+    padding: 10px;
+}
+.line {
+    width: 100%;
+    margin: 0px;
+}
+.driverName {
+    text-transform: capitalize;
+}
+.jobsDone {
+    font-size: 12px;
+}
+.jobsDone span {
+    font-weight: bold;
+}
+.listCont {
+    width: 100%;
+    padding: 10px ;
+}
+.list {
+
+}
+.listItem {
+
+}
+.listItem hr{
+margin: 0px;
+}

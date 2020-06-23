@@ -1,0 +1,57 @@
+.formFlex {
+    display: flex;
+}
+
+.contactFlex {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.contactFlex img {
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    border-radius: 50px;
+}
+
+.file_upload {
+    margin-left: 15px;
+    display: block;
+    padding: 10px 5px;
+    color: #fff;
+    background: #4962FE;
+    transition: background 0.3s;
+}
+
+
+.file-upload:hover {
+    cursor: pointer;
+    background: #000;
+}
+.profileInfo {
+    display: flex;
+    align-items: center;
+}
+
+.nameInfo {
+    margin-left: 15px;
+}
+.name {
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.city {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.email {
+    text-transform: lowercase;
+    font-size: 12px;
+}
+.representative {
+    font-size: 12px;
+}

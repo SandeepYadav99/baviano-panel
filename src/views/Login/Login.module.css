@@ -1,0 +1,139 @@
+/**
+ * Created by charnjeetelectrovese@gmail.com on 12/13/2018.
+ */
+.mainLoginView {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    /*background-image: url('../../assets/img/background.jpg');*/
+    /*background-size: cover;*/
+    /*background-repeat: no-repeat;*/
+}
+.loginFlex1 {
+    /*background-image: url('../../assets/img/background.jpg');*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    flex: 0 1 auto;
+    /*background: #006FC8;*/
+    display: block;
+    position: relative;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    width: 100%;
+    padding: 40px;
+    background-color: #F8345E;
+    color: #ffffff;
+    box-sizing: border-box;
+    /*background-size: 50%;*/
+    background-repeat: no-repeat;
+    /*background-position: right -10px bottom;*/
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loginFlex2 {
+    flex: 0 0 200px;
+    background-color: #ffffff;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 0 100%;
+    flex: 1 0 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    padding: 32px;
+    box-sizing: border-box;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 380px;
+    flex: 0 0 400px;
+    padding: 40px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*.loginFlex1:after {*/
+    /*position:absolute;*/
+    /*top:0;*/
+    /*!*left:-99px;*!*/
+    /*content:'';*/
+    /*height:0vh;*/
+    /*width:0;*/
+    /*border-right: 100px solid white;*/
+    /*border-bottom:0vh solid transparent;*/
+    /*border-top:100vh solid transparent;*/
+    /*overflow:hidden;*/
+    /*right: -1px;*/
+/*}*/
+
+.loginSignupText {
+    text-align: left;
+}
+
+.bottomSignUp {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.subText {
+    margin:20px 0px;
+    font-weight: 400;
+    /*font-size: 18px;*/
+    text-align: justify;
+}
+
+.bottomContainer {
+    position: absolute;
+    bottom: 40px;
+}
+
+.headingText {
+    margin: 0px;
+    /*font-weight: 600;*/
+    color: black;
+    font-family: CircularStd-Bold;
+}
+
+
+.bottomSignup {
+    font-size: 0.8rem;
+}
+
+.forgotBtn {
+    color: #F8345E !important;
+    text-decoration: underline !important;
+    font-size: 0.8rem;
+}
+
+.heading{
+    margin-bottom: 30px;
+    color: white;
+    font-size: 38px;
+    font-weight:500;
+    font-family: 'CircularStd-Medium';
+}
+
+.innerFlex {
+    display: flex;
+    align-items: center;
+}
+.icons {
+    height: 70px;
+    width: 70px;
+}
+
+.textRight {
+    margin-left: 15px;
+}
+
+.titleText {
+    font-size: 22px;
+    font-family: 'CircularStd-Book';
+}
+
+.subHeading {
+    font-size: 14px;
+    /*font-family: CircularStd-Book;*/
+}

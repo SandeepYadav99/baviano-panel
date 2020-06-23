@@ -1,0 +1,69 @@
+.LPTransition {
+    transition: all 0.5s;
+    background: red;
+    -webkit-box-shadow: 0px 0px 28px -10px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 28px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 28px -10px rgba(0, 0, 0, 0.75);
+}
+
+.noScrollbar::-webkit-scrollbar-track {
+    background: red;
+    /*display:none;*/
+}
+
+.noScrollbar::-webkit-scrollbar-thumb {
+    background: red;
+    /*display:none*/
+}
+
+.noScrollbar::-webkit-scrollbar-button {
+    display: none
+}
+
+.noScrollbar::-webkit-scrollbar {
+    background-color: #fff;
+    width: 0px
+}
+
+.sideUpper {
+    display: flex;
+    position: fixed;
+    width: calc(45vw);
+    background: white;
+    z-index: 19;
+    top: 0px;
+}
+
+.btnIcon {
+
+}
+
+
+.resizer {
+    height: 100%;
+    width: 8px;
+    background: #e0e0e0;
+    position: absolute;
+    cursor: col-resize;
+    flex-shrink: 0;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+}
+
+.resizer::after,
+.resizer::before {
+    content: "";
+    border-left: 1px solid #333;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-100%);
+    right: 0;
+    display: inline-block;
+    height: 20px;
+    margin: 0 2px;
+}
+.resizer::before {
+    left: 0;
+}

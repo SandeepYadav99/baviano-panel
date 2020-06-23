@@ -1,0 +1,14 @@
+.infoContainer {
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 70%;
+    margin: auto;
+}
+
+.infoContainer h3 {
+    margin: 0px;
+    text-align: center;
+}

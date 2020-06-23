@@ -1,0 +1,70 @@
+.positionR {
+    position: relative;
+}
+.fileUpload {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    display: flex;
+}
+
+.fileName {
+    padding-left: 10px;
+    border: 1px solid #a9adaf;
+    display: flex;
+    align-items: center;
+    /* padding-left: 10px; */
+    font-size: 16px;
+    /*padding: 5px;*/
+    flex:1;
+}
+
+.fileLabel {
+    display: block;
+    padding: 10px 5px;
+    color: #fff;
+    background: #4B80EA;
+    transition: background 0.3s;
+    /*max-width: 90px;*/
+}
+.imgFileLabel {
+    display: block;
+    padding: 5px 5px;
+    color: #fff;
+    background: #4B80EA;
+    transition: background 0.3s;
+    text-align: center;
+}
+.imgLowerContainer {
+    text-align: center;
+}
+
+.fileInput {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.image {
+    width: 100px;
+    height: 100px;
+}
+.imageBtnContainer {
+    width: 100px;
+    position: relative;
+    display: inline-block;
+}
+.anchorTag {
+    right: 0px;
+    bottom: -12px;
+    margin: 0px;
+    position: absolute;
+    margin-left: 5px;
+    font-size: 0.60rem;
+    /* text-decoration: none; */
+    color: #536dfe;
+}
