@@ -1,7 +1,8 @@
 import tinycolor from "tinycolor2";
 
 const primary = "#536DFE";
-const bgcolors = '#5850EC';
+const bgcolors = '#f6f7ff';
+const textColor = "#000000";
 const secondary = "#9f43ff";
 const warning = "#FFC260";
 const success = "#3CD4A0";
@@ -31,6 +32,7 @@ export default {
                 .darken(darkenRate)
                 .toHexString()
         },
+        textColor: textColor,
         secondary: {
             main: secondary,
             light: tinycolor(secondary)
@@ -89,13 +91,23 @@ export default {
     },
     customShadows: {
         widget:
-            "0px 3px 11px 0px #E8EAFC, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
+            "0px 1px 2px 0px #E8EAFC, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
         widgetDark:
             "0px 3px 18px 0px #4558A3B3, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
         widgetWide:
             "0px 12px 33px 0px #E8EAFC, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A"
     },
     overrides: {
+        MuiPaper: {
+            root: {
+                color: textColor,
+            }
+        },
+        MuiTablePagination: {
+            root: {
+                color: textColor,
+            }
+        },
         MuiBackdrop: {
             root: {
                 backgroundColor: "#4A4A4A1A"
@@ -133,8 +145,11 @@ export default {
             },
         },
         MuiFormLabel: {
+            root: {
+                color: textColor,
+            },
             filled: {
-                backgroundColor: 'white'
+                backgroundColor: bgcolors
             }
         },
         MuiListItem: {
@@ -160,17 +175,42 @@ export default {
                 height: 40,
             }
         },
+        MuiButton: {
+            root: {
+                color: textColor,
+            }
+        },
+        MuiInputBase: {
+            root: {
+                border: '1px solid '+textColor,
+                color: textColor,
+            },
+            selected: {
+                border: 'none',
+                '&:focus': {
+                    border: 'none',
+                },
+            }
+        },
+        MuiTypography: {
+            colorTextSecondary: {
+                color: textColor
+            }
+        },
         MuiTableCell: {
             root: {
                 padding: '10px',
+
                 // color: 'black !important'
                 // borderBottom: '1px solid rgba(224, 224, 224, .5)',
             },
             head: {
                 fontSize: '0.80rem',
+                color: textColor,
             },
             body: {
                 fontSize: '0.80rem',
+                color: textColor,
             }
         }
     }

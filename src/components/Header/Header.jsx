@@ -18,7 +18,7 @@ import cx from "classnames";
 
 import headerStyle from "../../assets/jss/material-dashboard-react/headerStyle.jsx";
 import {actionLogoutUser} from "../../actions/auth_index.action";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { actionChangeTheme } from '../../actions/AppSettings.action';
 // import HeaderLinks from "./HeaderLinks";
 
 class Header extends React.Component {
@@ -31,7 +31,7 @@ class Header extends React.Component {
         this._handleClick = this._handleClick.bind(this);
         this._handleClose = this._handleClose.bind(this);
         this._handleLogout = this._handleLogout.bind(this);
-        this.handleChangeTheme = this.handleChangeTheme.bind(this)
+        this._handleChangeTheme = this._handleChangeTheme.bind(this)
     }
 
     makeBrand() {
@@ -58,14 +58,13 @@ class Header extends React.Component {
         this.setState({anchorEl: null});
     }
 
-    handleChangeTheme(){
-        this.setState({
-            dark: !this.state.dark
-        })
+    _handleChangeTheme(){
+        const { themeType } = this.props;
+        this.props.actionChangeTheme(themeType == 'dark' ? 'light' : 'dark');
     }
 
     render() {
-        const {classes, color} = this.props;
+        const {classes, color, themeType} = this.props;
         const { anchorEl } = this.state;
         const appBarClasses = cx({
             [" " + classes[color]]: color
@@ -86,7 +85,7 @@ class Header extends React.Component {
                         {this.makeBrand()}
                     </Button>
                     <div className={classes.flexGrow}>
-                        <Switch checked={this.state.dark} onChange={this.handleChangeTheme}/>
+                        <Switch checked={themeType == 'dark'} onChange={this._handleChangeTheme}/>
                     </div>
                     <div>
                         <Button
@@ -130,8 +129,15 @@ Header.propTypes = {
 const temp = withStyles(headerStyle)(Header);
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ actionLogoutUser: actionLogoutUser }, dispatch);
+    return bindActionCreators({
+        actionLogoutUser: actionLogoutUser,
+        actionChangeTheme: actionChangeTheme,
+    }, dispatch);
+}
+function mapStateToProps(state) {
+    return {
+        themeType: state.app_setting.theme,
+    }
 }
 
-
-export  default  connect(null, mapDispatchToProps)(temp);
+export  default  connect(mapStateToProps, mapDispatchToProps)(temp);

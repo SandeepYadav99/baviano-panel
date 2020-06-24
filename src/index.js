@@ -16,9 +16,14 @@ import store from './store';
 import {AUTH_USER} from "./actions/auth_index.action";
 import { actionGetDashboard } from './actions/Dashboard.action';
 import {connectToSocket} from "./libs/socket.utils";
-import {actionGetAppSettings} from "./actions/AppSettings.action";
+import {actionChangeTheme, actionGetAppSettings} from "./actions/AppSettings.action";
 
 setAxiosTimezone();
+if (localStorage.theme) {
+    store.dispatch(actionChangeTheme(localStorage.theme));
+} else {
+    store.dispatch(actionChangeTheme('dark'));
+}
 if (localStorage.jwt_token) {
     setAuthorizationToken(localStorage.jwt_token);
     store.dispatch({
