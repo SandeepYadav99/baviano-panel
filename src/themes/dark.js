@@ -4,7 +4,7 @@
 import tinycolor from "tinycolor2";
 
 const primary = "#536DFE";
-const bgcolors = '#000000';
+const bgcolors = '#212121';
 const secondary = "#9f43ff";
 const warning = "#FFC260";
 const success = "#3CD4A0";
@@ -148,8 +148,11 @@ export default {
             },
         },
         MuiFormLabel: {
+            root: {
+              color: textColor,
+            },
             filled: {
-                backgroundColor: 'white'
+                backgroundColor: bgcolors
             }
         },
         MuiListItem: {
@@ -182,7 +185,8 @@ export default {
         },
         MuiInputBase: {
           root: {
-              border: '1px solid white'
+              border: '1px solid '+textColor,
+              color: textColor,
           },
             selected: {
               border: 'none',

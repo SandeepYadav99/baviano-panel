@@ -29,7 +29,7 @@
     display: flex;
     position: fixed;
     width: calc(45vw);
-    background: white;
+    /*background: white;*/
     z-index: 19;
     top: 0px;
 }

@@ -243,12 +243,13 @@ class FilterComponent extends Component {
     }
 
     render() {
+        const { theme } = this.props;
         return (
             <div style={{}}>
                 <br/>
                 <div style={{ display: 'flex', width: '100%', alignItems: 'flex-end', }}>
                     <div style={{ flex: 1 }}>
-                    <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #f4f4f4', paddingLeft: '10px'}}>
+                    <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #f4f4f4', paddingLeft: '10px', backgroundColor: theme.palette.textColor, color: theme.palette.bgColor.main}}>
                         <SearchIcon style={{ width: 30, height: 30, marginRight: 10 }}/>
                         <input onBlur={this._handleSearchBlur} value={this.state.query} onChange={this._handleSearchChange} style={{ width: '100%', height: '30px', border: 'none', padding: 10, fontSize: 20 }} placeholder={'Search'}/>
                     </div>
@@ -307,4 +308,4 @@ FilterComponent.propTypes = {
     is_progress: PropTypes.bool
 }
 
-export default withStyles(useStyles)(FilterComponent);
+export default withStyles(useStyles, { withTheme: true })(FilterComponent);

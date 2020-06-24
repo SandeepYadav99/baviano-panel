@@ -5,9 +5,8 @@ import React, {Component} from 'react';
 import classnames from 'classnames';
 import ReactDOM from 'react-dom';
 import styles from './style.module.css';
-import {ButtonBase} from '@material-ui/core';
+import {ButtonBase, withTheme} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
-
 
 class ResizablePanels extends React.Component {
 
@@ -106,11 +105,12 @@ class SidePanelComponent extends Component {
     }
 
     render() {
-
+        const { theme } = this.props;
         const tempStyle = {
             width: (this.state.delta == 0 || !this.props.open) ? 'calc(45vw)' : (window.innerWidth - this.state.delta),
             height: '100%',
-            backgroundColor: 'white',
+            backgroundColor: theme.palette.bgColor.main,
+            color: theme.palette.textColor,
             top: '0px',
             position: 'fixed',
         };
@@ -153,5 +153,5 @@ class SidePanelComponent extends Component {
     }
 }
 
-export default SidePanelComponent;
+export default withTheme(SidePanelComponent);
 
