@@ -340,7 +340,7 @@ class Product extends Component {
                                    component={renderOutlinedTextField}
                                    type={'number'}
                                    margin={'dense'}
-                                   label="Offer Price"/>
+                                   label="Price"/>
                         </div>
                     </div>
 
