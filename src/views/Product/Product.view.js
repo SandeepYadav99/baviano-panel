@@ -110,7 +110,7 @@ class Product extends Component {
     componentDidMount() {
         const {data} = this.props;
         if (data) {
-            requiredFields = ['name', 'unit_id', 'list_price', 'price', 'tags', 'category_ids',  'quantity', 'max_quantity']; //'label',
+            requiredFields = ['name', 'unit_id', 'list_price', 'price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step']; //'label',
             Object.keys(data).forEach((val) => {
                 if (['status', 'image','is_featured'].indexOf(val) == -1) {
                     const temp = data[val];
@@ -122,7 +122,7 @@ class Product extends Component {
                 is_featured: data.is_featured
             })
         } else {
-            requiredFields = ['name', 'image', 'unit_id', 'list_price', 'price', 'tags', 'category_ids',  'quantity', 'max_quantity']; //'label',
+            requiredFields = ['name', 'image', 'unit_id', 'list_price', 'price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step']; //'label',
         }
     }
 

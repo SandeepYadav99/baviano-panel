@@ -8,10 +8,9 @@ import history from './libs/history.utils';
 
 // const history = createBrowserHistory();
 
-const themeDefault = themes.default;
+const themeDefault = themes.dark;
 // themeDefault['palette']['type'] = 'dark';
 const theme = createMuiTheme({...themeDefault, ...overrides});
-console.log({ ['palette.type']: 'dark' });
 
 class App extends Component {
     render() {

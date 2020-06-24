@@ -10,7 +10,8 @@ const appStyle = theme => ({
 		position: 'relative',
 		top: '0',
 		height: '100vh',
-		overflowX: 'hidden'
+		overflowX: 'hidden',
+		backgroundColor: theme.palette.bgColor.main
 	},
 	mainPanel: {
 		// [theme.breakpoints.up("md")]: {
