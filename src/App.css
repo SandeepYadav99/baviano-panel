@@ -71,3 +71,12 @@ body{
     margin-left: 5px;
     margin-top: 5px;
 }
+
+.login .MuiInputBase-input {
+    border-bottom: 1px solid black;
+}
+
+.login .MuiInputLabel-root {
+    color: black;
+    background: white;
+}

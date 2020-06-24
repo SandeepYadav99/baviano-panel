@@ -100,6 +100,7 @@ class LoginView extends Component {
     render() {
         const {handleSubmit,classes} = this.props;
         return (
+            <div className={'login'}>
             <div className={styles.mainLoginView}>
                 <div className={styles.loginFlex1}>
                     <div className={styles.heading}>
@@ -193,6 +194,7 @@ class LoginView extends Component {
                     </form>
                 </div>
                 <DashboardSnackbar/>
+            </div>
             </div>
         );
     }

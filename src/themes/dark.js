@@ -94,7 +94,7 @@ export default {
     },
     customShadows: {
         widget:
-            "0px 1px 2px 0px #E8EAFC, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
+            "none",
         widgetDark:
             "0px 3px 18px 0px #4558A3B3, 0 3px 3px -2px #B2B2B21A, 0 1px 8px 0 #9A9A9A1A",
         widgetWide:
@@ -183,18 +183,23 @@ export default {
               color: textColor,
           }
         },
-        MuiInputBase: {
-          root: {
-              border: '1px solid '+textColor,
-              color: textColor,
-          },
-            selected: {
-              border: 'none',
-                '&:focus': {
-                    border: 'none',
-                },
+        MuiOutlinedInput: {
+            input: {
+                color: textColor
             }
         },
+        // MuiInputBase: {
+        //   root: {
+        //       border: '1px solid '+textColor,
+        //       color: textColor,
+        //   },
+        //     selected: {
+        //       border: 'none',
+        //         '&:focus': {
+        //             border: 'none',
+        //         },
+        //     }
+        // },
         MuiTypography: {
           colorTextSecondary: {
               color: textColor

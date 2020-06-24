@@ -180,18 +180,18 @@ export default {
                 color: textColor,
             }
         },
-        MuiInputBase: {
-            root: {
-                border: '1px solid '+textColor,
-                color: textColor,
-            },
-            selected: {
-                border: 'none',
-                '&:focus': {
-                    border: 'none',
-                },
-            }
-        },
+        // MuiInputBase: {
+        //     root: {
+        //         border: '1px solid '+textColor,
+        //         color: textColor,
+        //     },
+        //     selected: {
+        //         border: 'none',
+        //         '&:focus': {
+        //             border: 'none',
+        //         },
+        //     }
+        // },
         MuiTypography: {
             colorTextSecondary: {
                 color: textColor
