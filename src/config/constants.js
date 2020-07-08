@@ -5,7 +5,7 @@ const tempDate = new Date();
 export default {
     TIME_ZONE: -(tempDate.getTimezoneOffset()/60),
     DEFAULT_TIME_FORMAT: 'DD-MM-YYYY, HH:mm',
-    APP_NAME: 'Grocery - CompanyPanel',
+    APP_NAME: 'Baviano - CompanyPanel',
     DEFAULT_APP_URL: tempLevel ? 'http://91.205.173.97:2306/api/company/' :'http://192.168.1.21:2306/api/company/',
     SOCKET_URL: tempLevel ? 'http://91.205.173.97:2306' : 'http://192.168.1.21:2306',
     // DEFAULT_APP_URL: 'http://35.154.147.169:5055/api/',
