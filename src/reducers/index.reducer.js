@@ -19,6 +19,9 @@ import DRequestReducer from './DriverRequest.reducer';
 import OrderReducer from './Order.reducer'
 import DashboardReducer from './Dashboard.reducer';
 import AppSettingReducer from './AppSettings.reducer';
+import PendingPlanReducer from './PendingPlan.reducer';
+import BatchReducer from './Batch.reducer';
+import BatchProcessingReducer from './BatchProcessing.reducer';
 
 const rootReducer = combineReducers({
     state: (state = {}) => state,
@@ -37,7 +40,10 @@ const rootReducer = combineReducers({
     promotion: PromotionReducer,
     customers: Customers,
     drivers: DRequestReducer,
-    order: OrderReducer
+    order: OrderReducer,
+    pending_plan: PendingPlanReducer,
+    batch: BatchReducer,
+    batch_processing: BatchProcessingReducer,
     // form: formReducer,
 });
 

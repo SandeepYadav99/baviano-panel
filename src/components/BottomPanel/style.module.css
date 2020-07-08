@@ -1,0 +1,28 @@
+.LPTransition {
+    transition: all 0.5s;
+    background: red;
+    -webkit-box-shadow: 0px 0px 28px -10px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 28px -10px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 28px -10px rgba(0,0,0,0.1);
+}
+.noScrollbar::-webkit-scrollbar-track{
+    background: red;
+    /*display:none;*/
+}
+.noScrollbar::-webkit-scrollbar-thumb {
+    background: red;
+    /*display:none*/
+}
+.noScrollbar::-webkit-scrollbar-button {display:none}
+
+.noScrollbar::-webkit-scrollbar {
+    background-color:#fff;
+    width:0px
+}
+.sideUpper{
+    display: flex;
+}
+
+.btnIcon{
+
+}

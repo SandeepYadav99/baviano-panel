@@ -110,7 +110,7 @@ class Product extends Component {
     componentDidMount() {
         const {data} = this.props;
         if (data) {
-            requiredFields = ['name', 'unit_id', 'list_price', 'price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step']; //'label',
+            requiredFields = ['name', 'unit_id', 'list_price', 'price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step', 'min_value', 'min_percentage']; //'label',
             Object.keys(data).forEach((val) => {
                 if (['status', 'image','is_featured'].indexOf(val) == -1) {
                     const temp = data[val];
@@ -122,7 +122,7 @@ class Product extends Component {
                 is_featured: data.is_featured
             })
         } else {
-            requiredFields = ['name', 'image', 'unit_id', 'list_price', 'price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step']; //'label',
+            requiredFields = ['name', 'image', 'unit_id', 'list_price', 'price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step', 'min_value', 'min_percentage']; //'label',
         }
     }
 
@@ -404,6 +404,27 @@ class Product extends Component {
                                 component={renderOutlinedTextField}
                                 margin={'dense'}
                                 label="Max Quantity (0 for no limit)"/>
+                        </div>
+                    </div>
+
+                    <div className={'formFlex'}>
+                        <div className={'formGroup'}>
+                            <Field
+                                fullWidth={true}
+                                name="min_value"
+                                component={renderOutlinedTextField}
+                                type={'number'}
+                                margin={'dense'}
+                                label="Min Value"/>
+                        </div>
+                        <div className={'formGroup'}>
+                            <Field
+                                fullWidth={true}
+                                name="min_percentage"
+                                type={'number'}
+                                component={renderOutlinedTextField}
+                                margin={'dense'}
+                                label="Min Percentage"/>
                         </div>
                     </div>
 

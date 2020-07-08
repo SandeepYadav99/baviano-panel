@@ -102,18 +102,3 @@ font-size: 10px;
     font-size: 12px;
 }
 
-.bottomSide {
-    flex: 1;
-}
-.bottomSide label {
-    margin-left: 10px;
-}
-.bottomCenter {
-    display: flex;
-    justify-content: center;
-    flex: 2;
-}
-.buttonCont {
-    margin-left: 10px;
-    margin-right: 10px;
-}

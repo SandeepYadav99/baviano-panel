@@ -12,7 +12,8 @@ import CustomerList from '../views/Customers/CustomerList.container';
 import DriverList from '../views/driver/DriversList.container';
 import OrderList from '../views/Order/OrderList.container'
 import AppSettings from '../views/AppSettings/AppSettings.container';
-
+import PendingPlan from '../views/PendingPlans/PendingPlanList.container';
+import BatchProcessing from '../views/BatchProcessing/BatchList.container';
 // import TableList from "views/TableList/TableList.jsx";
 // import Typography from "views/Typography/Typography.jsx";
 // import Icons from "views/Icons/Icons.jsx";
@@ -131,6 +132,25 @@ const dashboardRoutes = [
         is_sidebar: true,
         is_protect: true,
     },
+    {
+        path: "/plans/pending",
+        sidebarName: "Pending Plans",
+        navbarName: "Pending Plans",
+        icon: Dashboard,
+        component: PendingPlan,
+        is_sidebar: true,
+        is_protect: true,
+    },
+    {
+        path: "/batch/processing",
+        sidebarName: "Today Batch",
+        navbarName: "Today Batch",
+        icon: Dashboard,
+        component: BatchProcessing,
+        is_sidebar: true,
+        is_protect: true,
+    },
+
     {
         path: "/app/settings",
         sidebarName: "App Settings",

@@ -21,19 +21,19 @@ import Constants from '../../config/constants';
 import FilterComponent from '../../components/Filter/Filter.component';
 import {BookmarkBorder, Bookmark, Check, Close,} from '@material-ui/icons';
 import {
-    actionFetchOrder,
-    actionChangePageOrder,
-    actionChangeStatusOrder,
-    actionFilterOrder,
-    actionResetFilterOrder,
-    actionSetPageOrder,
-    actionCreateOrder,
-    actionUpdateOrder
-} from '../../actions/Order.action';
+    actionFetchPendingPlan,
+    actionChangePagePendingPlan,
+    actionChangeStatusPendingPlan,
+    actionFilterPendingPlan,
+    actionResetFilterPendingPlan,
+    actionSetPagePendingPlan,
+    actionCreatePendingPlan,
+    actionUpdatePendingPlan,
+    actionAssignBatch
+} from '../../actions/PendingPlans.action';
 import DateUtils from '../../libs/DateUtils.lib';
-import {serviceAcceptOrder, serviceListData, serviceRejectOrder} from "../../services/OrderRequest.service";
-import EventEmitter from "../../libs/Events.utils";
 import BottomPanel from '../../components/BottomPanel/BottomPanel.component';
+import BottomAction from './components/BottomActions/BottomAction.component';
 
 let CreateProvider = null;
 class OrderList extends Component {
@@ -69,11 +69,13 @@ class OrderList extends Component {
         this._handleChangeStatus = this._handleChangeStatus.bind(this);
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleCheckbox = this._handleCheckbox.bind(this);
+        this._handleBatchSelection = this._handleBatchSelection.bind(this);
     }
 
     componentDidMount() {
         // if (this.props.total_count <= 0) {
         this.props.actionFetchData();
+
         // const request = serviceListData();
         // request.then((data)=> {
         //     if(!data.error){
@@ -205,7 +207,7 @@ class OrderList extends Component {
     _renderCreateForm () {
         if (CreateProvider == null) {
             // import CreateProvider from './Create.container';
-            CreateProvider = require('./Order.container').default;
+            CreateProvider = require('./PendingPlan.container').default;
         }
         if (this.state.side_panel) {
             const { id } = this.props.match.params;
@@ -228,24 +230,30 @@ class OrderList extends Component {
             is_submit: true
         });
         let request = null;
-        if (type == 'ACCEPT') {
-            request = await serviceAcceptOrder(data);
-        } else {
-            request = await serviceRejectOrder(data);
-        }
-        if (!request.error) {
-            this.props.actionUpdate({...data});
-            this.setState({
-                side_panel: !this.state.side_panel,
-                edit_data: null,
-                is_submit: false
-            });
-        } else {
-            EventEmitter.dispatch(EventEmitter.THROW_ERROR, {error: request.message, type: 'error'});
-            this.setState({
-                is_submit: false
-        });
-        }
+        // if (type == 'ACCEPT') {
+        //     request = await serviceAcceptOrder(data);
+        // } else {
+        //     request = await serviceRejectOrder(data);
+        // }
+        // if (!request.error) {
+        //     this.props.actionUpdate({...data});
+        //     this.setState({
+        //         side_panel: !this.state.side_panel,
+        //         edit_data: null,
+        //         is_submit: false
+        //     });
+        // } else {
+        //     EventEmitter.dispatch(EventEmitter.THROW_ERROR, {error: request.message, type: 'error'});
+        //     this.setState({
+        //         is_submit: false
+        // });
+        // }
+    }
+
+    _handleBatchSelection(data) {
+        const { selected } = this.state;
+        const formData = { ...data, selection: selected };
+        this.props.actionAssignBatch(formData);
     }
 
     _renderContact(all){
@@ -318,18 +326,18 @@ class OrderList extends Component {
                 render: (temp, all) => <div style={{wordBreak:'break-word'}}>{all.address.address}</div>,
             },
             {
-                key: 'total_products',
-                label: 'Total Products',
+                key: 'name',
+                label: 'Product',
                 sortable: true,
                 // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.products.length}</div>,
+                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.name}</div>,
             },
             {
                 key: 'total_amount',
                 label: 'Total Amount',
                 sortable: true,
                 // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.amount.total}</div>,
+                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.total_price}</div>,
             },
             {
                 key: 'status',
@@ -425,43 +433,9 @@ class OrderList extends Component {
                     {this._renderCreateForm()}
                 </SidePanelComponent>
                 <BottomPanel open={this.state.selected.length > 0}>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        <div className={styles.bottomSide}>
-                            <label htmlFor="">
-                                {this.state.selected.length} Selected
-                            </label>
-                        </div>
-                        <div className={styles.bottomCenter}>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleSetFeatured}
-                                    startIcon={<Bookmark/>}
-                                >Mark</Button>
-                            </div>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleUnsetFeatured}
-                                    startIcon={<BookmarkBorder/>}
-                                >Unmark</Button>
-                            </div>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleReject}
-                                    startIcon={<Close/>}
-                                >Reject</Button>
-                            </div>
-
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleAccept}
-                                    startIcon={<Check/>}
-                                >Accept</Button>
-                            </div>
-                        </div>
-                        <div className={styles.bottomSide}>
-
-                        </div>
-                    </div>
+                    <BottomAction
+                        selected={this.state.selected.length}
+                        handleAssign={this._handleBatchSelection} />
                 </BottomPanel>
             </div>
         )
@@ -470,26 +444,28 @@ class OrderList extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.order.present,
-        total_count: state.order.all.length,
-        currentPage: state.order.currentPage,
-        serverPage: state.order.serverPage,
-        sorting_data: state.order.sorting_data,
-        is_fetching: state.order.is_fetching,
-        query: state.order.query,
-        query_data: state.order.query_data,
+        data: state.pending_plan.present,
+        total_count: state.pending_plan.all.length,
+        currentPage: state.pending_plan.currentPage,
+        serverPage: state.pending_plan.serverPage,
+        sorting_data: state.pending_plan.sorting_data,
+        is_fetching: state.pending_plan.is_fetching,
+        query: state.pending_plan.query,
+        query_data: state.pending_plan.query_data,
+        batches: state.batch.present,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        actionFetchData: actionFetchOrder,
-        actionSetPage: actionSetPageOrder,
-        actionResetFilter: actionResetFilterOrder,
-        actionSetFilter: actionFilterOrder,
-        actionChangeStatus: actionChangeStatusOrder,
-        actionCreate: actionCreateOrder,
-        actionUpdate: actionUpdateOrder
+        actionFetchData: actionFetchPendingPlan,
+        actionSetPage: actionSetPagePendingPlan,
+        actionResetFilter: actionResetFilterPendingPlan,
+        actionSetFilter: actionFilterPendingPlan,
+        actionChangeStatus: actionChangeStatusPendingPlan,
+        actionCreate: actionCreatePendingPlan,
+        actionUpdate: actionUpdatePendingPlan,
+        actionAssignBatch: actionAssignBatch
     }, dispatch);
 }
 

@@ -21,22 +21,29 @@ import Constants from '../../config/constants';
 import FilterComponent from '../../components/Filter/Filter.component';
 import {BookmarkBorder, Bookmark, Check, Close,} from '@material-ui/icons';
 import {
-    actionFetchOrder,
-    actionChangePageOrder,
-    actionChangeStatusOrder,
-    actionFilterOrder,
-    actionResetFilterOrder,
-    actionSetPageOrder,
-    actionCreateOrder,
-    actionUpdateOrder
-} from '../../actions/Order.action';
+    actionFetchBatchProcessing,
+    actionChangePageBatchProcessing,
+    actionChangeStatusBatchProcessing,
+    actionFilterBatchProcessing,
+    actionResetFilterBatchProcessing,
+    actionSetPageBatchProcessing,
+    actionCreateBatchProcessing,
+    actionUpdateBatchProcessing,
+    actionChangeBatchId,
+} from '../../actions/BatchProcessing.action';
 import DateUtils from '../../libs/DateUtils.lib';
 import {serviceAcceptOrder, serviceListData, serviceRejectOrder} from "../../services/OrderRequest.service";
 import EventEmitter from "../../libs/Events.utils";
 import BottomPanel from '../../components/BottomPanel/BottomPanel.component';
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import {Field} from "redux-form";
+import {actionFetchBatch} from "../../actions/Batch.action";
 
 let CreateProvider = null;
-class OrderList extends Component {
+class BatchProcessingList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -69,11 +76,13 @@ class OrderList extends Component {
         this._handleChangeStatus = this._handleChangeStatus.bind(this);
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleCheckbox = this._handleCheckbox.bind(this);
+        this._handleBatchChange = this._handleBatchChange.bind(this);
     }
 
     componentDidMount() {
+        this.props.actionFetchBatch();
         // if (this.props.total_count <= 0) {
-        this.props.actionFetchData();
+        // this.props.actionFetchData();
         // const request = serviceListData();
         // request.then((data)=> {
         //     if(!data.error){
@@ -222,30 +231,19 @@ class OrderList extends Component {
         });
     }
 
+    _handleBatchChange(e) {
+        const batchId = e.target.value;
+        this.setState({
+            batchId,
+        });
+        this.props.actionChangeBatchId(batchId);
+    }
+
     async _handleDataSave(data, type) {
 
         this.setState({
             is_submit: true
         });
-        let request = null;
-        if (type == 'ACCEPT') {
-            request = await serviceAcceptOrder(data);
-        } else {
-            request = await serviceRejectOrder(data);
-        }
-        if (!request.error) {
-            this.props.actionUpdate({...data});
-            this.setState({
-                side_panel: !this.state.side_panel,
-                edit_data: null,
-                is_submit: false
-            });
-        } else {
-            EventEmitter.dispatch(EventEmitter.THROW_ERROR, {error: request.message, type: 'error'});
-            this.setState({
-                is_submit: false
-        });
-        }
     }
 
     _renderContact(all){
@@ -279,6 +277,13 @@ class OrderList extends Component {
         this.setState({
             selected: tempSelected,
         });
+    }
+
+    _renderMenu() {
+        const { batches } = this.props;
+        return batches.map((val) => {
+            return (<MenuItem value={val.id}>{val.name}</MenuItem>);
+        })
     }
 
     _renderOrderId(data) {
@@ -344,27 +349,6 @@ class OrderList extends Component {
                 sortable: true,
                 render: (temp, all) => <div>{DateUtils.changeTimezoneFromUtc(all.createdAt)}</div>,
             },
-            // {
-            //     key: 'start_loc',
-            //     label: 'Start - End Location',
-            //     sortable: false,
-            //     render: (temp, all) => (<div>
-            //         <div>{all.start_loc.name}</div>
-            //         <div>{all.end_loc.name}</div>
-            //     </div>)
-            // },
-            // {
-            //     key: 'createdAt',
-            //     label: 'Date',
-            //     sortable: true,
-            //     render: (temp, all) => <div>{all.createdAt}</div>,
-            // },
-            // {
-            //     key: 'status',
-            //     label: 'Status',
-            //     sortable: true,
-            //     render: (temp, all) => <div>{this.renderStatus(all.status)}</div>,
-            // },
             {
                 key: 'user_id',
                 label: 'Action',
@@ -395,6 +379,25 @@ class OrderList extends Component {
                 <PageBox>
                     <div className={styles.headerContainer}>
                         <span className={styles.title}>Order List</span>
+                        <div style={{ width: '200px' }}>
+                            <FormControl fullWidth variant="outlined" margin={'dense'}  >
+                                <InputLabel
+                                    htmlFor={'selectBatchLabel'}
+                                >
+                                    Select Batch
+                                </InputLabel>
+                            <Select
+                                label={'Select Batch'}
+                                fullWidth={true}
+                                labelId="selectBatchLabel"
+                                id="selectBatch"
+                                value={this.state.batchId}
+                                onChange={this._handleBatchChange}
+                            >
+                                {this._renderMenu()}
+                            </Select>
+                            </FormControl>
+                        </div>
                         {/*<Button onClick={this._handleSideToggle} variant={'contained'} color={'primary'} disabled={this.state.listData==null}>*/}
                             {/*<Add></Add> Create*/}
                         {/*</Button>*/}
@@ -470,27 +473,30 @@ class OrderList extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.order.present,
-        total_count: state.order.all.length,
-        currentPage: state.order.currentPage,
-        serverPage: state.order.serverPage,
-        sorting_data: state.order.sorting_data,
-        is_fetching: state.order.is_fetching,
-        query: state.order.query,
-        query_data: state.order.query_data,
+        data: state.batch_processing.present,
+        total_count: state.batch_processing.all.length,
+        currentPage: state.batch_processing.currentPage,
+        serverPage: state.batch_processing.serverPage,
+        sorting_data: state.batch_processing.sorting_data,
+        is_fetching: state.batch_processing.is_fetching,
+        query: state.batch_processing.query,
+        query_data: state.batch_processing.query_data,
+        batches: state.batch.present,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        actionFetchData: actionFetchOrder,
-        actionSetPage: actionSetPageOrder,
-        actionResetFilter: actionResetFilterOrder,
-        actionSetFilter: actionFilterOrder,
-        actionChangeStatus: actionChangeStatusOrder,
-        actionCreate: actionCreateOrder,
-        actionUpdate: actionUpdateOrder
+        actionFetchData: actionFetchBatchProcessing,
+        actionSetPage: actionSetPageBatchProcessing,
+        actionResetFilter: actionResetFilterBatchProcessing,
+        actionSetFilter: actionFilterBatchProcessing,
+        actionChangeStatus: actionChangeStatusBatchProcessing,
+        actionCreate: actionCreateBatchProcessing,
+        actionUpdate: actionUpdateBatchProcessing,
+        actionChangeBatchId: actionChangeBatchId,
+        actionFetchBatch: actionFetchBatch
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderList);
+export default connect(mapStateToProps, mapDispatchToProps)(BatchProcessingList);
