@@ -60,10 +60,10 @@ const useStyles = {
     },
     colorButton: {
         color: 'white',
-        backgroundColor: '#F8345E',
+        backgroundColor: '#0762BE',
         '&:hover': {
             color: 'white',
-            backgroundColor: '#F8345E',
+            backgroundColor: '#0762BE',
         }
     }
 
@@ -104,38 +104,38 @@ class LoginView extends Component {
             <div className={styles.mainLoginView}>
                 <div className={styles.loginFlex1}>
                     <div className={styles.heading}>
-                        Welcome To Fresh Basket
+                        Milk Delivery Application Panel
                     </div>
 
-                    <div className={styles.innerFlex}>
-                        <div>
-                            <img src={require('../../assets/img/home/1.png')} className={styles.icons}/>
-                        </div>
-                        <div className={styles.textRight}>
-                            <div className={styles.titleText}>Order Groceries & Food Items</div>
-                            <div className={styles.subHeading}>Choose from a range of 1000+ products available at special prices.</div>
-                        </div>
-                    </div>
+                    {/*<div className={styles.innerFlex}>*/}
+                        {/*<div>*/}
+                            {/*<img src={require('../../assets/img/home/1.png')} className={styles.icons}/>*/}
+                        {/*</div>*/}
+                        {/*<div className={styles.textRight}>*/}
+                            {/*<div className={styles.titleText}>Order Groceries & Food Items</div>*/}
+                            {/*<div className={styles.subHeading}>Choose from a range of 1000+ products available at special prices.</div>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
 
-                    <div className={styles.innerFlex} style={{marginTop:'30px'}}>
-                        <div>
-                            <img src={require('../../assets/img/home/2.png')} className={styles.icons}/>
-                        </div>
-                        <div className={styles.textRight}>
-                            <div className={styles.titleText}>Hassle-free Doorstep Delivery</div>
-                            <div className={styles.subHeading}>Get your orders delivered to your doorstep - safe,hygenic and quick.</div>
-                        </div>
-                    </div>
+                    {/*<div className={styles.innerFlex} style={{marginTop:'30px'}}>*/}
+                        {/*<div>*/}
+                            {/*<img src={require('../../assets/img/home/2.png')} className={styles.icons}/>*/}
+                        {/*</div>*/}
+                        {/*<div className={styles.textRight}>*/}
+                            {/*<div className={styles.titleText}>Hassle-free Doorstep Delivery</div>*/}
+                            {/*<div className={styles.subHeading}>Get your orders delivered to your doorstep - safe,hygenic and quick.</div>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
 
-                    <div className={styles.innerFlex} style={{marginTop:'30px'}}>
-                        <div>
-                            <img src={require('../../assets/img/home/3.png')} className={styles.icons}/>
-                        </div>
-                        <div className={styles.textRight}>
-                            <div className={styles.titleText}>Realtime Order Tracking</div>
-                            <div className={styles.subHeading}>Get real time updates on your orders & track your order.</div>
-                        </div>
-                    </div>
+                    {/*<div className={styles.innerFlex} style={{marginTop:'30px'}}>*/}
+                        {/*<div>*/}
+                            {/*<img src={require('../../assets/img/home/3.png')} className={styles.icons}/>*/}
+                        {/*</div>*/}
+                        {/*<div className={styles.textRight}>*/}
+                            {/*<div className={styles.titleText}>Realtime Order Tracking</div>*/}
+                            {/*<div className={styles.subHeading}>Get real time updates on your orders & track your order.</div>*/}
+                        {/*</div>*/}
+                    {/*</div>*/}
                     {/*<div style={{width:'80%'}}>*/}
                         {/*<div className={styles.subText}>*/}
                             {/*Identify new growth opportunities for your business with the lucrative alliance with Get a Tour and list down all your tours with the platform*/}
@@ -162,7 +162,7 @@ class LoginView extends Component {
                 </div>
                 <div className={styles.loginFlex2}>
                     <div style={{textAlign:'center',marginBottom:'40px'}}>
-                        <img src={require('../../assets/img/home/ic_spalsh_logo.png')} style={{height:'130px'}}/>
+                        <img src={require('../../assets/img/logo.png')}/>
                     </div>
                     <br/>
                     <h1 className={styles.headingText}>Login</h1>

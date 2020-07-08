@@ -80,3 +80,7 @@ body{
     color: black;
     background: white;
 }
+
+.forgot .MuiInputBase-input {
+    border-bottom: 1px solid black;
+}

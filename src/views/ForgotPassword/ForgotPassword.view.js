@@ -185,6 +185,7 @@ class ForgotPasswordView extends Component {
     render() {
         const {handleSubmit,classes} = this.props;
         return (
+            <div className={'forgot'}>
             <div className={styles.mainLoginView}>
                 <div className={styles.loginFlex1}>
 
@@ -192,37 +193,7 @@ class ForgotPasswordView extends Component {
                         {/*Finish your registration in 3-simple steps on our intutive host platform and go live*/}
                         {/*</div>*/}
                     <div className={styles.heading}>
-                        Welcome To Fresh Basket
-                    </div>
-
-                    <div className={styles.innerFlex}>
-                        <div>
-                            <img src={require('../../assets/img/home/1.png')} className={styles.icons}/>
-                        </div>
-                        <div className={styles.textRight}>
-                            <div className={styles.titleText}>Order Groceries & Food Items</div>
-                            <div className={styles.subHeading}>Choose from a range of 1000+ products available at special prices.</div>
-                        </div>
-                    </div>
-
-                    <div className={styles.innerFlex} style={{marginTop:'30px'}}>
-                        <div>
-                            <img src={require('../../assets/img/home/2.png')} className={styles.icons}/>
-                        </div>
-                        <div className={styles.textRight}>
-                            <div className={styles.titleText}>Hassle-free Doorstep Delivery</div>
-                            <div className={styles.subHeading}>Get your orders delivered to your doorstep - safe,hygenic and quick.</div>
-                        </div>
-                    </div>
-
-                    <div className={styles.innerFlex} style={{marginTop:'30px'}}>
-                        <div>
-                            <img src={require('../../assets/img/home/3.png')} className={styles.icons}/>
-                        </div>
-                        <div className={styles.textRight}>
-                            <div className={styles.titleText}>Realtime Order Tracking</div>
-                            <div className={styles.subHeading}>Get real time updates on your orders & track your order.</div>
-                        </div>
+                        Milk Delivery Application Panel
                     </div>
 
                 </div>
@@ -232,7 +203,7 @@ class ForgotPasswordView extends Component {
                 </div>
                 <DashboardSnackbar/>
 
-
+            </div>
             </div>
         );
     }

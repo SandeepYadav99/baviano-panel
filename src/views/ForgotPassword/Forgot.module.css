@@ -71,7 +71,7 @@
 
 .loginSignupText {
     text-align: left;
-    color: #F8345E;
+    color: #0762BE;
 }
 
 .bottomSignUp {
@@ -99,7 +99,7 @@
 }
 
 .back{
-    color: #F8345E !important;
+    color: #0762BE !important;
     text-decoration: underline !important;
     font-size: 0.8rem;
 }
@@ -149,6 +149,6 @@
 }
 
 .resetButton {
-    background-color: #F8345E !important;
+    background-color: #0762BE !important;
     color: white !important;
 }
