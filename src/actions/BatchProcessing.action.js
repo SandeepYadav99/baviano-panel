@@ -3,7 +3,7 @@
  */
 import store from '../store';
 import Constants from '../config/constants';
-import {serviceGetBatchProcessing} from "../services/BatchProcessing.service";
+import {serviceGetBatchProcessing, serviceAssignDriverToJob} from "../services/BatchProcessing.service";
 
 export const FETCH_INIT = 'FETCH_INIT_BATCH_PROCESSING';
 export const FETCHED = 'FETCHED_BATCH_PROCESSING';
@@ -23,6 +23,8 @@ export const SET_SERVER_PAGE = 'SET_SERVER_PAGE_BATCH_PROCESSING';
 export const CREATE_DATA = 'CREATE_BATCH_PROCESSING';
 export const UPDATE_DATA = 'UPDATE_BATCH_PROCESSING';
 export const UPDATE_BATCH_ID = 'UPDATE_BATCH_ID_BATCH_PROCESSING';
+export const ASSIGN_DRIVER_TO_JOB = 'ASSIGN_DRIVER_TO_JOB';
+export const CLEAN_LIST = 'CLEAN_LIST_BATCH_PROCESSING';
 
 export function actionFetchBatchProcessing(index = 1, sorting = {}, filter = {}, shouldReset = false) {
     const stateData = store.getState().batch_processing;
@@ -70,6 +72,12 @@ export function actionChangeBatchId(data) {
     }
 }
 
+export function actionAssignDriver(data) {
+    const req = serviceAssignDriverToJob(data);
+    return (dispatch) => {
+        dispatch({type: ASSIGN_DRIVER_TO_JOB, payload: data})
+    }
+}
 
 
 export function actionChangePageBatchProcessing(page) {
@@ -116,6 +124,13 @@ export function actionChangeStatusBatchProcessing(params) {
 export function actionResetFilterBatchProcessing() {
     return {
         type: RESET_FILTER,
+        payload: null,
+    };
+}
+
+export function actionCleanBatchProcessing() {
+    return {
+        type: CLEAN_LIST,
         payload: null,
     };
 }

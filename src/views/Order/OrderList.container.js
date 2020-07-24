@@ -28,12 +28,13 @@ import {
     actionResetFilterOrder,
     actionSetPageOrder,
     actionCreateOrder,
-    actionUpdateOrder
+    actionUpdateOrder, actionAssignBatchToOrders
 } from '../../actions/Order.action';
 import DateUtils from '../../libs/DateUtils.lib';
 import {serviceAcceptOrder, serviceListData, serviceRejectOrder} from "../../services/OrderRequest.service";
 import EventEmitter from "../../libs/Events.utils";
 import BottomPanel from '../../components/BottomPanel/BottomPanel.component';
+import BottomAction from './components/BottomActions/BottomAction.component';
 
 let CreateProvider = null;
 class OrderList extends Component {
@@ -69,6 +70,7 @@ class OrderList extends Component {
         this._handleChangeStatus = this._handleChangeStatus.bind(this);
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleCheckbox = this._handleCheckbox.bind(this);
+        this._handleBatchSelection = this._handleBatchSelection.bind(this);
     }
 
     componentDidMount() {
@@ -248,6 +250,15 @@ class OrderList extends Component {
         }
     }
 
+    _handleBatchSelection(data) {
+        const { selected } = this.state;
+        const formData = { ...data, selection: selected };
+        this.props.actionAssignBatch(formData);
+        this.setState({
+            selected: [],
+        });
+    }
+
     _renderContact(all){
         return (
             <div>
@@ -425,43 +436,9 @@ class OrderList extends Component {
                     {this._renderCreateForm()}
                 </SidePanelComponent>
                 <BottomPanel open={this.state.selected.length > 0}>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        <div className={styles.bottomSide}>
-                            <label htmlFor="">
-                                {this.state.selected.length} Selected
-                            </label>
-                        </div>
-                        <div className={styles.bottomCenter}>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleSetFeatured}
-                                    startIcon={<Bookmark/>}
-                                >Mark</Button>
-                            </div>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleUnsetFeatured}
-                                    startIcon={<BookmarkBorder/>}
-                                >Unmark</Button>
-                            </div>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleReject}
-                                    startIcon={<Close/>}
-                                >Reject</Button>
-                            </div>
-
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleAccept}
-                                    startIcon={<Check/>}
-                                >Accept</Button>
-                            </div>
-                        </div>
-                        <div className={styles.bottomSide}>
-
-                        </div>
-                    </div>
+                    <BottomAction
+                        selected={this.state.selected.length}
+                        handleAssign={this._handleBatchSelection} />
                 </BottomPanel>
             </div>
         )
@@ -489,7 +466,8 @@ function mapDispatchToProps(dispatch) {
         actionSetFilter: actionFilterOrder,
         actionChangeStatus: actionChangeStatusOrder,
         actionCreate: actionCreateOrder,
-        actionUpdate: actionUpdateOrder
+        actionUpdate: actionUpdateOrder,
+        actionAssignBatch: actionAssignBatchToOrders
     }, dispatch);
 }
 

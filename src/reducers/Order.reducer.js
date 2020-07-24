@@ -15,7 +15,7 @@ import {
     CHANGE_STATUS,
     SET_SERVER_PAGE,
     CREATE_DATA,
-    UPDATE_DATA
+    UPDATE_DATA, ASSIGN_BATCH_PENDING_ORDERS
 } from '../actions/Order.action';
 import Constants from '../config/constants';
 
@@ -147,6 +147,26 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
                         ...oldData,
                         ...newData,
                     };
+                }
+                const tableData = mapPresetPRequest(prevState, state.currentPage);
+                return {...state, all: prevState, present: tableData};
+            }
+            return state;
+        }
+        case ASSIGN_BATCH_PENDING_ORDERS: {
+            if (action.payload) {
+                let tempIndex = [];
+                const prevState = state.all;
+                prevState.forEach((val, index) => {
+                    if (action.payload.selection.indexOf(val.id) >= 0) {
+                        tempIndex.push(index);
+                    }
+                });
+                if (tempIndex.length > 0) {
+                    tempIndex.sort(function(a, b){return b - a});
+                    tempIndex.forEach((val) => {
+                        prevState.splice(val, 1);
+                    })
                 }
                 const tableData = mapPresetPRequest(prevState, state.currentPage);
                 return {...state, all: prevState, present: tableData};

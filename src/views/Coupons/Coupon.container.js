@@ -97,10 +97,8 @@ class CouponCreateContainer extends Component {
         };
         this.COUPON_TYPE = {
             GENERAL: 'GENERAL',
-            CATEGORY: 'CATEGORY',
-            PRODUCT: 'PRODUCT',
             USER: 'USER',
-            FIRST_TRANSACTION: 'FIRST TRANSACTION'
+            // FIRST_TRANSACTION: 'FIRST TRANSACTION'
         };
         this._handleSubmit = this._handleSubmit.bind(this);
         this._handleType = this._handleType.bind(this);
@@ -391,7 +389,7 @@ class CouponCreateContainer extends Component {
                                 normalize={this.state.discount_type == 'PERCENT' ? percentNormalize : null}
                                 component={renderOutlinedTextField}
                                 margin={'dense'}
-                                label="Discount"/>
+                                label="Cashback"/>
                         </div>
                         <div className={'formGroup'}>
                             <Field
@@ -400,7 +398,7 @@ class CouponCreateContainer extends Component {
                                 type={'number'}
                                 component={renderOutlinedTextField}
                                 margin={'dense'}
-                                label="Max Discount (Optional) "/>
+                                label="Max Cashback (Optional) "/>
                         </div>
                     </div>
                     <div className={'formFlex'}>
@@ -461,7 +459,7 @@ class CouponCreateContainer extends Component {
                                 type={'number'}
                                 component={renderOutlinedTextField}
                                 margin={'dense'}
-                                label="Min Cart Value (0 for Unlimited)"/>
+                                label="Min Recharge Value (0 for Unlimited)"/>
                         </div>
                     </div>
 

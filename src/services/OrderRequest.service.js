@@ -19,3 +19,6 @@ export async function serviceAcceptOrder(params) {
 export async function serviceRejectOrder(params) {
     return await postRequest('orders/reject', params);
 }
+export async function serviceAssignBatchToOrders(params) {
+    return await postRequest('orders/assign/batch', params);
+}

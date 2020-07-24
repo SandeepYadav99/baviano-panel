@@ -117,3 +117,14 @@ font-size: 10px;
     margin-left: 10px;
     margin-right: 10px;
 }
+.productInfo {
+
+}
+.productName {
+    font-weight: 500;
+    width: 50px;
+    display: inline-block;
+}
+.productQty {
+
+}

@@ -44,7 +44,7 @@ class TableTask extends Component {
                     <TableBody>
                         {this.props.data.map((row) => (
                             <TableRow key={row.desc}>
-                                <TableCell>{row.name}</TableCell>
+                                <TableCell>{row.name} { row.is_trial ? ('(TRIAL PRODUCT)') : '' }</TableCell>
                                 {/*<TableCell align="right">{row.qty}</TableCell>*/}
                                 <TableCell align="right">{row.quantity} X {parseFloat(row.price) } /-</TableCell>
                                 <TableCell align="right">{this.ccyFormat(parseFloat(row.quantity) * parseFloat(row.price))}</TableCell>
@@ -54,20 +54,12 @@ class TableTask extends Component {
                         <TableRow>
                             <TableCell rowSpan={4} />
                             <TableCell >Subtotal</TableCell>
-                            <TableCell align="right">{this.ccyFormat(amount.subtotal)}</TableCell>
+                            <TableCell align="right">{this.ccyFormat(amount)}</TableCell>
                         </TableRow>
-                        <TableRow>
-                            <TableCell>Discount</TableCell>
-                            <TableCell align="right">{this.ccyFormat(amount.discount)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>Delivery Charges</TableCell>
-                            <TableCell align="right">{this.ccyFormat(amount.delivery_charges)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell >Total</TableCell>
-                            <TableCell align="right">{this.ccyFormat(amount.total)}</TableCell>
-                        </TableRow>
+                        {/*<TableRow>*/}
+                        {/*    <TableCell >Total</TableCell>*/}
+                        {/*    <TableCell align="right">{this.ccyFormat(amount)}</TableCell>*/}
+                        {/*</TableRow>*/}
                     </TableBody>
                 </Table>
             </TableContainer>

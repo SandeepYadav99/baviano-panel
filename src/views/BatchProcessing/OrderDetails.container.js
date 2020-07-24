@@ -167,15 +167,16 @@ class Order extends Component {
     }
 
     _renderStatus(val) {
-        const status = val.replace('_', ' ');
-        let color = 'orange';
-        if (status == Constants.ORDER_STATUS.DELIVERED) {
-            color = 'green';
-        } else if (status == Constants.ORDER_STATUS.PAYMENT || status == Constants.ORDER_STATUS.REJECTED) {
-            color = '#ff4610';
-        } else if (status == 'PENDING' || val == 'INACTIVE') {
-            color = 'orange'
+        const status = val;
+        const oStatus = Constants.JOB_STATUS;
+        const colors = {
+            [oStatus.NO_CASH]: '#d50000',
+            [oStatus.PENDING]: '#f9a825',
+            [oStatus.NOT_ASSIGNED]: '#ff9100',
+            [oStatus.ASSIGNED]: '#f44336',
+            [oStatus.DELIVERED]: '#1b5e20',
         }
+        const color = colors[status];
         return (<span style={{
             ...styles.spanFont,
             fontSize: '12px',
@@ -184,7 +185,7 @@ class Order extends Component {
             padding: '3px 10px',
             borderRadius: '20px',
             textTransform: 'capitalize'
-        }}>{Constants.ORDER_STATUS_TEXT[val]}</span>);
+        }}>{Constants.JOB_STATUS_TEXT[val]}</span>);
     }
 
     _renderInformation() {
@@ -226,12 +227,8 @@ class Order extends Component {
                                             <TableCell
                                                 classes={{root: classes.tableCell}}>
                                                 {data.address.address} <br/>
-                                                {data.address.landmark} {data.address.landmark ? '-' : ''} <div className={styles.badge}>{data.address.type}</div>
+                                                {data.address.landmark} {data.address.landmark ? '-' : ''} <div className={styles.badge}>{data.address.area}</div>
                                             </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell classes={{root: classes.tableCell}}>Order No</TableCell>
-                                            <TableCell classes={{root: classes.tableCell}}>{data.order_no}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell classes={{root: classes.tableCell}}>Status</TableCell>
@@ -241,20 +238,10 @@ class Order extends Component {
                                         {this._renderRejectReason(data.reject_reason)}
                                         {this._renderDriver(data.driver)}
                                         <TableRow>
-                                            <TableCell classes={{root: classes.tableCell}}>Payment Mode</TableCell>
-                                            <TableCell
-                                                classes={{root: classes.tableCell}}>{data.payment_mode}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell classes={{root: classes.tableCell}}>Coupon</TableCell>
-                                            <TableCell
-                                                classes={{root: classes.tableCell}}>{data.coupon ? data.coupon : 'N/A'}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell classes={{root: classes.tableCell}}>Instructions</TableCell>
+                                            <TableCell classes={{root: classes.tableCell}}>Delivery Preference</TableCell>
                                             <TableCell classes={{root: classes.tableCell}}>
                                                     <span className={styles.capitalize}>
-                                                        {data.instructions ? data.instructions : 'N/A'}
+                                                        {data.delivery_preference ? data.delivery_preference: 'N/A'}
                                                     </span>
                                             </TableCell>
                                         </TableRow>
@@ -264,15 +251,15 @@ class Order extends Component {
                             </Paper>
                             <br/>
                         </div>
-                        <div className={styles.timeStampTable}>
-                            <TimeStamps data={data.timestamps}></TimeStamps>
-                        </div>
+                        {/*<div className={styles.timeStampTable}>*/}
+                        {/*    /!*<TimeStamps data={data.timestamps}></TimeStamps>*!/*/}
+                        {/*</div>*/}
                         <div className={styles.listWindow}>
                             <div className={'formFlex'}>
                                 <div className={'formGroup'} style={{padding: '0px 10px'}}>
                                     <div>
                                         {/*{data.address}*/}
-                                        <OrderTable data={data.products} amount={data.amount}/>
+                                        <OrderTable data={data.products} amount={data.price}/>
                                     </div>
                                 </div>
                             </div>
@@ -333,8 +320,6 @@ class Order extends Component {
             <div className={styles.mainContainer}>
                 <Tabs value={tab_value} onChange={this._handleTabChange} aria-label="simple tabs example">
                     <Tab label="Order Details" {...this.a11yProps(0)} />
-                    {([Constants.ORDER_STATUS.ACCEPTED, Constants.ORDER_STATUS.REJECTED, Constants.ORDER_STATUS.DELIVERED, Constants.ORDER_STATUS.PENDING, Constants.ORDER_STATUS.PAYMENT].indexOf(data.status) < 0) && (
-                        <Tab label="Order Map" {...this.a11yProps(1)} />)}
                 </Tabs>
                 {this._renderInformation()}
                 {this._renderMap()}

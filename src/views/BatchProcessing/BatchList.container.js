@@ -10,7 +10,7 @@ import {connect} from 'react-redux';
 import {
     red as redColor,
 } from '@material-ui/core/colors';
-import { Add } from '@material-ui/icons';
+import {Add} from '@material-ui/icons';
 import PageBox from '../../components/PageBox/PageBox.component';
 import SidePanelComponent from '../../components/SidePanel/SidePanel.component';
 // import CreateProvider from './Create.container';
@@ -29,20 +29,23 @@ import {
     actionSetPageBatchProcessing,
     actionCreateBatchProcessing,
     actionUpdateBatchProcessing,
+    actionAssignDriver,
     actionChangeBatchId,
+    actionCleanBatchProcessing
 } from '../../actions/BatchProcessing.action';
 import DateUtils from '../../libs/DateUtils.lib';
-import {serviceAcceptOrder, serviceListData, serviceRejectOrder} from "../../services/OrderRequest.service";
 import EventEmitter from "../../libs/Events.utils";
 import BottomPanel from '../../components/BottomPanel/BottomPanel.component';
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import {Field} from "redux-form";
 import {actionFetchBatch} from "../../actions/Batch.action";
+import BottomAction from "./components/BottomActions/BottomAction.component";
+
 
 let CreateProvider = null;
+
 class BatchProcessingList extends Component {
     constructor(props) {
         super(props);
@@ -57,6 +60,7 @@ class BatchProcessingList extends Component {
             listData: null,
             is_submit: false,
             selected: [],
+            batch_id: null,
         };
         this.configFilter = [
             {label: 'Country', name: 'country', type: 'text'},
@@ -77,21 +81,14 @@ class BatchProcessingList extends Component {
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleCheckbox = this._handleCheckbox.bind(this);
         this._handleBatchChange = this._handleBatchChange.bind(this);
+        this._handleDriverSelection = this._handleDriverSelection.bind(this);
+
     }
 
     componentDidMount() {
         this.props.actionFetchBatch();
-        // if (this.props.total_count <= 0) {
-        // this.props.actionFetchData();
-        // const request = serviceListData();
-        // request.then((data)=> {
-        //     if(!data.error){
-        //         this.setState({
-        //             listData: data.data
-        //         })
-        //     }
-        // });
-        }
+        this.props.actionCleanBatchProcessing();
+    }
 
 
     handleCellClick(rowIndex, columnIndex, row, column) {
@@ -148,52 +145,25 @@ class BatchProcessingList extends Component {
 
     renderStatus(val) {
         const status = val.status;
-        const oStatus = Constants.ORDER_STATUS;
+        const oStatus = Constants.JOB_STATUS;
         const colors = {
-            [oStatus.PAYMENT]: '#d50000',
+            [oStatus.NO_CASH]: '#d50000',
             [oStatus.PENDING]: '#f9a825',
-            [oStatus.ACCEPTED]: '#ff9100',
-            [oStatus.REJECTED]: '#f44336',
-            [oStatus.ASSIGNED]: '#66bb6a',
-            [oStatus.ON_PICKUP_LOCATION]: '#4caf50',
-            [oStatus.OUT_FOR_DELIVERY]: '#43a047',
-            [oStatus.ON_DROP_LOCATION]: '#2e7d32',
+            [oStatus.NOT_ASSIGNED]: '#ff9100',
+            [oStatus.ASSIGNED]: '#f44336',
             [oStatus.DELIVERED]: '#1b5e20',
         }
         const color = colors[status];
-        let shouldBlink = false;
-        if (status == oStatus.ACCEPTED && val.retry_dispatching) {
-            shouldBlink = true;
-        } else if (status == oStatus.ON_PICKUP_LOCATION) {
-            shouldBlink = true;
-        }
         return (<span
-            className={classNames((shouldBlink ? styles.blink : ''))}
             style={{
-            ...styles.spanFont,
-            fontSize: '12px',
-            color: 'white',
-            background: `${color}`,
-            padding: '3px 10px',
-            borderRadius: '20px',
-            textTransform: 'capitalize'
-        }}>{Constants.ORDER_STATUS_TEXT[val.status]}</span>);
-    }
-
-
-    renderFirstCell(user) {
-        const tempEmailRender = (<span style={{textTransform: 'lowercase'}}>+{(user.user.contact)}</span>);
-        return (
-            <div className={styles.firstCellFlex}>
-                <div>
-
-                </div>
-                <div className={classNames(styles.firstCellInfo, 'openSans')}>
-                    <span><strong>{user.user.name}</strong></span> <br/>
-                   {tempEmailRender}
-                </div>
-            </div>
-        );
+                ...styles.spanFont,
+                fontSize: '12px',
+                color: 'white',
+                background: `${color}`,
+                padding: '3px 10px',
+                borderRadius: '20px',
+                textTransform: 'capitalize'
+            }}>{Constants.JOB_STATUS_TEXT[val.status]}</span>);
     }
 
 
@@ -211,18 +181,20 @@ class BatchProcessingList extends Component {
         });
     }
 
-    _renderCreateForm () {
+    _renderCreateForm() {
         if (CreateProvider == null) {
             // import CreateProvider from './Create.container';
-            CreateProvider = require('./Order.container').default;
+            CreateProvider = require('./OrderDetails.container').default;
         }
         if (this.state.side_panel) {
-            const { id } = this.props.match.params;
+            const {id} = this.props.match.params;
             return (<CreateProvider data={this.state.edit_data}
                                     listData={this.state.listData}
                                     changeStatus={this._handleDataSave}></CreateProvider>);
-        } return null;
+        }
+        return null;
     }
+
     _handleChangeStatus(data, type) {
         this.props.actionChangeStatus({...data, type: type});
         this.setState({
@@ -234,7 +206,8 @@ class BatchProcessingList extends Component {
     _handleBatchChange(e) {
         const batchId = e.target.value;
         this.setState({
-            batchId,
+            batch_id: batchId,
+            selected: [],
         });
         this.props.actionChangeBatchId(batchId);
     }
@@ -246,7 +219,16 @@ class BatchProcessingList extends Component {
         });
     }
 
-    _renderContact(all){
+    _handleDriverSelection(data) {
+        const {selected} = this.state;
+        const formData = {...data, selection: selected};
+        this.props.actionAssignDriver(formData);
+        this.setState({
+            selected: []
+        })
+    }
+
+    _renderContact(all) {
         return (
             <div>
                 {all.country_code}-{all.contact}
@@ -280,26 +262,50 @@ class BatchProcessingList extends Component {
     }
 
     _renderMenu() {
-        const { batches } = this.props;
+        const {batches} = this.props;
         return batches.map((val) => {
             return (<MenuItem value={val.id}>{val.name}</MenuItem>);
         })
     }
 
     _renderOrderId(data) {
+        const isDisabled = ([Constants.JOB_STATUS.NOT_ASSIGNED]).indexOf(data.status) < 0;
+        let isChecked = ([Constants.JOB_STATUS.NOT_ASSIGNED]).indexOf(data.status) < 0;
+        if (Constants.JOB_STATUS.NO_CASH == data.status) {
+            isChecked = false;
+        }
         return (
             <div className={styles.flex}>
                 <Checkbox
+                    disabled={isDisabled}
                     onChange={this._handleCheckbox.bind(this, data.id)}
-                    checked={this.state.selected.indexOf(data.id) >= 0}
+                    checked={isChecked || this.state.selected.indexOf(data.id) >= 0}
                     value="secondary"
                     color="primary"
                     inputProps={{'aria-label': 'secondary checkbox'}}
                 />
-                <span>{data.order_no}</span>
+                <div>
+                    {data.user.name}
+                    <br/>
+                    {data.user.contact}
+                </div>
             </div>
         )
     }
+
+    ccyFormat(num) {
+        return `${Constants.CURRENCY} ${num.toFixed(2)}`;
+    }
+
+    _renderProducts(products) {
+        return products.map((val) => {
+            return (<div className={styles.productInfo}>
+                <span className={styles.productName}>{val.name}</span>
+                <span className={styles.productQty}> {parseFloat(val.quantity * val.unit_step).toFixed(2)} {val.unit}</span>
+            </div>)
+        })
+    }
+
     render() {
         const tableStructure = [
             {
@@ -310,31 +316,34 @@ class BatchProcessingList extends Component {
                 render: (temp, all) => <div>{this._renderOrderId(all)}</div>,
             },
             {
-                key: 'user_info',
-                label: 'User Info',
-                sortable: true,
-                style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}}>{this.renderFirstCell(all)}</div>,
-            },{
                 key: 'address',
                 label: 'Address',
                 sortable: true,
-                style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}}>{all.address.address}</div>,
+                style: {width: '20%'},
+                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{all.address.address} - {all.address.area}
+                    <br/>{all.address.landmark}</div>,
             },
             {
                 key: 'total_products',
                 label: 'Total Products',
                 sortable: true,
                 // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.products.length}</div>,
+                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{this._renderProducts(all.products)}</div>,
             },
             {
                 key: 'total_amount',
-                label: 'Total Amount',
+                label: 'Price',
                 sortable: true,
                 // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.amount.total}</div>,
+                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{this.ccyFormat(all.price)}</div>,
+            },
+
+            {
+                key: 'total_amount',
+                label: 'Wallet Amount',
+                sortable: true,
+                // style: { width: '20%'},
+                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{this.ccyFormat(all.wallet.amount)}</div>,
             },
             {
                 key: 'status',
@@ -343,12 +352,12 @@ class BatchProcessingList extends Component {
                 // style: { width: '20%'},
                 render: (temp, all) => <div>{this.renderStatus(all)}</div>,
             },
-            {
-                key: 'createdAt',
-                label: 'Date',
-                sortable: true,
-                render: (temp, all) => <div>{DateUtils.changeTimezoneFromUtc(all.createdAt)}</div>,
-            },
+            // {
+            //     key: 'createdAt',
+            //     label: 'Date',
+            //     sortable: true,
+            //     render: (temp, all) => <div>{DateUtils.changeTimezoneFromUtc(all.createdAt)}</div>,
+            // },
             {
                 key: 'user_id',
                 label: 'Action',
@@ -379,27 +388,27 @@ class BatchProcessingList extends Component {
                 <PageBox>
                     <div className={styles.headerContainer}>
                         <span className={styles.title}>Order List</span>
-                        <div style={{ width: '200px' }}>
-                            <FormControl fullWidth variant="outlined" margin={'dense'}  >
+                        <div style={{width: '200px'}}>
+                            <FormControl fullWidth variant="outlined" margin={'dense'}>
                                 <InputLabel
                                     htmlFor={'selectBatchLabel'}
                                 >
                                     Select Batch
                                 </InputLabel>
-                            <Select
-                                label={'Select Batch'}
-                                fullWidth={true}
-                                labelId="selectBatchLabel"
-                                id="selectBatch"
-                                value={this.state.batchId}
-                                onChange={this._handleBatchChange}
-                            >
-                                {this._renderMenu()}
-                            </Select>
+                                <Select
+                                    label={'Select Batch'}
+                                    fullWidth={true}
+                                    labelId="selectBatchLabel"
+                                    id="selectBatch"
+                                    value={this.state.batchId}
+                                    onChange={this._handleBatchChange}
+                                >
+                                    {this._renderMenu()}
+                                </Select>
                             </FormControl>
                         </div>
                         {/*<Button onClick={this._handleSideToggle} variant={'contained'} color={'primary'} disabled={this.state.listData==null}>*/}
-                            {/*<Add></Add> Create*/}
+                        {/*<Add></Add> Create*/}
                         {/*</Button>*/}
                     </div>
 
@@ -428,43 +437,11 @@ class BatchProcessingList extends Component {
                     {this._renderCreateForm()}
                 </SidePanelComponent>
                 <BottomPanel open={this.state.selected.length > 0}>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        <div className={styles.bottomSide}>
-                            <label htmlFor="">
-                                {this.state.selected.length} Selected
-                            </label>
-                        </div>
-                        <div className={styles.bottomCenter}>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleSetFeatured}
-                                    startIcon={<Bookmark/>}
-                                >Mark</Button>
-                            </div>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleUnsetFeatured}
-                                    startIcon={<BookmarkBorder/>}
-                                >Unmark</Button>
-                            </div>
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleReject}
-                                    startIcon={<Close/>}
-                                >Reject</Button>
-                            </div>
-
-                            <div className={styles.buttonCont}>
-                                <Button
-                                    onClick={this._handleAccept}
-                                    startIcon={<Check/>}
-                                >Accept</Button>
-                            </div>
-                        </div>
-                        <div className={styles.bottomSide}>
-
-                        </div>
-                    </div>
+                    {this.state.selected.length > 0 && (<BottomAction
+                        selected={this.state.selected.length}
+                        handleAssign={this._handleDriverSelection}
+                        batch_id={this.state.batch_id}
+                    />)}
                 </BottomPanel>
             </div>
         )
@@ -494,8 +471,10 @@ function mapDispatchToProps(dispatch) {
         actionChangeStatus: actionChangeStatusBatchProcessing,
         actionCreate: actionCreateBatchProcessing,
         actionUpdate: actionUpdateBatchProcessing,
+        actionAssignDriver: actionAssignDriver,
         actionChangeBatchId: actionChangeBatchId,
-        actionFetchBatch: actionFetchBatch
+        actionFetchBatch: actionFetchBatch,
+        actionCleanBatchProcessing: actionCleanBatchProcessing
     }, dispatch);
 }
 

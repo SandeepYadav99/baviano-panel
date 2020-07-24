@@ -16,7 +16,9 @@ import {
     SET_SERVER_PAGE,
     CREATE_DATA,
     UPDATE_DATA,
-    UPDATE_BATCH_ID
+    UPDATE_BATCH_ID,
+    ASSIGN_DRIVER_TO_JOB,
+    CLEAN_LIST
 } from '../actions/BatchProcessing.action';
 import Constants from '../config/constants';
 
@@ -42,6 +44,9 @@ const initialState = {
 
 export default function (state = JSON.parse(JSON.stringify(initialState)), action) {
     switch (action.type) {
+        case CLEAN_LIST: {
+          return { ...state, ...JSON.parse(JSON.stringify(initialState)) };
+        }
         case FETCH_INIT: {
             return {...state, is_fetching: true};
         }
@@ -158,6 +163,29 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
             }
             return state;
         }
+
+        case ASSIGN_DRIVER_TO_JOB: {
+            if (action.payload) {
+                let tempIndex = [];
+                const prevState = state.all;
+                prevState.forEach((val, index) => {
+                    if (action.payload.selection.indexOf(val.id) >= 0) {
+                        // tempIndex.push(index);
+                        val.status = Constants.JOB_STATUS.ASSIGNED;
+                    }
+                });
+                // if (tempIndex.length > 0) {
+                //     tempIndex.forEach((val) => {
+                //         // prevState.splice(tempIndex, 1);
+                //     })
+                //
+                // }
+                const tableData = mapPresetPRequest(prevState, state.currentPage);
+                return {...state, all: prevState, present: tableData};
+            }
+            return state;
+        }
+
         default: {
             return state;
         }

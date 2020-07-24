@@ -10,7 +10,7 @@ import {
     renderOutlinedTextField,
     renderOutlinedSelectField,
     renderFileField,
-    renderOutlinedMultipleSelectField, renderOutlinedTextFieldWithLimit
+    renderOutlinedMultipleSelectField, renderOutlinedTextFieldWithLimit, renderCheckbox
 } from '../../libs/redux-material.utils';
 import EventEmitter from "../../libs/Events.utils";
 import Dialog from "@material-ui/core/Dialog";
@@ -448,6 +448,12 @@ class Product extends Component {
                         </div>
                         <div className={'formGroup'}>
                             {this._renderActive()}
+                            <Field
+                                fullWidth={true}
+                                name="is_trial"
+                                component={renderCheckbox}
+                                margin={'dense'}
+                                label="Is Trial?"/>
                         </div>
                     </div>
 

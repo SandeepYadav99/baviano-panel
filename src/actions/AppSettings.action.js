@@ -1,12 +1,13 @@
 /**
  * Created by charnjeetelectrovese@gmail.com on 5/1/2020.
  */
-import {serviceGetAppSettings, serviceUpdateGeoFence} from "../services/AppSettings.service";
+import {serviceGetAppSettings, serviceUpdateGeoFence, serviceUpdateMinValue} from "../services/AppSettings.service";
 
 export const APP_SETTINGS_INIT = 'APP_SETTINGS_INIT';
 export const APP_SETTINGS_DONE = 'APP_SETTINGS_DONE';
 export const APP_SETTINGS_UPDATE_GEOFENCE = 'APP_SETTINGS_UPDATE_GEOFENCE';
 export const APP_SETTINGS_CHANGE_THEME = 'APP_SETTINGS_CHANGE_THEME';
+export const APP_SETTINGS_UPDATE_MIN_VALUE = 'APP_SETTINGS_UPDATE_MIN_VALUE';
 
 export function actionGetAppSettings(data) {
     const req = serviceGetAppSettings({});
@@ -29,6 +30,13 @@ export function actionUpdateGeoFence(data) {
         dispatch({ type: APP_SETTINGS_UPDATE_GEOFENCE, payload: data })
     }
 }
+export function actionUpdateMinValue(data) {
+    const request = serviceUpdateMinValue({ data: data } );
+    return (dispatch) => {
+        dispatch({ type: APP_SETTINGS_UPDATE_MIN_VALUE, payload: data })
+    }
+}
+
 
 export function actionChangeTheme(theme) {
     return (dispatch) => {

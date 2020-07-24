@@ -9,8 +9,9 @@ import PageBox from '../../components/PageBox/PageBox.component';
 import styles from './Style.module.css';
 import {withStyles, Tabs, Tab} from "@material-ui/core";
 import Geofencing from './Components/Geofencing/Geofencing.component';
+import MinValueComponent from './Components/MinValues/MinValues.component';
 import {WaitingComponent} from "../../components/index.component";
-import {actionUpdateGeoFence} from "../../actions/AppSettings.action";
+import {actionUpdateGeoFence, actionUpdateMinValue} from "../../actions/AppSettings.action";
 
 class AppSettings extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class AppSettings extends Component {
     }
 
     _renderPanel(value) {
-        const {appSetting, actionUpdateGeoFence} = this.props;
+        const {appSetting, actionUpdateGeoFence, actionUpdateMinValue} = this.props;
         if (value == 0) {
             return (
                 <Geofencing
@@ -44,6 +45,14 @@ class AppSettings extends Component {
                     handleSave={actionUpdateGeoFence}
                 />
             );
+        }
+        if (value == 1) {
+            return (
+                <MinValueComponent
+                    data={appSetting.min_value}
+                    handleDataSave={actionUpdateMinValue}
+                />
+            )
         }
         return (
             <h1>{value}</h1>
@@ -72,6 +81,7 @@ class AppSettings extends Component {
                         </Tabs>
                         <div className={styles.tabPanel}>
                         {this._renderPanel(value)}
+
                         </div>
                     </div>
                 </div>
@@ -101,6 +111,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         actionUpdateGeoFence: actionUpdateGeoFence,
+        actionUpdateMinValue: actionUpdateMinValue
     }, dispatch);
 }
 

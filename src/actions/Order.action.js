@@ -6,7 +6,7 @@
 // import { fetchPRequests } from '../services/User.service';
 import store from '../store';
 import Constants from '../config/constants';
-import {serviceCreateOrder, serviceGetOrder, serviceUpdateOrder} from "../services/OrderRequest.service";
+import {serviceCreateOrder, serviceGetOrder, serviceUpdateOrder, serviceAssignBatchToOrders} from "../services/OrderRequest.service";
 
 export const FETCH_INIT = 'FETCH_INIT_ORDER';
 export const FETCHED = 'FETCHED_ORDER';
@@ -25,6 +25,7 @@ export const CHANGE_STATUS = 'CHANGE_STATE_ORDER';
 export const SET_SERVER_PAGE = 'SET_SERVER_PAGE_ORDER';
 export const CREATE_DATA = 'CREATE_ORDER';
 export const UPDATE_DATA = 'UPDATE_ORDER';
+export const ASSIGN_BATCH_PENDING_ORDERS = 'ASSIGN_BATCH_PENDING_ORDERS';
 
 export function actionFetchOrder(index = 1, sorting = {}, filter = {}, shouldReset = false) {
     const request = serviceGetOrder({index, row: sorting.row, order: sorting.order, ...filter}); // GetOrder
@@ -64,6 +65,12 @@ export function actionUpdateOrder(data) {
     }
 }
 
+export function actionAssignBatchToOrders(data) {
+    const req = serviceAssignBatchToOrders(data);
+    return (dispatch) => {
+        dispatch({type: ASSIGN_BATCH_PENDING_ORDERS, payload: data})
+    }
+}
 
 export function actionChangePageOrder(page) {
     return (dispatch) => {

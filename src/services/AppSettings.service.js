@@ -11,3 +11,8 @@ export async function serviceGetAppSettings(params) {
 export async function serviceUpdateGeoFence(params) {
     return await postRequest('app/settings/geofence/update', params);
 }
+
+export async function serviceUpdateMinValue(params) {
+    return await postRequest('app/settings/minvalue/update', params);
+}
+

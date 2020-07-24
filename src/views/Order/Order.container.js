@@ -196,8 +196,8 @@ class Order extends Component {
                 <div className={styles.infoContainer}>
 
                     <div className={styles.processButtons}>
-                        {this._renderApprove()}
-                        {this._renderReject()}
+                        {/*{this._renderApprove()}*/}
+                        {/*{this._renderReject()}*/}
                     </div>
                     {/*<h3>Order Details</h3>*/}
                     {/*<hr/>*/}
@@ -238,8 +238,8 @@ class Order extends Component {
                                             <TableCell
                                                 classes={{root: classes.tableCell}}>{this._renderStatus(data.status)}</TableCell>
                                         </TableRow>
-                                        {this._renderRejectReason(data.reject_reason)}
-                                        {this._renderDriver(data.driver)}
+                                        {/*{this._renderRejectReason(data.reject_reason)}*/}
+                                        {/*{this._renderDriver(data.driver)}*/}
                                         <TableRow>
                                             <TableCell classes={{root: classes.tableCell}}>Payment Mode</TableCell>
                                             <TableCell
@@ -272,7 +272,7 @@ class Order extends Component {
                                 <div className={'formGroup'} style={{padding: '0px 10px'}}>
                                     <div>
                                         {/*{data.address}*/}
-                                        <OrderTable data={data.products} amount={data.amount}/>
+                                        <OrderTable data={data.products} amount={data.amount.total}/>
                                     </div>
                                 </div>
                             </div>
@@ -296,21 +296,21 @@ class Order extends Component {
         return null;
     }
 
-    _renderMap() {
-        const {data} = this.props;
-        const {tab_value} = this.state;
-        if (tab_value == 1) {
-            return (
-                <GoogleMap
-                    ref={(ref) => {
-                        this.googleMap = ref;
-                    }}
-                    order_id={data.id}
-                />
-            )
-        }
-        return null;
-    }
+    // _renderMap() {
+    //     const {data} = this.props;
+    //     const {tab_value} = this.state;
+    //     if (tab_value == 1) {
+    //         return (
+    //             <GoogleMap
+    //                 ref={(ref) => {
+    //                     this.googleMap = ref;
+    //                 }}
+    //                 order_id={data.id}
+    //             />
+    //         )
+    //     }
+    //     return null;
+    // }
 
     _handleTabChange(id, handleValue) {
         this.setState({
@@ -333,11 +333,8 @@ class Order extends Component {
             <div className={styles.mainContainer}>
                 <Tabs value={tab_value} onChange={this._handleTabChange} aria-label="simple tabs example">
                     <Tab label="Order Details" {...this.a11yProps(0)} />
-                    {([Constants.ORDER_STATUS.ACCEPTED, Constants.ORDER_STATUS.REJECTED, Constants.ORDER_STATUS.DELIVERED, Constants.ORDER_STATUS.PENDING, Constants.ORDER_STATUS.PAYMENT].indexOf(data.status) < 0) && (
-                        <Tab label="Order Map" {...this.a11yProps(1)} />)}
                 </Tabs>
                 {this._renderInformation()}
-                {this._renderMap()}
             </div>
         )
     }
