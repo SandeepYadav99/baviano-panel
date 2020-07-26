@@ -2,7 +2,7 @@
  * Created by charnjeetelectrovese@gmail.com on 12/3/2019.
  */
 import React, {Component} from 'react';
-import {Button, Paper} from '@material-ui/core';
+import {Button, Paper, IconButton} from '@material-ui/core';
 
 import classNames from 'classnames';
 import {bindActionCreators} from 'redux';
@@ -10,7 +10,6 @@ import {connect} from 'react-redux';
 import {
     red as redColor,
 } from '@material-ui/core/colors';
-import { Add } from '@material-ui/icons';
 import PageBox from '../../components/PageBox/PageBox.component';
 import SidePanelComponent from '../../components/SidePanel/SidePanel.component';
 // import CreateProvider from './Create.container';
@@ -19,6 +18,8 @@ import styles from './styles.module.css';
 import DataTables from '../../Datatables/Datatable.table';
 import Constants from '../../config/constants';
 import FilterComponent from '../../components/Filter/Filter.component';
+import AmountDialog from './component/wallet/AddDialog.componet';
+
 import {
     actionFetchCustomers,
     actionChangePageCustomers,
@@ -29,7 +30,7 @@ import {
     actionCreateCustomers,
     actionUpdateCustomers
 } from '../../actions/Customers.action';
-import {serviceListData} from "../../services/CustomersRequest.service";
+import {AddCircle as AddIcon, Delete as DeleteIcon} from '@material-ui/icons';
 
 let CreateProvider = null;
 class CustomerList extends Component {
@@ -43,7 +44,9 @@ class CustomerList extends Component {
             total: Constants.DEFAULT_PAGE_VALUE + 1,
             side_panel: false,
             edit_data: null,
-            listData: null
+            listData: null,
+            userId: null,
+            showAmountDialog: false,
         };
         this.configFilter = [
             {label: 'Country', name: 'country', type: 'text'},
@@ -61,7 +64,8 @@ class CustomerList extends Component {
         this._handlePageChange = this._handlePageChange.bind(this);
         this._handleEdit = this._handleEdit.bind(this);
         this._handleChangeStatus = this._handleChangeStatus.bind(this);
-        this._handleDataSave = this._handleDataSave.bind(this)
+        this._handleDataSave = this._handleDataSave.bind(this);
+        this._handleCloseAmountDialog = this._handleCloseAmountDialog.bind(this);
     }
 
     componentDidMount() {
@@ -240,6 +244,33 @@ class CustomerList extends Component {
         )
     }
 
+    _renderSubscription(isOrder) {
+        const color = isOrder ? '#2e7d32' : '#f44336';
+        return (<span
+            style={{
+                ...styles.spanFont,
+                fontSize: '12px',
+                color: 'white',
+                background: `${color}`,
+                padding: '3px 10px',
+                borderRadius: '20px',
+                textTransform: 'capitalize'
+            }}>{isOrder ? 'Subscribed' : 'Not Subscribed'}</span>);
+    }
+
+    _handleCloseAmountDialog () {
+        this.setState({
+            userId: null,
+            showAmountDialog: false,
+        })
+    }
+    _handleAddAmount(userId) {
+        this.setState({
+            userId: userId,
+            showAmountDialog: true,
+        })
+    }
+
     render() {
         const tableStructure = [
             {
@@ -287,18 +318,25 @@ class CustomerList extends Component {
                 key: 'subscription',
                 label: 'Subscription',
                 sortable: true,
-                render: (temp, all) => <div>{this.renderStatus(all.subscription)}</div>,
+                render: (temp, all) => <div>{this._renderSubscription(all.is_order)}</div>,
             },
             {
                 key: 'wallet_balance',
                 label: 'Wallet Balance',
                 sortable: true,
-                render: (temp, all) => <div>{all.wallet_balance}</div>,
+                render: (temp, all) => <div>{all.wallet.amount}</div>,
             },
             {
                 key: 'user_id',
                 label: 'Action',
-                render: (temp, all) => (<div><Button onClick={this._handleEdit.bind(this, all)}>Info</Button></div>),
+                render: (temp, all) => (<div>
+                    <IconButton variant={'contained'}
+                                onClick={this._handleAddAmount.bind(this, all.id)}
+                                type="button">
+                        <AddIcon />
+                    </IconButton>
+                    <Button onClick={this._handleEdit.bind(this, all)}>Info</Button>
+                </div>),
             },
 
 
@@ -354,6 +392,11 @@ class CustomerList extends Component {
                     title={'Customers '} open={this.state.side_panel} side={'right'}>
                     {this._renderCreateForm()}
                 </SidePanelComponent>
+                <AmountDialog
+                    userId={this.state.userId}
+                    open={this.state.showAmountDialog}
+                    handleClose={this._handleCloseAmountDialog}
+                />
             </div>
         )
     }

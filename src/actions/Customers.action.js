@@ -6,7 +6,12 @@
 // import { fetchPRequests } from '../services/User.service';
 import store from '../store';
 import Constants from '../config/constants';
-import {serviceCreateCustomers, serviceGetCustomers, serviceUpdateCustomers} from "../services/CustomersRequest.service";
+import {
+    serviceCreateCustomers,
+    serviceCustomerAddWallet,
+    serviceGetCustomers,
+    serviceUpdateCustomers
+} from "../services/CustomersRequest.service";
 
 export const FETCH_INIT = 'FETCH_INIT_CUSTOMERS';
 export const FETCHED = 'FETCHED_CUSTOMERS';
@@ -25,6 +30,8 @@ export const CHANGE_STATUS= 'CHANGE_STATE_CUSTOMERS';
 export const SET_SERVER_PAGE = 'SET_SERVER_PAGE_CUSTOMERS';
 export const CREATE_DATA = 'CREATE_CUSTOMERS';
 export const UPDATE_DATA = 'UPDATE_CUSTOMERS';
+export const ADD_AMOUNT_CUSTOMERS = 'ADD_AMOUNT_CUSTOMERS';
+
 
 export function actionFetchCustomers(index = 1, sorting = {}, filter = {}, shouldReset=false) {
     const request = serviceGetCustomers({ index, row: sorting.row, order: sorting.order, ...filter }); // GetCustomers
@@ -82,6 +89,16 @@ export function actionChangePageCustomers(page) {
     }
 }
 
+export function actionCustomerAddAmount(data) {
+    const request = serviceCustomerAddWallet(data);
+    return (dispatch) => {
+        request.then((data) => {
+            if (!data.error) {
+                dispatch({type: ADD_AMOUNT_CUSTOMERS, payload: data.data})
+            }
+        })
+    }
+}
 // export function nextPRequestsClick() {
 //     return {
 //         type: NEXT_PREQUESTS,

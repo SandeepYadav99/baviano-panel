@@ -5,8 +5,10 @@ import {bindActionCreators} from 'redux';
 import {Button, withStyles} from "@material-ui/core";
 import Table from '../../components/Table/Table.component'
 import styles from './styles.module.css'
+import SubscriptionList from './component/subscriptions/Subscriptions.component';
+import TransactionsList from './component/transactions/Transactions.component';
 
-class VehicleUR extends Component{
+class CustomerInfo extends Component{
     constructor(props){
         super(props);
 
@@ -133,6 +135,24 @@ class VehicleUR extends Component{
                         </div>
                     </div>
                 </div>
+                <div className={'formFlex'}>
+                    <div className={'formGroup'}>
+                        <label>Subscriptions</label>
+                        <div>
+                            <SubscriptionList userId={data.id}/>
+                        </div>
+                    </div>
+                </div>
+                <div className={'formFlex'}>
+                    <div className={'formGroup'}>
+                        <label>Transactions</label>
+                        <div>
+                            <TransactionsList userId={data.id}/>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 <br/>
 
@@ -176,4 +196,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)((withStyles(useStyle, {withTheme: true})(VehicleUR)));
+export default connect(mapStateToProps, mapDispatchToProps)((withStyles(useStyle, {withTheme: true})(CustomerInfo)));

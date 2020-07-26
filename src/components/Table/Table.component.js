@@ -32,7 +32,7 @@ class TableTask extends Component {
     render(){
         const {handleSubmit,classes, data} = this.props;
         return (
-            <TableContainer component={Paper}><br/>
+            <TableContainer component={Paper}>
                 <Table className={classes.table} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>

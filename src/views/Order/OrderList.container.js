@@ -175,7 +175,7 @@ class OrderList extends Component {
 
 
     renderFirstCell(user) {
-        const tempEmailRender = (<span style={{textTransform: 'lowercase'}}>+{(user.user.contact)}</span>);
+        const tempEmailRender = (<span style={{textTransform: 'lowercase'}}>{(user.user.contact)}</span>);
         return (
             <div className={styles.firstCellFlex}>
                 <div>
@@ -326,7 +326,12 @@ class OrderList extends Component {
                 label: 'Address',
                 sortable: true,
                 style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}}>{all.address.address}</div>,
+                render: (temp, all) => {
+                    return (<a href={"https://www.google.com/maps/search/?api=1&query="+all.loc.coordinates[1]+','+all.loc.coordinates[0]} target={'_blank'}><div style={{wordBreak:'break-word'}}>{all.address.address}, {all.address.area}
+                        <br/>
+                        {all.address.landmark} , {all.address.city}
+                    </div></a>)
+                },
             },
             {
                 key: 'total_products',

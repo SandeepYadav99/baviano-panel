@@ -225,8 +225,10 @@ class Order extends Component {
                                             <TableCell classes={{root: classes.tableCell}}>Address</TableCell>
                                             <TableCell
                                                 classes={{root: classes.tableCell}}>
-                                                {data.address.address} <br/>
-                                                {data.address.landmark} {data.address.landmark ? '-' : ''} <div className={styles.badge}>{data.address.type}</div>
+                                                <a href={"https://www.google.com/maps/search/?api=1&query="+data.loc.coordinates[1]+','+data.loc.coordinates[0]} target={'_blank'}>
+                                                {data.address.address} - {data.address.area} <br/>
+                                                {data.address.landmark} {data.address.landmark ? '-' : ''} <div className={styles.badge}>{data.address.city}</div>
+                                                </a>
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -245,17 +247,26 @@ class Order extends Component {
                                             <TableCell
                                                 classes={{root: classes.tableCell}}>{data.payment_mode}</TableCell>
                                         </TableRow>
+                                        {/*<TableRow>*/}
+                                        {/*    <TableCell classes={{root: classes.tableCell}}>Instructions</TableCell>*/}
+                                        {/*    <TableCell classes={{root: classes.tableCell}}>*/}
+                                        {/*            <span className={styles.capitalize}>*/}
+                                        {/*                {data.instructions ? data.instructions : 'N/A'}*/}
+                                        {/*            </span>*/}
+                                        {/*    </TableCell>*/}
+                                        {/*</TableRow>*/}
                                         <TableRow>
-                                            <TableCell classes={{root: classes.tableCell}}>Coupon</TableCell>
-                                            <TableCell
-                                                classes={{root: classes.tableCell}}>{data.coupon ? data.coupon : 'N/A'}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell classes={{root: classes.tableCell}}>Instructions</TableCell>
+                                            <TableCell classes={{root: classes.tableCell}}>Delivery Preference</TableCell>
                                             <TableCell classes={{root: classes.tableCell}}>
                                                     <span className={styles.capitalize}>
-                                                        {data.instructions ? data.instructions : 'N/A'}
+                                                        {data.delivery_preference}
                                                     </span>
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell classes={{root: classes.tableCell}}>Delivery Slot</TableCell>
+                                            <TableCell classes={{root: classes.tableCell}}>
+                                                {data.delivery_slot.unformatted}
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>

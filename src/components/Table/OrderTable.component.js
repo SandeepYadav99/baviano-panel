@@ -22,6 +22,34 @@ class TableTask extends Component {
         return `${Constants.CURRENCY} ${num.toFixed(2)}`;
     }
 
+    _renderDelivery(row) {
+        if (row.type == 'CUSTOM') {
+            let weekData = '';
+            const weekArr = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            row.week_data.forEach((t, index) => {
+                if (t) {
+                    weekData += weekArr[index];
+                    if (index + 1 != weekArr.length) {
+                        weekData += ', ';
+                    }
+                }
+            });
+            return (<div>
+                {row.start_date}
+                <br/>
+                <span style={{ textTransform: 'capitalize' }}>{weekData}</span>
+            </div>);
+        } else {
+            return (
+                <div>
+                    {row.start_date}
+                    <br/>
+                    <span style={{ textTransform: 'capitalize' }}>{row.type}</span>
+                </div>
+            )
+        }
+    }
+
     render(){
         const {handleSubmit,classes, amount} = this.props;
         return (
@@ -29,14 +57,14 @@ class TableTask extends Component {
                 <Table className={classes.table} aria-label="spanning table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center" colSpan={2}>
+                            <TableCell align="center" colSpan={3}>
                                 Details
                             </TableCell>
                             <TableCell align="right">Price</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>Name</TableCell>
-                            {/*<TableCell align="right">Qty.</TableCell>*/}
+                            <TableCell align="right">Delivery Data</TableCell>
                             <TableCell align="right">Quantity - Price</TableCell>
                             <TableCell align="right">Price</TableCell>
                         </TableRow>
@@ -44,15 +72,22 @@ class TableTask extends Component {
                     <TableBody>
                         {this.props.data.map((row) => (
                             <TableRow key={row.desc}>
-                                <TableCell>{row.name} { row.is_trial ? ('(TRIAL PRODUCT)') : '' }</TableCell>
-                                {/*<TableCell align="right">{row.qty}</TableCell>*/}
-                                <TableCell align="right">{row.quantity} X {parseFloat(row.price) } /-</TableCell>
-                                <TableCell align="right">{this.ccyFormat(parseFloat(row.quantity) * parseFloat(row.price))}</TableCell>
+                                <TableCell>{row.name} { row.is_trial ? ('(TRIAL PRODUCT)') : '' }
+
+                                </TableCell>
+                                <TableCell align="right">{this._renderDelivery(row)}</TableCell>
+                                <TableCell align="right">{row.quantity} X {parseFloat(row.price) } /-
+                                    <br/>
+                                    <span>{row.unit_step * row.quantity} {row.unit}</span>
+                                </TableCell>
+                                <TableCell align="right">{this.ccyFormat(parseFloat(row.quantity) * parseFloat(row.price))}
+
+                                </TableCell>
                             </TableRow>
                         ))}
 
                         <TableRow>
-                            <TableCell rowSpan={4} />
+                            <TableCell rowSpan={5} />
                             <TableCell >Subtotal</TableCell>
                             <TableCell align="right">{this.ccyFormat(amount)}</TableCell>
                         </TableRow>

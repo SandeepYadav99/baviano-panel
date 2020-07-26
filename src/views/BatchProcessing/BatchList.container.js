@@ -264,7 +264,7 @@ class BatchProcessingList extends Component {
     _renderMenu() {
         const {batches} = this.props;
         return batches.map((val) => {
-            return (<MenuItem value={val.id}>{val.name}</MenuItem>);
+            return (<MenuItem value={val.id}>{val.name} - {val.delivery_slot.unformatted}</MenuItem>);
         })
     }
 
@@ -335,7 +335,9 @@ class BatchProcessingList extends Component {
                 label: 'Price',
                 sortable: true,
                 // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{this.ccyFormat(all.price)}</div>,
+                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{this.ccyFormat(all.price)} <br/>
+                    {all.payment_mode}
+                </div>,
             },
 
             {
@@ -388,7 +390,7 @@ class BatchProcessingList extends Component {
                 <PageBox>
                     <div className={styles.headerContainer}>
                         <span className={styles.title}>Order List</span>
-                        <div style={{width: '200px'}}>
+                        <div style={{width: '300px'}}>
                             <FormControl fullWidth variant="outlined" margin={'dense'}>
                                 <InputLabel
                                     htmlFor={'selectBatchLabel'}

@@ -14,11 +14,8 @@ import {
 import OrderTable from '../../components/Table/OrderTable.component'
 import styles from './styles.module.css'
 import {serviceGetOnlineDrivers} from "../../services/Driver.service";
-import DriversDialog from './components/driverdialog/DriversDialog.component';
 import Constants from '../../config/constants';
 import GoogleMap from './components/googlemap/GoogleMapHtml.component';
-import TimeStamps from './components/timestamps/TimeStampsTable.component';
-import RejectDialog from './components/rejectdialog/RejectDialog.component';
 
 class Order extends Component {
     constructor(props) {
@@ -266,17 +263,6 @@ class Order extends Component {
                         </div>
                     </div>
 
-
-                    <DriversDialog
-                        handleClick={this._handleDriverClick}
-                        data={this.state.drivers}
-                        handleClose={this._handleDriverDialog}
-                        is_open={this.state.is_driver_dialog}></DriversDialog>
-                    <RejectDialog
-                        open={this.state.is_reject_dialog}
-                        handleClose={this._handleRejectDialogClose}
-                        handleSubmit={this._handleRejectDialog}
-                    />
                 </div>
             )
         }

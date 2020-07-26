@@ -75,7 +75,7 @@ class BottomAction extends Component{
                         >
                             {batches.map((val) => {
                                 return (
-                                    <MenuItem value={val.id}>{val.name}</MenuItem>
+                                    <MenuItem value={val.id}>{val.name} - {val.delivery_slot.unformatted}</MenuItem>
                                 )})
                             }
                         </Field>
