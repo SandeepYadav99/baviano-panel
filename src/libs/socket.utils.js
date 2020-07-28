@@ -54,17 +54,17 @@ export const connectToSocket = (token = null) => {
             audio.play();
         });
         socket.on(Constants.SOCKET_EVENTS.ORDER_UPDATE, (data) => {
-            console.log('order_update', data);
-            store.dispatch(actionUpdateOrder(data.message));
-            const tempData = data.message;
-            if (tempData.retry_dispatching) {
-                EventEmitter.dispatch(EventEmitter.THROW_ERROR, {
-                    error: 'One Order needs attention, Check in the order window',
-                    type: 'info'
-                });
-                const  audio = new Audio(require('../assets/audio/just-saying.ogg'));
-                audio.play();
-            }
+            // console.log('order_update', data);
+            // store.dispatch(actionUpdateOrder(data.message));
+            // const tempData = data.message;
+            // if (tempData.retry_dispatching) {
+            //     EventEmitter.dispatch(EventEmitter.THROW_ERROR, {
+            //         error: 'One Order needs attention, Check in the order window',
+            //         type: 'info'
+            //     });
+            //     const  audio = new Audio(require('../assets/audio/just-saying.ogg'));
+            //     audio.play();
+            // }
         });
 
         socket.on(Constants.SOCKET_EVENTS.COMPANY_DRIVER_ADD, (data) => {

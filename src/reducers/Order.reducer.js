@@ -119,6 +119,16 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
         case CREATE_DATA: {
             if (action.payload) {
                 const prevState = state.all;
+                let tIndex = null;
+                prevState.some((val, index) => {
+                    if (val.user_id == action.payload.user_id) {
+                        tIndex = index;
+                        return true;
+                    }
+                });
+                if (tIndex != null) {
+                    prevState.splice(tIndex, 1);
+                }
                 prevState.unshift(action.payload);
                 const tableData = mapPresetPRequest(prevState, state.currentPage);
                 return {...state, all: prevState, present: tableData};

@@ -1,18 +1,27 @@
 /* eslint-disable indent,linebreak-style */
 const TABLE_LIMIT = 50;
+const isDev = true;
 const tempLevel = !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 const tempDate = new Date();
 const SOCKET_PROJECT = 'BAVIANO_';
+let url  = 'http://91.205.173.97:2306/api/company/';
+let socketUrl = 'http://91.205.173.97:2306';
+
+if (!isDev) {
+    url = 'https://ksheersagar.com/api/company/';
+    socketUrl = 'https://ksheersagar.com/';
+}
+
 export default {
     TIME_ZONE: -(tempDate.getTimezoneOffset()/60),
     DEFAULT_TIME_FORMAT: 'DD-MM-YYYY, HH:mm',
     APP_NAME: 'Baviano - CompanyPanel',
-    DEFAULT_APP_URL: tempLevel ? 'http://91.205.173.97:2306/api/company/' :'http://192.168.1.21:2306/api/company/',
-    SOCKET_URL: tempLevel ? 'http://91.205.173.97:2306' : 'http://192.168.1.21:2306',
+    DEFAULT_APP_URL: tempLevel ? url :'http://localhost:2306/api/company/',
+    SOCKET_URL: tempLevel ? socketUrl : 'http://localhost:2306',
     // DEFAULT_APP_URL: 'http://35.154.147.169:5055/api/',
     DEFAULT_PAGE_VALUE: TABLE_LIMIT,
     GOOGLE_LOGIN_KEY: '1027293586426-qg6lv2vsp57m05tn32m9stku2ljsd1uh.apps.googleusercontent.com',
-    GOOGLE_MAP_KEY: 'AIzaSyDUTIV7DaCvMUMg3qElE-sxdj4zR-dxhFM',
+    GOOGLE_MAP_KEY: 'AIzaSyCFLmHivV8XnwV9qV1vV8oIDI-EOYRCBhY',
     FACEBOOK_LOGIN_KEY: '213504989180156',
     DATATABLE_PROPERTIES: {
         title: 'Search',
