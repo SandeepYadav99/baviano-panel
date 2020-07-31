@@ -14,6 +14,7 @@ import OrderList from '../views/Order/OrderList.container'
 import AppSettings from '../views/AppSettings/AppSettings.container';
 import PendingPlan from '../views/PendingPlans/PendingPlanList.container';
 import BatchProcessing from '../views/BatchProcessing/BatchList.container';
+import BatchForecasting from '../views/BatchForecastring/ForecastingList.container';
 // import TableList from "views/TableList/TableList.jsx";
 // import Typography from "views/Typography/Typography.jsx";
 // import Icons from "views/Icons/Icons.jsx";
@@ -147,6 +148,15 @@ const dashboardRoutes = [
         navbarName: "Today Batch",
         icon: Dashboard,
         component: BatchProcessing,
+        is_sidebar: true,
+        is_protect: true,
+    },
+    {
+        path: "/batch/forecasting",
+        sidebarName: "Batch Forecasting",
+        navbarName: "Batch Forecasting",
+        icon: Dashboard,
+        component: BatchForecasting,
         is_sidebar: true,
         is_protect: true,
     },

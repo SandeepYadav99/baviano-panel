@@ -42,6 +42,7 @@ export default {
     JOB_STATUS: {
         PENDING: 'PENDING',
         DELIVERED: 'DELIVERED',
+        UNDELIVERED: 'UNDELIVERED',
         REJECTED: 'REJECTED',
         NOT_ASSIGNED: 'NOT_ASSIGNED',
         NO_CASH: 'NO_CASH',
@@ -50,6 +51,7 @@ export default {
     JOB_STATUS_TEXT: {
         PENDING: 'Pending',
         DELIVERED: 'Delivered',
+        UNDELIVERED: 'UnDelivered',
         REJECTED: 'Rejected',
         NOT_ASSIGNED: 'Not Assigned',
         NO_CASH: 'No Cash',

@@ -1,3 +1,4 @@
+
 /**
  * Created by charnjeetelectrovese@gmail.com on 6/29/2020.
  */
@@ -19,7 +20,7 @@ import {
     UPDATE_BATCH_ID,
     ASSIGN_DRIVER_TO_JOB,
     CLEAN_LIST
-} from '../actions/BatchProcessing.action';
+} from '../actions/BatchForecasting.action';
 import Constants from '../config/constants';
 
 function mapPresetPRequest(all, pageId) {
@@ -45,7 +46,7 @@ const initialState = {
 export default function (state = JSON.parse(JSON.stringify(initialState)), action) {
     switch (action.type) {
         case CLEAN_LIST: {
-          return { ...state, ...JSON.parse(JSON.stringify(initialState)) };
+            return { ...state, ...JSON.parse(JSON.stringify(initialState)) };
         }
         case FETCH_INIT: {
             return {...state, is_fetching: true};
@@ -58,7 +59,7 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
             const page = action.payload.page;
             let newAll = [];
             if (page == 1) {
-                 newAll = [...newData];
+                newAll = [...newData];
             } else {
                 newAll = [...state.all, ...newData];
                 console.log(newAll)

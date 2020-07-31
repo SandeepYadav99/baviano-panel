@@ -269,6 +269,12 @@ class Order extends Component {
                                                 {data.delivery_slot.unformatted}
                                             </TableCell>
                                         </TableRow>
+                                        <TableRow>
+                                            <TableCell classes={{root: classes.tableCell}}>User Wallet Amount</TableCell>
+                                            <TableCell classes={{root: classes.tableCell}}>
+                                                Rs. {data.user.wallet_amount} /-
+                                            </TableCell>
+                                        </TableRow>
                                     </TableBody>
                                 </Table>
 
@@ -346,6 +352,7 @@ class Order extends Component {
                     <Tab label="Order Details" {...this.a11yProps(0)} />
                 </Tabs>
                 {this._renderInformation()}
+                <div style={{ height: '75px' }}></div>
             </div>
         )
     }

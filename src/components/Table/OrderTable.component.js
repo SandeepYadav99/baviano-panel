@@ -70,21 +70,23 @@ class TableTask extends Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.props.data.map((row) => (
-                            <TableRow key={row.desc}>
+                        {this.props.data.map((row) => {
+                            const qty = row.quantity ? row.quantity : (row.qty ? row.qty : 0);
+                            return (<TableRow key={row.desc}>
                                 <TableCell>{row.name} { row.is_trial ? ('(TRIAL PRODUCT)') : '' }
 
                                 </TableCell>
                                 <TableCell align="right">{this._renderDelivery(row)}</TableCell>
-                                <TableCell align="right">{row.quantity} X {parseFloat(row.price) } /-
+                                <TableCell align="right">{qty} X {parseFloat(row.price) } /-
                                     <br/>
-                                    <span>{row.unit_step * row.quantity} {row.unit}</span>
+                                    <span>{row.unit_step * qty} {row.unit}</span>
                                 </TableCell>
-                                <TableCell align="right">{this.ccyFormat(parseFloat(row.quantity) * parseFloat(row.price))}
+                                <TableCell align="right">{this.ccyFormat(parseFloat(qty) * parseFloat(row.price))}
 
                                 </TableCell>
-                            </TableRow>
-                        ))}
+                            </TableRow>)
+                        }
+                        )}
 
                         <TableRow>
                             <TableCell rowSpan={5} />

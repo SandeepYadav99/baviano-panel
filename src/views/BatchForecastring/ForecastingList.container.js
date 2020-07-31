@@ -2,15 +2,9 @@
  * Created by charnjeetelectrovese@gmail.com on 12/3/2019.
  */
 import React, {Component} from 'react';
-import {Button, Paper, Checkbox} from '@material-ui/core';
-
-import classNames from 'classnames';
+import {Button} from '@material-ui/core';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {
-    red as redColor,
-} from '@material-ui/core/colors';
-import {Add} from '@material-ui/icons';
 import PageBox from '../../components/PageBox/PageBox.component';
 import SidePanelComponent from '../../components/SidePanel/SidePanel.component';
 // import CreateProvider from './Create.container';
@@ -19,34 +13,29 @@ import styles from './styles.module.css';
 import DataTables from '../../Datatables/Datatable.table';
 import Constants from '../../config/constants';
 import FilterComponent from '../../components/Filter/Filter.component';
-import {BookmarkBorder, Bookmark, Check, Close,} from '@material-ui/icons';
 import {
-    actionFetchBatchProcessing,
-    actionChangePageBatchProcessing,
-    actionChangeStatusBatchProcessing,
-    actionFilterBatchProcessing,
-    actionResetFilterBatchProcessing,
-    actionSetPageBatchProcessing,
-    actionCreateBatchProcessing,
-    actionUpdateBatchProcessing,
-    actionAssignDriver,
     actionChangeBatchId,
-    actionCleanBatchProcessing
-} from '../../actions/BatchProcessing.action';
+    actionChangeStatusBatchForecasting,
+    actionCleanBatchForecasting,
+    actionCreateBatchForecasting,
+    actionFetchBatchForecasting,
+    actionFilterBatchForecasting,
+    actionResetFilterBatchForecasting,
+    actionSetPageBatchForecasting,
+    actionUpdateBatchForecasting
+} from '../../actions/BatchForecasting.action';
 import DateUtils from '../../libs/DateUtils.lib';
-import EventEmitter from "../../libs/Events.utils";
-import BottomPanel from '../../components/BottomPanel/BottomPanel.component';
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import {actionFetchBatch} from "../../actions/Batch.action";
-import BottomAction from "./components/BottomActions/BottomAction.component";
+import ReduxDatePicker from "../../components/ReduxDatePicker/ReduxDatePicker.component";
 
 
 let CreateProvider = null;
 
-class BatchProcessingList extends Component {
+class BatchForecastingList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -62,6 +51,9 @@ class BatchProcessingList extends Component {
             selected: [],
             batch_id: null,
             allSelected: false,
+            selectedDate: null,
+            minDate: null,
+            maxDate: null
         };
         this.configFilter = [
             {label: 'Country', name: 'country', type: 'text'},
@@ -80,16 +72,24 @@ class BatchProcessingList extends Component {
         this._handleEdit = this._handleEdit.bind(this);
         this._handleChangeStatus = this._handleChangeStatus.bind(this);
         this._handleDataSave = this._handleDataSave.bind(this);
-        this._handleCheckbox = this._handleCheckbox.bind(this);
         this._handleBatchChange = this._handleBatchChange.bind(this);
-        this._handleDriverSelection = this._handleDriverSelection.bind(this);
-        this._handleSelectAll = this._handleSelectAll.bind(this);
+        this._handleDateChange = this._handleDateChange.bind(this);
 
     }
 
     componentDidMount() {
+        const date = new Date();
+        date.setDate(date.getDate() + 1);
+        const maxDate = new Date();
+        maxDate.setMonth(maxDate.getMonth() + 1);
+        this.setState({
+            selectedDate: date,
+            minDate: date,
+            maxDate: maxDate
+        })
+        this.props.actionFetchData({ date: DateUtils.changeTimeStamp(date, 'YYYY-MM-DD')});
         this.props.actionFetchBatch();
-        this.props.actionCleanBatchProcessing();
+
     }
 
 
@@ -183,10 +183,17 @@ class BatchProcessingList extends Component {
         });
     }
 
+    _handleDateChange(date) {
+        this.setState({
+            selectedDate: date,
+        });
+        this.props.actionFetchData({ date: DateUtils.changeTimeStamp(date, 'YYYY-MM-DD')});
+    }
+
     _renderCreateForm() {
         if (CreateProvider == null) {
             // import CreateProvider from './Create.container';
-            CreateProvider = require('./OrderDetails.container').default;
+            CreateProvider = require('./ForecastingDetails.container').default;
         }
         if (this.state.side_panel) {
             const {id} = this.props.match.params;
@@ -211,7 +218,9 @@ class BatchProcessingList extends Component {
             batch_id: batchId,
             selected: [],
         });
-        this.props.actionChangeBatchId(batchId);
+        const  { selectedDate } = this.state;
+        this.props.actionCleanBatchForecasting();
+        this.props.actionChangeBatchId(DateUtils.changeTimeStamp(selectedDate, 'YYYY-MM-DD'), batchId);
     }
 
     async _handleDataSave(data, type) {
@@ -221,14 +230,7 @@ class BatchProcessingList extends Component {
         });
     }
 
-    _handleDriverSelection(data) {
-        const {selected} = this.state;
-        const formData = {...data, selection: selected};
-        this.props.actionAssignDriver(formData);
-        this.setState({
-            selected: []
-        })
-    }
+
 
     _renderContact(all) {
         return (
@@ -250,47 +252,14 @@ class BatchProcessingList extends Component {
         )
     }
 
-    _handleCheckbox(id) {
-        const tempSelected = this.state.selected;
-        const tempIndex = tempSelected.indexOf(id);
-        if (tempIndex >= 0) {
-            tempSelected.splice(tempIndex, 1);
-        } else {
-            tempSelected.push(id);
-        }
-        this.setState({
-            selected: tempSelected,
-            allSelected: false,
-        });
-    }
 
     _renderMenu() {
         const {batches} = this.props;
-        return batches.map((val) => {
+        const temp =  batches.map((val) => {
             return (<MenuItem value={val.id}>{val.name} - {val.delivery_slot.unformatted}</MenuItem>);
-        })
-    }
-
-    _handleSelectAll() {
-        const { data } = this.props;
-        const { allSelected } = this.state;
-        if (allSelected) {
-            this.setState({
-                selected: [],
-                allSelected: false
-            });
-        } else {
-            const temp = [];
-            data.forEach((val) => {
-                if (val.status == Constants.JOB_STATUS.NOT_ASSIGNED) {
-                    temp.push(val.id);
-                }
-            });
-            this.setState({
-                selected: temp,
-                allSelected: true
-            });
-        }
+        });
+        temp.unshift(<MenuItem value={''}>NONE</MenuItem>)
+        return temp;
     }
 
     _renderOrderId(data) {
@@ -301,14 +270,6 @@ class BatchProcessingList extends Component {
         }
         return (
             <div className={styles.flex}>
-                <Checkbox
-                    disabled={isDisabled}
-                    onChange={this._handleCheckbox.bind(this, data.id)}
-                    checked={isChecked || this.state.selected.indexOf(data.id) >= 0}
-                    value="secondary"
-                    color="primary"
-                    inputProps={{'aria-label': 'secondary checkbox'}}
-                />
                 <div>
                     {data.user.name}
                     <br/>
@@ -332,6 +293,7 @@ class BatchProcessingList extends Component {
     }
 
     render() {
+        const { minDate, maxDate } = this.state;
         const tableStructure = [
             {
                 key: 'order_no',
@@ -364,14 +326,6 @@ class BatchProcessingList extends Component {
                     {all.payment_mode}
                 </div>,
             },
-
-            {
-                key: 'total_amount',
-                label: 'Wallet Amount',
-                sortable: true,
-                // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{this.ccyFormat(all.wallet.amount)}</div>,
-            },
             {
                 key: 'status',
                 label: 'Status',
@@ -401,7 +355,6 @@ class BatchProcessingList extends Component {
             onPageChange: this._handlePageChange,
             onRowSelection: this.handleRowSelection,
             onRowSizeChange: this._handleRowSize,
-            handleSelectAllClick: this._handleSelectAll
 
         };
         const datatable = {
@@ -409,16 +362,23 @@ class BatchProcessingList extends Component {
             columns: tableStructure,
             data: this.props.data,
             count: this.props.total_count,
-            page: this.props.currentPage,
-            showSelection: true,
-            allRowSelected: this.state.allSelected
+            page: this.props.currentPage
         };
         return (
             <div>
                 <PageBox>
                     <div className={styles.headerContainer}>
-                        <span className={styles.title}>Today Orders <strong>({DateUtils.changeTimeStamp(new Date, 'DD-MM-YYYY')})</strong></span>
-                        <div style={{width: '300px'}}>
+                        <span className={styles.title}>Orders Forecasting</span>
+                        <div style={{width: '80%', display: 'flex', }}>
+                            <div style={{ marginRight: '10px' }}>
+                            <ReduxDatePicker
+                                minDate={minDate}
+                                maxDate={maxDate}
+                                onChange={this._handleDateChange}
+                                value={this.state.selectedDate}
+                                label={'Date'}
+                            />
+                            </div>
                             <FormControl fullWidth variant="outlined" margin={'dense'}>
                                 <InputLabel
                                     htmlFor={'selectBatchLabel'}
@@ -466,13 +426,6 @@ class BatchProcessingList extends Component {
                     title={'Order '} open={this.state.side_panel} side={'right'}>
                     {this._renderCreateForm()}
                 </SidePanelComponent>
-                <BottomPanel open={this.state.selected.length > 0}>
-                    {this.state.selected.length > 0 && (<BottomAction
-                        selected={this.state.selected.length}
-                        handleAssign={this._handleDriverSelection}
-                        batch_id={this.state.batch_id}
-                    />)}
-                </BottomPanel>
             </div>
         )
     }
@@ -480,32 +433,31 @@ class BatchProcessingList extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.batch_processing.present,
-        total_count: state.batch_processing.all.length,
-        currentPage: state.batch_processing.currentPage,
-        serverPage: state.batch_processing.serverPage,
-        sorting_data: state.batch_processing.sorting_data,
-        is_fetching: state.batch_processing.is_fetching,
-        query: state.batch_processing.query,
-        query_data: state.batch_processing.query_data,
+        data: state.batch_forecasting.present,
+        total_count: state.batch_forecasting.all.length,
+        currentPage: state.batch_forecasting.currentPage,
+        serverPage: state.batch_forecasting.serverPage,
+        sorting_data: state.batch_forecasting.sorting_data,
+        is_fetching: state.batch_forecasting.is_fetching,
+        query: state.batch_forecasting.query,
+        query_data: state.batch_forecasting.query_data,
         batches: state.batch.present,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        actionFetchData: actionFetchBatchProcessing,
-        actionSetPage: actionSetPageBatchProcessing,
-        actionResetFilter: actionResetFilterBatchProcessing,
-        actionSetFilter: actionFilterBatchProcessing,
-        actionChangeStatus: actionChangeStatusBatchProcessing,
-        actionCreate: actionCreateBatchProcessing,
-        actionUpdate: actionUpdateBatchProcessing,
-        actionAssignDriver: actionAssignDriver,
+        actionFetchData: actionFetchBatchForecasting,
+        actionSetPage: actionSetPageBatchForecasting,
+        actionResetFilter: actionResetFilterBatchForecasting,
+        actionSetFilter: actionFilterBatchForecasting,
+        actionChangeStatus: actionChangeStatusBatchForecasting,
+        actionCreate: actionCreateBatchForecasting,
+        actionUpdate: actionUpdateBatchForecasting,
         actionChangeBatchId: actionChangeBatchId,
         actionFetchBatch: actionFetchBatch,
-        actionCleanBatchProcessing: actionCleanBatchProcessing
+        actionCleanBatchForecasting: actionCleanBatchForecasting
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BatchProcessingList);
+export default connect(mapStateToProps, mapDispatchToProps)(BatchForecastingList);

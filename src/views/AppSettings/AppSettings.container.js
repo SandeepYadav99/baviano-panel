@@ -12,6 +12,7 @@ import Geofencing from './Components/Geofencing/Geofencing.component';
 import MinValueComponent from './Components/MinValues/MinValues.component';
 import {WaitingComponent} from "../../components/index.component";
 import {actionUpdateGeoFence, actionUpdateMinValue} from "../../actions/AppSettings.action";
+import NotificationComponent from './Components/Notifications/Notifications.component';
 
 class AppSettings extends Component {
     constructor(props) {
@@ -53,6 +54,10 @@ class AppSettings extends Component {
                     handleDataSave={actionUpdateMinValue}
                 />
             )
+        } else if (value == 2) {
+            return (
+                <NotificationComponent/>
+            )
         }
         return (
             <h1>{value}</h1>
@@ -77,7 +82,8 @@ class AppSettings extends Component {
                             className={classes.tabs}
                         >
                             <Tab label="Geo Fence" {...this.a11yProps(0)} />
-                            <Tab label="Other" {...this.a11yProps(1)} />
+                            <Tab label="Min Values" {...this.a11yProps(1)} />
+                            <Tab label="Notification" {...this.a11yProps(2)} />
                         </Tabs>
                         <div className={styles.tabPanel}>
                         {this._renderPanel(value)}

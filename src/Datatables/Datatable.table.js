@@ -76,7 +76,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-    const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, columns} = props;
+    const {classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, columns, allRowSelected, showSelection} = props;
     const createSortHandler = (property) => event => {
         console.log('createSortHandler', event, property);
         onRequestSort(event, property);
@@ -85,35 +85,52 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {/*<TableCell padding="checkbox">*/}
-                {/*    <Checkbox*/}
-                {/*        indeterminate={numSelected > 0 && numSelected < rowCount}*/}
-                {/*        checked={numSelected === rowCount}*/}
-                {/*        onChange={onSelectAllClick}*/}
-                {/*        inputProps={{'aria-label': 'select all desserts'}}*/}
-                {/*    />*/}
-                {/*</TableCell>*/}
-                {columns.map(headCell => (
-                    <TableCell
-                        key={headCell.key}
-                        align={headCell.numeric ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'default'}
-                        sortDirection={orderBy === headCell.key ? order : false}
-                    >
-                        {headCell.sortable ? (<TableSortLabel
-                            active={orderBy === headCell.key}
-                            direction={order}
-                            onClick={createSortHandler(headCell.key)}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.key ? (
-                                <span className={classes.visuallyHidden}>
+                {columns.map((headCell, index) => {
+                    if (index == 0 && showSelection) {
+                        return (<TableCell padding="checkbox">
+                            <Checkbox
+                                indeterminate={numSelected > 0 && numSelected < rowCount}
+                                checked={allRowSelected}
+                                onChange={onSelectAllClick}
+                                inputProps={{'aria-label': 'select all desserts'}}
+                            />
+                            {headCell.sortable ? (<TableSortLabel
+                                active={orderBy === headCell.key}
+                                direction={order}
+                                onClick={createSortHandler(headCell.key)}
+                            >
+                                {headCell.label}
+                                {orderBy === headCell.key ? (
+                                    <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
-                            ) : null}
-                        </TableSortLabel>) : headCell.label}
-                    </TableCell>
-                ))}
+                                ) : null}
+                            </TableSortLabel>) : headCell.label}
+                        </TableCell>);
+                    }
+                    return (
+                        <TableCell
+                            key={headCell.key}
+                            align={headCell.numeric ? 'right' : 'left'}
+                            padding={headCell.disablePadding ? 'none' : 'default'}
+                            sortDirection={orderBy === headCell.key ? order : false}
+                        >
+                            {headCell.sortable ? (<TableSortLabel
+                                active={orderBy === headCell.key}
+                                direction={order}
+                                onClick={createSortHandler(headCell.key)}
+                            >
+                                {headCell.label}
+                                {orderBy === headCell.key ? (
+                                    <span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </span>
+                                ) : null}
+                            </TableSortLabel>) : headCell.label}
+                        </TableCell>
+                    )
+                })
+                }
             </TableRow>
         </TableHead>
     );
@@ -364,7 +381,7 @@ class EnhancedTable extends React.Component {
     render() {
         const {classes} = this.props;
         const {order, orderBy, selected, dense} = this.state;
-        const {page, rowsPerPageOptions, rowsPerPage, count} = this.props;
+        const {page, rowsPerPageOptions, rowsPerPage, count, allRowSelected} = this.props;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
         return (
@@ -383,10 +400,13 @@ class EnhancedTable extends React.Component {
                                 numSelected={selected.length}
                                 order={order}
                                 orderBy={orderBy}
-                                onSelectAllClick={this._handleSelectAllClick}
+                                onSelectAllClick={this.props.handleSelectAllClick}
                                 onRequestSort={this._handleRequestSort}
                                 rowCount={rows.length}
                                 columns={this.props.columns}
+                                allRowSelected={allRowSelected}
+                                showSelection={this.props.showSelection}
+
                             />
                             <TableBody>
                                 {this._renderTableBody()}
@@ -408,5 +428,12 @@ class EnhancedTable extends React.Component {
     }
 }
 
+EnhancedTable.propTypes = {
+    showSelection: PropTypes.bool,
+};
+
+EnhancedTable.defaultProps = {
+    showSelection: false
+};
 
 export default  withStyles(useStyles)(EnhancedTable)
