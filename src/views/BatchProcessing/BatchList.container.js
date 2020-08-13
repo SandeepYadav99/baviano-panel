@@ -42,6 +42,8 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import {actionFetchBatch} from "../../actions/Batch.action";
 import BottomAction from "./components/BottomActions/BottomAction.component";
+import {ProductAggComponent} from "../../components/index.component";
+import {serviceGetBatchDriverAssigned} from "../../services/BatchProcessing.service";
 
 
 let CreateProvider = null;
@@ -62,6 +64,7 @@ class BatchProcessingList extends Component {
             selected: [],
             batch_id: null,
             allSelected: false,
+            driver_name: '',
         };
         this.configFilter = [
             {label: 'Country', name: 'country', type: 'text'},
@@ -149,6 +152,7 @@ class BatchProcessingList extends Component {
         const status = val.status;
         const oStatus = Constants.JOB_STATUS;
         const colors = {
+            [oStatus.UNDELIVERED]: '#d50000',
             [oStatus.NO_CASH]: '#d50000',
             [oStatus.PENDING]: '#f9a825',
             [oStatus.NOT_ASSIGNED]: '#ff9100',
@@ -212,6 +216,24 @@ class BatchProcessingList extends Component {
             selected: [],
         });
         this.props.actionChangeBatchId(batchId);
+        serviceGetBatchDriverAssigned({batch_id: batchId}).then((val) => {
+            if (!val.error) {
+                const t = val.data;
+                if (t) {
+                    this.setState({
+                        driver_name: t
+                    });
+                } else {
+                    this.setState({
+                        driver_name: '',
+                    });
+                }
+            } else {
+                this.setState({
+                    driver_name: '',
+                });
+            }
+        });
     }
 
     async _handleDataSave(data, type) {
@@ -272,8 +294,8 @@ class BatchProcessingList extends Component {
     }
 
     _handleSelectAll() {
-        const { data } = this.props;
-        const { allSelected } = this.state;
+        const {data} = this.props;
+        const {allSelected} = this.state;
         if (allSelected) {
             this.setState({
                 selected: [],
@@ -326,7 +348,8 @@ class BatchProcessingList extends Component {
         return products.map((val) => {
             return (<div className={styles.productInfo}>
                 <span className={styles.productName}>{val.name}</span>
-                <span className={styles.productQty}> {parseFloat(val.quantity * val.unit_step).toFixed(2)} {val.unit}</span>
+                <span
+                    className={styles.productQty}> {parseFloat(val.quantity * val.unit_step).toFixed(2)} {val.unit}</span>
             </div>)
         })
     }
@@ -353,7 +376,8 @@ class BatchProcessingList extends Component {
                 label: 'Total Products',
                 sortable: true,
                 // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{this._renderProducts(all.products)}</div>,
+                render: (temp, all) => <div
+                    style={{wordBreak: 'break-word'}}>{this._renderProducts(all.products)}</div>,
             },
             {
                 key: 'price',
@@ -417,7 +441,10 @@ class BatchProcessingList extends Component {
             <div>
                 <PageBox>
                     <div className={styles.headerContainer}>
-                        <span className={styles.title}>Today Orders <strong>({DateUtils.changeTimeStamp(new Date, 'DD-MM-YYYY')})</strong></span>
+                        <span
+                            className={styles.title}>Today Orders <strong>({DateUtils.changeTimeStamp(new Date, 'DD-MM-YYYY')})</strong></span>
+                        <br/>
+
                         <div style={{width: '300px'}}>
                             <FormControl fullWidth variant="outlined" margin={'dense'}>
                                 <InputLabel
@@ -441,6 +468,9 @@ class BatchProcessingList extends Component {
                         {/*<Add></Add> Create*/}
                         {/*</Button>*/}
                     </div>
+                    <div>
+                    <span>Driver Assigned <strong>{this.state.driver_name}</strong></span>
+                    </div>
 
                     <div>
                         <FilterComponent
@@ -451,6 +481,9 @@ class BatchProcessingList extends Component {
                         />
                         <div>
                             <br/>
+                            <div>
+                                <ProductAggComponent data={this.props.data}/>
+                            </div>
                             <div style={{width: '100%'}}>
                                 <DataTables
                                     {...datatable}

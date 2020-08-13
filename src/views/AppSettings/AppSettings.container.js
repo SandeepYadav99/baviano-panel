@@ -11,8 +11,9 @@ import {withStyles, Tabs, Tab} from "@material-ui/core";
 import Geofencing from './Components/Geofencing/Geofencing.component';
 import MinValueComponent from './Components/MinValues/MinValues.component';
 import {WaitingComponent} from "../../components/index.component";
-import {actionUpdateGeoFence, actionUpdateMinValue} from "../../actions/AppSettings.action";
+import {actionUpdateGeoFence, actionUpdateMinValue, actionUpdateOrderAfter} from "../../actions/AppSettings.action";
 import NotificationComponent from './Components/Notifications/Notifications.component';
+import DeliveryDateComponent from './Components/DeliveryDates/DeliveryDates.component';
 
 class AppSettings extends Component {
     constructor(props) {
@@ -38,7 +39,7 @@ class AppSettings extends Component {
     }
 
     _renderPanel(value) {
-        const {appSetting, actionUpdateGeoFence, actionUpdateMinValue} = this.props;
+        const {appSetting, actionUpdateGeoFence, actionUpdateMinValue, actionUpdateOrderAfter} = this.props;
         if (value == 0) {
             return (
                 <Geofencing
@@ -58,7 +59,15 @@ class AppSettings extends Component {
             return (
                 <NotificationComponent/>
             )
+        } else if (value == 3) {
+            return (
+                <DeliveryDateComponent
+                    data={ {order_after: appSetting.order_after }}
+                    handleDataSave={actionUpdateOrderAfter}
+                />
+            )
         }
+
         return (
             <h1>{value}</h1>
         )
@@ -84,6 +93,7 @@ class AppSettings extends Component {
                             <Tab label="Geo Fence" {...this.a11yProps(0)} />
                             <Tab label="Min Values" {...this.a11yProps(1)} />
                             <Tab label="Notification" {...this.a11yProps(2)} />
+                            <Tab label="Order After" {...this.a11yProps(3)} />
                         </Tabs>
                         <div className={styles.tabPanel}>
                         {this._renderPanel(value)}
@@ -117,7 +127,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         actionUpdateGeoFence: actionUpdateGeoFence,
-        actionUpdateMinValue: actionUpdateMinValue
+        actionUpdateMinValue: actionUpdateMinValue,
+        actionUpdateOrderAfter: actionUpdateOrderAfter
     }, dispatch);
 }
 

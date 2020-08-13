@@ -4,7 +4,7 @@
 import React, {Component} from 'react';
 import classnames from 'classnames';
 import styles from './style.module.css';
-import {ButtonBase} from '@material-ui/core';
+import {ButtonBase, withTheme} from '@material-ui/core';
 import {Close} from '@material-ui/icons';
 
 class BottomPanelComponent extends Component {
@@ -19,14 +19,16 @@ class BottomPanelComponent extends Component {
     }
 
     render() {
+        const { theme } = this.props;
         const tempStyle = {
             width: '100%',
             // height: '100%',
-            backgroundColor: 'white',
+            backgroundColor: theme.palette.bgColor.main,
             bottom: '0px',
             left: '0px',
             position: 'fixed',
             zIndex: '99',
+            color: theme.palette.textColor
         };
         tempStyle['bottom'] = (this.props.open ? '0px' : 'calc(-100px)');
         return (
@@ -45,4 +47,4 @@ class BottomPanelComponent extends Component {
     }
 }
 
-export default BottomPanelComponent;
+export default  withTheme(BottomPanelComponent);

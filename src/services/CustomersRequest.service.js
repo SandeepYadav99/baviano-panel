@@ -21,3 +21,8 @@ export async function serviceCustomerAddWallet(params) {
 export async function serviceCustomerWalletTransactions(params) {
     return await postRequest('customers/wallet/transactions', params);
 }
+
+
+export async function serviceCustomerCouponsUsed(params) {
+    return await postRequest('customers/coupons/used', params);
+}

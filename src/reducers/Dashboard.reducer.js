@@ -1,7 +1,14 @@
 /**
  * Created by charnjeetelectrovese@gmail.com on 4/30/2020.
  */
-import {DASHBOARD_INIT, DASHBOARD_DONE, DASHBOARD_ADD_DRIVER, DASHBOARD_REMOVE_DRIVER} from "../actions/Dashboard.action";
+import {
+    DASHBOARD_INIT,
+    DASHBOARD_DONE,
+    DASHBOARD_ADD_DRIVER,
+    DASHBOARD_REMOVE_DRIVER,
+    DASHBOARD_UPDATE_DRIVER,
+    DASHBOARD_CHANGE_ACCEPTING_ORDERS
+} from "../actions/Dashboard.action";
 
 const initialState = {
     error: false,
@@ -12,6 +19,7 @@ const initialState = {
     total_revenue: 0,
     total_products: 0,
     drivers: [],
+    is_accepting: false,
 };
 
 export default function (state = JSON.parse(JSON.stringify(initialState)), action) {
@@ -47,6 +55,31 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
                     prevState.splice(tIndex, 1);
                 }
                 return {...state, drivers: prevState};
+            }
+        }
+        case DASHBOARD_UPDATE_DRIVER: {
+            if (action.payload) {
+                const prevState = state.drivers;
+                let tIndex = null;
+                prevState.some((val, index) => {
+                    if (val.driver_id == action.payload.driver_id) {
+                        tIndex = index;
+                        return true;
+                    }
+                });
+                if (tIndex != null) {
+                    prevState[tIndex] = {
+                        ...prevState[tIndex],
+                        ...action.payload,
+                    };
+                }
+                return {...state, drivers: prevState};
+            }
+        }
+        case DASHBOARD_CHANGE_ACCEPTING_ORDERS: {
+            return {
+                ...state,
+                is_accepting: action.payload,
             }
         }
         default: {

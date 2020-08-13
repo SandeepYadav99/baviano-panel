@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import classnames from 'classnames';
+import moment from 'moment';
 import styles from './style.module.css';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -23,6 +23,8 @@ class TableTask extends Component {
     }
 
     _renderDelivery(row) {
+        let deliverDate = moment(row.start_date);
+        deliverDate = deliverDate.format('DD-MM-YYYY');
         if (row.type == 'CUSTOM') {
             let weekData = '';
             const weekArr = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -35,14 +37,14 @@ class TableTask extends Component {
                 }
             });
             return (<div>
-                {row.start_date}
+                {deliverDate}
                 <br/>
                 <span style={{ textTransform: 'capitalize' }}>{weekData}</span>
             </div>);
         } else {
             return (
                 <div>
-                    {row.start_date}
+                    {deliverDate}
                     <br/>
                     <span style={{ textTransform: 'capitalize' }}>{row.type}</span>
                 </div>

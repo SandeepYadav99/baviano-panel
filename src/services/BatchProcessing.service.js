@@ -14,3 +14,6 @@ export async function serviceGetFreeDrivers(params) {
     return await postRequest('batch/free/driver', params);
 }
 
+export async function serviceGetBatchDriverAssigned(params) {
+    return await postRequest('batch/assigned/driver', params);
+}

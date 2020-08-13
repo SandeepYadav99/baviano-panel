@@ -16,3 +16,8 @@ export async function serviceUpdateMinValue(params) {
     return await postRequest('app/settings/minvalue/update', params);
 }
 
+
+export async function serviceUpdateOrderAfter(params) {
+    return await postRequest('app/settings/order/after', params);
+}
+

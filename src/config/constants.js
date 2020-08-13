@@ -1,6 +1,6 @@
 /* eslint-disable indent,linebreak-style */
 const TABLE_LIMIT = 50;
-const isDev = true;
+const isDev = false;
 const tempLevel = !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 const tempDate = new Date();
 const SOCKET_PROJECT = 'BAVIANO_';
@@ -95,4 +95,26 @@ export default {
         COMPANY_DRIVER_ADD: SOCKET_PROJECT+'COMPANY_DRIVER_ADD',
         COMPANY_DRIVER_REMOVE: SOCKET_PROJECT+'COMPANY_DRIVER_REMOVE',
     },
+    DELIVERY_SLOTS: [{
+        time: '10:00',
+        time_min: 600,
+        unformatted: '10:00 - 11:00am',
+        index: 0,
+    }, {
+        time: '11:00',
+        time_min: 660,
+        unformatted: '11:00 - 12:00pm',
+        index: 1,
+    }, {
+        time: '12:00',
+        time_min: 720,
+        unformatted: '12:00 - 01:00pm',
+        index: 2,
+    }, {
+        time: '13:00',
+        time_min: 780,
+        unformatted: '01:00 - 02:00pm',
+        index: 3,
+    },
+    ],
 };

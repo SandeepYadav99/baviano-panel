@@ -127,6 +127,7 @@ class Unit extends Component {
     componentDidMount() {
         const {data} = this.props;
         if (data) {
+            requiredFields = ['name', 'short_code'];
             Object.keys(data).forEach((val) => {
                 if (['status'].indexOf(val) == -1) {
                     const temp = data[val];
@@ -137,7 +138,7 @@ class Unit extends Component {
                 is_active: data.status == 'ACTIVE',
             })
         } else {
-            requiredFields = ['name'];
+            requiredFields = ['name', 'short_code'];
         }
     }
 
@@ -253,6 +254,15 @@ class Unit extends Component {
                             <Field fullWidth={true} name="name" component={renderOutlinedTextField}
                                    margin={'dense'}
                                    label="Unit Name"/>
+                        </div>
+
+                    </div>
+
+                    <div className={'formFlex'}>
+                        <div className={'formGroup'}>
+                            <Field fullWidth={true} name="short_code" component={renderOutlinedTextField}
+                                   margin={'dense'}
+                                   label="Unit ShortCode (l for Liter)"/>
                         </div>
 
                     </div>

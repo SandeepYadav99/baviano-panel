@@ -9,7 +9,12 @@ import {
     Typography,
     Paper
 } from "@material-ui/core";
-import { VerifiedUser, ShoppingCart as ShopIcon, AttachMoney as MoneyIcon, Store as ProductIcon } from '@material-ui/icons';
+import {
+    VerifiedUser,
+    ShoppingCart as ShopIcon,
+    AttachMoney as MoneyIcon,
+    Store as ProductIcon
+} from '@material-ui/icons';
 import LineStat from './components/LineStat/LineStat.component';
 import mock from "./mock";
 import Widget from "../../components/Widget/WidgetView";
@@ -22,6 +27,7 @@ import Table from "./components/Table/Table";
 import BigStat from "./components/BigStat/BigStat";
 import {WaitingComponent} from "../../components/index.component";
 import StatCard from './components/StatCard/StatCard.component';
+
 
 const getRandomData = (length, min, max, multiplier = 10, maxDiff = 10) => {
     const array = new Array(length).fill();
@@ -40,7 +46,7 @@ const getRandomData = (length, min, max, multiplier = 10, maxDiff = 10) => {
 
         lastValue = randomValue;
 
-        return { value: randomValue };
+        return {value: randomValue};
     });
 };
 
@@ -64,18 +70,18 @@ const getMainChartData = () => {
 const mainChartData = getMainChartData();
 
 const PieChartData = [
-    { name: "Group A", value: 400, color: "primary" },
-    { name: "Group B", value: 300, color: "secondary" },
-    { name: "Group C", value: 300, color: "warning" },
-    { name: "Group D", value: 200, color: "success" }
+    {name: "Group A", value: 400, color: "primary"},
+    {name: "Group B", value: 300, color: "secondary"},
+    {name: "Group C", value: 300, color: "warning"},
+    {name: "Group D", value: 200, color: "success"}
 ];
 
 class Dashboard extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
     }
 
-    render () {
+    render() {
         const {classes, theme, data, dashboard} = this.props;
         if(dashboard.is_calling) {
             return (<WaitingComponent/>);
@@ -117,9 +123,14 @@ class Dashboard extends React.Component {
                     <Grid item xs={12}>
                         <LineStat data={dashboard.weekly_data}></LineStat>
                     </Grid>
+                    {/*<Grid item xs={12}>*/}
+                    {/*    <OrderTable data={this.props.order_list} />*/}
+                    {/*</Grid>*/}
+
                     <Grid item xs={4}>
                         <DriversList data={dashboard.drivers}></DriversList>
                     </Grid>
+
                     <Grid item xs={8}>
                         <Widget
                             title="Support Requests"
@@ -146,7 +157,7 @@ const styles = theme => ({
         display: "flex",
         alignItems: "center",
         flexGrow: 1,
-        marginBottom:'10px'
+        marginBottom: '10px'
         // justifyContent:'space-around'
     },
     progressSection: {
@@ -254,14 +265,13 @@ const styles = theme => ({
 function mapStateToProps(state) {
     return {
         data: state.common,
-        dashboard: state.dashboard
+        dashboard: state.dashboard,
+        order_list: state.order.present
     };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-
-    }, dispatch);
+    return bindActionCreators({}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Dashboard));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, {withTheme: true})(Dashboard));

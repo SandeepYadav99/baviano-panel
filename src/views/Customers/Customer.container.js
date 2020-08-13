@@ -7,6 +7,7 @@ import Table from '../../components/Table/Table.component'
 import styles from './styles.module.css'
 import SubscriptionList from './component/subscriptions/Subscriptions.component';
 import TransactionsList from './component/transactions/Transactions.component';
+import CouponList from './component/coupons/CouponsList.component';
 
 class CustomerInfo extends Component{
     constructor(props){
@@ -148,6 +149,15 @@ class CustomerInfo extends Component{
                         <label>Transactions</label>
                         <div>
                             <TransactionsList userId={data.id}/>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={'formFlex'}>
+                    <div className={'formGroup'}>
+                        <label>Coupons Used</label>
+                        <div>
+                            <CouponList userId={data.id}/>
                         </div>
                     </div>
                 </div>

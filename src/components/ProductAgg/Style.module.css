@@ -1,0 +1,14 @@
+.productPill {
+    padding: 5px 10px;
+    background: #9c27b0;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+.productCont {
+    display: flex;
+    flex-wrap: wrap;
+    /*justify-content: center;*/
+    align-items: center;
+}

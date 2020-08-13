@@ -167,6 +167,7 @@ class Order extends Component {
         const status = val;
         const oStatus = Constants.JOB_STATUS;
         const colors = {
+            [oStatus.UNDELIVERED]: '#d50000',
             [oStatus.NO_CASH]: '#d50000',
             [oStatus.PENDING]: '#f9a825',
             [oStatus.NOT_ASSIGNED]: '#ff9100',
@@ -194,6 +195,14 @@ class Order extends Component {
                     <TableCell classes={{root: classes.tableCell}}>Proof Image</TableCell>
                     <TableCell classes={{root: classes.tableCell}}>
                         <a href={data.delivery_image} target={'_blank'}><img src={data.delivery_image} style={{ width: '100px' }} alt=""/></a>
+                    </TableCell>
+                </TableRow>);
+            }
+            if (data.status == Constants.JOB_STATUS.UNDELIVERED) {
+                temp.push(<TableRow>
+                    <TableCell classes={{root: classes.tableCell}}>Reason Of Undeliver</TableCell>
+                    <TableCell classes={{root: classes.tableCell}}>
+                        <span>{data.reason}</span>
                     </TableCell>
                 </TableRow>);
             }

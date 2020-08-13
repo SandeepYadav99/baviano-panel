@@ -6,3 +6,6 @@ import { postRequest} from "../libs/AxiosService.util";
 export async function serviceGetDashboard(params) {
     return await postRequest('dashboard', params);
 }
+export async function serviceChangeAcceptingOrders(type) {
+    return await postRequest('/app/settings/change/accepting', {is_accepting: type});
+}

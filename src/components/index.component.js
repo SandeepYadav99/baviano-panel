@@ -5,10 +5,11 @@ import Header from "./Header/Header.jsx";
 import Sidebar from "./Sidebar/Sidebar.jsx";
 import WaitingComponent from './Waiting.component';
 import CountryPhone from './country/index'
-
+import ProductAggComponent from "./ProductAgg/ProductAgg.component";
 export {
     Header,
     Sidebar,
     WaitingComponent,
-    CountryPhone
+    CountryPhone,
+    ProductAggComponent
 }

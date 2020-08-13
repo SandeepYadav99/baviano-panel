@@ -27,6 +27,9 @@ class ReduxDatePicker extends Component {
 
     render() {
         const {value, label, minDate, maxDate} = this.props;
+        const d = new Date();
+        d.setFullYear(d.getFullYear() + 10);
+        const mD = maxDate ? maxDate : d;
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <DatePicker
@@ -42,7 +45,7 @@ class ReduxDatePicker extends Component {
                         "dd-MM-yyyy"
                     }
                     minDate={minDate}
-                    maxDate={maxDate ? maxDate : ''}
+                    maxDate={mD}
                     // KeyboardButtonProps={{
                     //     'aria-label': 'change time',
                     // }}

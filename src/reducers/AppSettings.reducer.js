@@ -5,14 +5,15 @@
 import {
     APP_SETTINGS_UPDATE_GEOFENCE,
     APP_SETTINGS_DONE,
-    APP_SETTINGS_INIT, APP_SETTINGS_CHANGE_THEME, APP_SETTINGS_UPDATE_MIN_VALUE
+    APP_SETTINGS_INIT, APP_SETTINGS_CHANGE_THEME, APP_SETTINGS_UPDATE_MIN_VALUE, APP_SETTINGS_UPDATE_ORDER_AFTER
 } from "../actions/AppSettings.action";
 
 const initialState = {
     error: false,
     is_calling: true,
     geofence: [],
-    theme: 'dark'
+    theme: 'dark',
+    order_after: 0,
 };
 
 export default function (state = JSON.parse(JSON.stringify(initialState)), action) {
@@ -42,6 +43,12 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
                 return {...state, min_value: action.payload};
             }
         }
+        case APP_SETTINGS_UPDATE_ORDER_AFTER: {
+            if (action.payload) {
+                return {...state, order_after: action.payload.order_after};
+            }
+        }
+
         default: {
             return state;
         }

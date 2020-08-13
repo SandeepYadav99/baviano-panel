@@ -2,7 +2,7 @@
  * Created by charnjeetelectrovese@gmail.com on 12/3/2019.
  */
 import React, {Component} from 'react';
-import {Button, Paper, Checkbox} from '@material-ui/core';
+import {Button, Paper, Checkbox, Switch} from '@material-ui/core';
 
 import classNames from 'classnames';
 import {bindActionCreators} from 'redux';
@@ -35,6 +35,7 @@ import {serviceAcceptOrder, serviceListData, serviceRejectOrder} from "../../ser
 import EventEmitter from "../../libs/Events.utils";
 import BottomPanel from '../../components/BottomPanel/BottomPanel.component';
 import BottomAction from './components/BottomActions/BottomAction.component';
+import {actionChangeAcceptingOrders} from "../../actions/Dashboard.action";
 
 let CreateProvider = null;
 class OrderList extends Component {
@@ -71,6 +72,7 @@ class OrderList extends Component {
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleCheckbox = this._handleCheckbox.bind(this);
         this._handleBatchSelection = this._handleBatchSelection.bind(this);
+        this._handleAcceptingOrder = this._handleAcceptingOrder.bind(this);
     }
 
     componentDidMount() {
@@ -279,6 +281,11 @@ class OrderList extends Component {
         )
     }
 
+    _handleAcceptingOrder() {
+        const { accepting_orders } = this.props;
+        this.props.actionChangeAcceptingOrders(!accepting_orders);
+    }
+
     _handleCheckbox(id) {
         const tempSelected = this.state.selected;
         const tempIndex = tempSelected.indexOf(id);
@@ -323,15 +330,29 @@ class OrderList extends Component {
                 render: (temp, all) => <div style={{wordBreak:'break-word'}}>{this.renderFirstCell(all)}</div>,
             },{
                 key: 'address',
-                label: 'Address',
+                label: 'Address - Slot',
                 sortable: true,
                 style: { width: '20%'},
                 render: (temp, all) => {
-                    return (<a href={"https://www.google.com/maps/search/?api=1&query="+all.loc.coordinates[1]+','+all.loc.coordinates[0]} target={'_blank'}><div style={{wordBreak:'break-word'}}>{all.address.address}, {all.address.area}
-                        <br/>
-                        {all.address.landmark} , {all.address.city}
-                    </div></a>)
+                    return (<div >
+                        <span>
+                            <a href={"https://www.google.com/maps/search/?api=1&query="+all.loc.coordinates[1]+','+all.loc.coordinates[0]} target={'_blank'}><div style={{wordBreak:'break-word'}}>{all.address.address}, {all.address.area}
+                                <br/>
+                                {all.address.landmark} , {all.address.city}
+                        </div></a>
+                        </span>
+                        <span style={{ fontWeight: 'bold' }}>
+                            {all.delivery_slot.unformatted}
+                        </span>
+                    </div>)
                 },
+            },
+            {
+                key: 'distance',
+                label: 'Est. Distance',
+                sortable: true,
+                // style: { width: '20%'},
+                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.distance} Km</div>,
             },
             {
                 key: 'total_products',
@@ -340,6 +361,7 @@ class OrderList extends Component {
                 // style: { width: '20%'},
                 render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.products.length}</div>,
             },
+
             {
                 key: 'total_amount',
                 label: 'Total Amount',
@@ -411,9 +433,17 @@ class OrderList extends Component {
                 <PageBox>
                     <div className={styles.headerContainer}>
                         <span className={styles.title}>Order List</span>
-                        {/*<Button onClick={this._handleSideToggle} variant={'contained'} color={'primary'} disabled={this.state.listData==null}>*/}
-                            {/*<Add></Add> Create*/}
-                        {/*</Button>*/}
+                        <div>
+                            <span>
+                                Accepting Orders ?
+                            <Switch
+                                checked={this.props.accepting_orders}
+                                onChange={this._handleAcceptingOrder}
+                                name="checkedB"
+                                color="primary"
+                            />
+                            </span>
+                        </div>
                     </div>
 
                     <div>
@@ -452,6 +482,7 @@ class OrderList extends Component {
 
 function mapStateToProps(state) {
     return {
+        accepting_orders: state.dashboard.is_accepting,
         data: state.order.present,
         total_count: state.order.all.length,
         currentPage: state.order.currentPage,
@@ -472,7 +503,8 @@ function mapDispatchToProps(dispatch) {
         actionChangeStatus: actionChangeStatusOrder,
         actionCreate: actionCreateOrder,
         actionUpdate: actionUpdateOrder,
-        actionAssignBatch: actionAssignBatchToOrders
+        actionAssignBatch: actionAssignBatchToOrders,
+        actionChangeAcceptingOrders: actionChangeAcceptingOrders
     }, dispatch);
 }
 

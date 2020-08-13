@@ -142,7 +142,7 @@ export function actionResetFilterCustomers() {
 }
 
 export function actionSetPageCustomers(page) {
-    const stateData = store.getState().drivers;
+    const stateData = store.getState().customers;
     const currentPage = stateData.currentPage;
     const totalLength = stateData.all.length;
     const sortingData = stateData.sorting_data;

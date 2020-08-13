@@ -120,7 +120,7 @@ export function actionResetFilterPendingPlan() {
 }
 
 export function actionSetPagePendingPlan(page) {
-    const stateData = store.getState().pending_plans;
+    const stateData = store.getState().pending_plan;
     const currentPage = stateData.currentPage;
     const totalLength = stateData.all.length;
     const sortingData = stateData.sorting_data;

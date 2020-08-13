@@ -31,6 +31,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import {actionFetchBatch} from "../../actions/Batch.action";
 import ReduxDatePicker from "../../components/ReduxDatePicker/ReduxDatePicker.component";
+import {ProductAggComponent} from "../../components/index.component";
 
 
 let CreateProvider = null;
@@ -410,7 +411,11 @@ class BatchForecastingList extends Component {
                             handleFilterDataChange={this._handleFilterDataChange}
                         />
                         <div>
+
                             <br/>
+                            <div>
+                                <ProductAggComponent data={this.props.data} />
+                            </div>
                             <div style={{width: '100%'}}>
                                 <DataTables
                                     {...datatable}

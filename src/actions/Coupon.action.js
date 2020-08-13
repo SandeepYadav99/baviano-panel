@@ -125,7 +125,7 @@ export function actionResetFilterCoupons() {
 }
 
 export function actionSetPageCoupons(page) {
-    const stateData = store.getState().cities;
+    const stateData = store.getState().coupons;
     const currentPage = stateData.currentPage;
     const totalLength = stateData.all.length;
     const sortingData = stateData.sorting_data;

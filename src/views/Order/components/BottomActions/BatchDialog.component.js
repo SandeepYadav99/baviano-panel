@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {renderOutlinedSelectField, renderOutlinedTextField} from "../../../../libs/redux-material.utils";
 import {actionFetchBatch, actionCreateBatch} from "../../../../actions/Batch.action";
-
+import Constants from '../../../../config/constants';
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -82,8 +82,7 @@ class BatchDialog extends Component {
                                     margin={'dense'}
                                     label={'Slot'}
                                 >
-                                    <MenuItem value={0}>08:00 - 09:00</MenuItem>
-                                    <MenuItem value={1}>09:00 - 10:00</MenuItem>
+                                    {Constants.DELIVERY_SLOTS.map((val) => {return(<MenuItem value={val.index}>{val.unformatted}</MenuItem>); })}
                                 </Field>
                             </div>
                         </div>
