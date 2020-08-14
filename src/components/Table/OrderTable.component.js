@@ -23,7 +23,7 @@ class TableTask extends Component {
     }
 
     _renderDelivery(row) {
-        let deliverDate = moment(row.start_date);
+        let deliverDate = moment(row.next_date);
         deliverDate = deliverDate.format('DD-MM-YYYY');
         if (row.type == 'CUSTOM') {
             let weekData = '';
@@ -41,6 +41,14 @@ class TableTask extends Component {
                 <br/>
                 <span style={{ textTransform: 'capitalize' }}>{weekData}</span>
             </div>);
+        } else if (row.is_adhoc) {
+            return (
+                <div>
+                    {deliverDate}
+                    <br/>
+                    <span style={{ textTransform: 'capitalize' }}>ADHOC</span>
+                </div>
+            )
         } else {
             return (
                 <div>
