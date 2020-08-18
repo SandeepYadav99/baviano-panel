@@ -1,3 +1,6 @@
+.mainContainer {
+    padding: 10px;
+}
 .headerContainer {
     display: flex;
     justify-content: space-between;
@@ -6,10 +9,15 @@
 .headerContainer .title {
     font-size: 16px;
 }
-.userImage {
-    width:100px;
-    height: 100px;
-    border-radius: 50%;
+.bottomLine {
+    opacity: 0.4;
+    color: grey;
+    margin-bottom: 5px;
+}
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .firstCellFlex {
     display: flex;
@@ -23,10 +31,9 @@
 .firstCellInfo {
     margin-left: 10px;
 }
-.topHeader {
+
+.headerFlex {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-}
-.headingCont {
-    flex: 1
 }

@@ -109,7 +109,7 @@ class SidePanelComponent extends Component {
         const tempStyle = {
             width: (this.state.delta == 0 || !this.props.open) ? 'calc(45vw)' : (window.innerWidth - this.state.delta),
             height: '100%',
-            backgroundColor: theme.palette.bgColor.main,
+            backgroundColor: theme.palette.type == 'dark' ?  theme.palette.bgColor.main : 'white',
             color: theme.palette.textColor,
             top: '0px',
             position: 'fixed',

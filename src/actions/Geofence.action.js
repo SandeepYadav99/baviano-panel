@@ -1,48 +1,38 @@
 /**
- * Created by charnjeetelectrovese@gmail.com on 12/5/2019.
+ * Created by charnjeetelectrovese@gmail.com on 4/8/2020.
  */
 
 // import { serviceFetchProviderRequests } from '../services/ProviderRequest.service';
 // import { fetchPRequests } from '../services/User.service';
 import store from '../store';
 import Constants from '../config/constants';
-import {
-    serviceChangeStatusCustomers,
-    serviceCreateCustomers,
-    serviceCustomerAddWallet,
-    serviceGetCustomers,
-    serviceUpdateCustomers
-} from "../services/CustomersRequest.service";
+import {serviceCreateGeofence, serviceGetGeofence, serviceUpdateGeofence,serviceDeleteGeofence} from "../services/Geofence.service";
+import EventEmitter from "../libs/Events.utils";
+import {serviceDeleteCategory} from "../services/Category.service";
 
-export const FETCH_INIT = 'FETCH_INIT_CUSTOMERS';
-export const FETCHED = 'FETCHED_CUSTOMERS';
-export const FETCHED_FAIL = 'FETCHED_FAIL_CUSTOMERS';
-export const FETCHED_FILTER = 'FETCHED_FILTER_CUSTOMERS';
+
+export const FETCH_INIT = 'FETCH_INIT_GEOFENCES';
+export const FETCHED = 'FETCHED_GEOFENCES';
+export const FETCHED_FAIL = 'FETCHED_FAIL_GEOFENCES';
+export const FETCHED_FILTER = 'FETCHED_FILTER_GEOFENCES';
 // export const NEXT_PREQUESTS = 'NEXT_PREQUESTS';
 // export const PREV_PREQUESTS = 'PREV_PREQUESTS';
-export const FETCH_NEXT = 'FETCH_NEXT_CUSTOMERS';
-export const FILTER = 'FILTER_CUSTOMERS';
-export const RESET_FILTER = 'RESET_FILTER_CUSTOMERS';
-export const SET_SORTING = 'SET_SORTING_CUSTOMERS';
-export const SET_FILTER = 'SET_FILTER_CUSTOMERS';
-export const SET_PAGE = 'SET_PAGE_CUSTOMERS';
-export const CHANGE_PAGE = 'CHANGE_PAGE_CUSTOMERS';
-export const CHANGE_STATUS= 'CHANGE_STATE_CUSTOMERS';
-export const SET_SERVER_PAGE = 'SET_SERVER_PAGE_CUSTOMERS';
-export const CREATE_DATA = 'CREATE_CUSTOMERS';
-export const UPDATE_DATA = 'UPDATE_CUSTOMERS';
-export const ADD_AMOUNT_CUSTOMERS = 'ADD_AMOUNT_CUSTOMERS';
+export const FETCH_NEXT = 'FETCH_NEXT_GEOFENCES';
+export const FILTER = 'FILTER_GEOFENCES';
+export const RESET_FILTER = 'RESET_FILTER_GEOFENCES';
+export const SET_SORTING = 'SET_SORTING_GEOFENCES';
+export const SET_FILTER = 'SET_FILTER_GEOFENCES';
+export const SET_PAGE = 'SET_PAGE_GEOFENCES';
+export const CHANGE_PAGE = 'CHANGE_PAGE_GEOFENCES';
+export const CHANGE_STATUS= 'CHANGE_STATE_GEOFENCES';
+export const SET_SERVER_PAGE = 'SET_SERVER_PAGE_GEOFENCES';
+export const CREATE_DATA = 'CREATE_GEOFENCES';
+export const UPDATE_DATA = 'UPDATE_GEOFENCES';
+export const DELETE_ITEM = 'DELETE_GEOFENCES';
 
-
-export function actionFetchCustomers(index = 1, sorting = {}, filter = {}, shouldReset=false) {
-    const request = serviceGetCustomers({ index, row: sorting.row, order: sorting.order, ...filter }); // GetCustomers
+export function actionFetchGeofence(index = 1, sorting = {}, filter = {}) {
+    const request = serviceGetGeofence({ index, row: sorting.row, order: sorting.order, ...filter });
     return (dispatch) => {
-        if (shouldReset) {
-            dispatch({
-                type: CHANGE_PAGE,
-                payload: 1,
-            });
-        }
         dispatch({type: FETCH_INIT, payload: null});
         request.then((data) => {
             dispatch({type: SET_FILTER, payload: filter});
@@ -60,19 +50,20 @@ export function actionFetchCustomers(index = 1, sorting = {}, filter = {}, shoul
     };
 }
 
-export function actionCreateCustomers(data) {
-    const request = serviceCreateCustomers(data);
+export function actionCreateGeofence(data) {
+    const request = serviceCreateGeofence(data);
     return (dispatch) => {
         request.then((data) => {
             if (!data.error) {
+                EventEmitter.dispatch(EventEmitter.THROW_ERROR, {error: 'Saved', type: 'success'});
                 dispatch({type: CREATE_DATA, payload: data.data})
             }
         })
     }
 }
 
-export function actionUpdateCustomers(data) {
-    const request = serviceUpdateCustomers(data);
+export function actionUpdateGeofence(data) {
+    const request = serviceUpdateGeofence(data);
     return (dispatch) => {
         request.then((data) => {
             if (!data.error) {
@@ -82,24 +73,20 @@ export function actionUpdateCustomers(data) {
     }
 }
 
+export function actionDeleteGeofence(id) {
+    const request = serviceDeleteGeofence({ id: id});
+    return (dispatch) => {
+        dispatch({type: DELETE_ITEM, payload: id})
+    }
+}
 
 
-export function actionChangePageCustomers(page) {
+export function actionChangePageGeofenceRequests(page) {
     return (dispatch) => {
         dispatch({type: CHANGE_PAGE, payload: page})
     }
 }
 
-export function actionCustomerAddAmount(data) {
-    const request = serviceCustomerAddWallet(data);
-    return (dispatch) => {
-        request.then((data) => {
-            if (!data.error) {
-                dispatch({type: ADD_AMOUNT_CUSTOMERS, payload: data.data})
-            }
-        })
-    }
-}
 // export function nextPRequestsClick() {
 //     return {
 //         type: NEXT_PREQUESTS,
@@ -114,36 +101,38 @@ export function actionCustomerAddAmount(data) {
 //     };
 // }
 
-export function actionFilterCustomers(value) {
+export function actionFilterGeofenceRequests(value) {
     const request = null;////serviceFetchProviderRequests(value);
     return (dispatch) => {
         dispatch({type: FETCH_INIT, payload: null});
         request.then((data) => {
             dispatch({type: FILTER, payload: data});
-            dispatch({type: FETCHED, payload: null});
+            dispatch({type: FETCHED, payload: null});//dispatch function
         });
     };
 }
 
 
-export function actionChangeStatusCustomers(params) {
-    const request = serviceChangeStatusCustomers({ id: params.id, status: params.status});
+export function actionChangeStatusGeofenceRequests(id, status) {
+    // const request = serviceFetchProviderRequests(value);
     return (dispatch) => {
-        request.then((data) => {
-            dispatch({type: CHANGE_STATUS, payload: {id: params.id, status: params.status}});
-        });
+        dispatch({type: CHANGE_STATUS, payload: {id, status}});
+        // request.then((data) => {
+        //     dispatch({type: FILTER_PREQUESTS, payload: data});
+        //     dispatch({type: FETCHED_PREQUESTS, payload: null});
+        // });
     };
 }
 
-export function actionResetFilterCustomers() {
+export function actionResetFilterGeofenceRequests() {
     return {
         type: RESET_FILTER,
         payload: null,
     };
 }
 
-export function actionSetPageCustomers(page) {
-    const stateData = store.getState().customers;
+export function actionSetPageGeofenceRequests(page) {
+    const stateData = store.getState().geofence;
     const currentPage = stateData.currentPage;
     const totalLength = stateData.all.length;
     const sortingData = stateData.sorting_data;
@@ -152,7 +141,7 @@ export function actionSetPageCustomers(page) {
     const serverPage = stateData.serverPage;
 
     if (totalLength <= ((page + 1) * Constants.DEFAULT_PAGE_VALUE)) {
-        store.dispatch(actionFetchCustomers(serverPage + 1, sortingData, {query, query_data: queryData}));
+        store.dispatch(actionFetchGeofence(serverPage + 1, sortingData, {query, query_data: queryData}));
         // this.props.fetchNextUsers(this.props.serverPage + 1, this.props.sorting_data.row, this.props.sorting_data.order, { query: this.props.query, query_data: this.props.query_data });
     }
 

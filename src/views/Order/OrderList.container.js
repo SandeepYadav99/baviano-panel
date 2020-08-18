@@ -233,7 +233,7 @@ class OrderList extends Component {
         });
         let request = null;
         if (type == 'ACCEPT') {
-            request = await serviceAcceptOrder(data);
+            // request = await serviceAcceptOrder(data);
         } else {
             request = await serviceRejectOrder(data);
         }
@@ -332,7 +332,7 @@ class OrderList extends Component {
                 key: 'address',
                 label: 'Address - Slot',
                 sortable: true,
-                style: { width: '20%'},
+                style: { width: '10%'},
                 render: (temp, all) => {
                     return (<div >
                         <span>
@@ -346,6 +346,13 @@ class OrderList extends Component {
                         </span>
                     </div>)
                 },
+            },
+            {
+                key: 'geotag_name',
+                label: 'GeoTag',
+                sortable: true,
+                // style: { width: '20%'},
+                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.geotag_name}</div>,
             },
             {
                 key: 'distance',

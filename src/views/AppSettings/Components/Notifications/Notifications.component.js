@@ -1,7 +1,6 @@
-
 import React, {Component} from 'react';
-import {Button, MenuItem, withStyles, FormControlLabel, Switch,IconButton} from '@material-ui/core';
-import { Delete as DeleteIcon } from '@material-ui/icons';
+import {Button, MenuItem, withStyles, FormControlLabel, Switch, IconButton} from '@material-ui/core';
+import {Delete as DeleteIcon} from '@material-ui/icons';
 import {Field, reduxForm} from 'redux-form'
 import {connect} from 'react-redux';
 import {
@@ -10,13 +9,9 @@ import {
 } from '../../../../libs/redux-material.utils';
 import EventEmitter from "../../../../libs/Events.utils";
 import styles from '../../Style.module.css';
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions";
 import {bindActionCreators} from "redux";
 import {serviceSendNotification} from "../../../../services/Notification.service";
+import {actionFetchBatch} from "../../../../actions/Batch.action";
 
 let requiredFields = [];
 const validate = (values) => {
@@ -24,7 +19,7 @@ const validate = (values) => {
     requiredFields.forEach(field => {
         if (!values[field]) {
             errors[field] = 'Required'
-        } else if( values[field] && typeof values[field] == 'string' && !(values[field]).trim()) {
+        } else if (values[field] && typeof values[field] == 'string' && !(values[field]).trim()) {
             errors[field] = 'Required'
         }
     });
@@ -36,15 +31,18 @@ class NotificationComponent extends Component {
         super(props);
         this.state = {
             is_active: true,
-            show_confirm: false
+            show_confirm: false,
+            toUsers: 'ALL'
         };
         this._handleSubmit = this._handleSubmit.bind(this);
+        this._handleToUsers = this._handleToUsers.bind(this);
     }
 
     componentDidMount() {
+        this.props.actionFetchBatch();
         const {data} = this.props;
         if (data) {
-            requiredFields = ['title', 'message', 'action_code'];
+            requiredFields = ['title', 'message', 'action_code', 'to_users', 'batch_id'];
             Object.keys(data).forEach((val) => {
                 if (['status'].indexOf(val) == -1) {
                     const temp = data[val];
@@ -52,13 +50,44 @@ class NotificationComponent extends Component {
                 }
             });
         } else {
-            requiredFields = ['title', 'message', 'action_code'];
+            requiredFields = ['title', 'message', 'action_code', 'to_users', 'batch_id'];
         }
     }
 
     _handleSubmit(tData) {
         serviceSendNotification({...tData});
         this.props.reset();
+    }
+
+    _handleToUsers(e) {
+        const val = e.target.value;
+        this.setState({
+            toUsers: val
+        });
+    }
+
+    _renderBatchMenu() {
+        const {toUsers} = this.state;
+        if (toUsers == 'BATCH') {
+            return (
+                <div className="formFlex">
+                    <div className="formGroup">
+                        <Field
+                            inputId={'batch_id'}
+                            fullWidth={true}
+                            name="batch_id"
+                            component={renderOutlinedSelectField}
+                            margin={'dense'}
+                            label={'Batch'}
+                        >
+                            {this.props.batches.map((val) => {
+                                return (<MenuItem value={val.id}>{val.name}</MenuItem>);
+                            })};
+                        </Field>
+                    </div>
+                </div>
+            )
+        }
     }
 
     render() {
@@ -97,6 +126,26 @@ class NotificationComponent extends Component {
                             </Field>
                         </div>
                     </div>
+                    <div className="formFlex">
+                        <div className="formGroup">
+                            <Field
+                                inputId={'to_users'}
+                                fullWidth={true}
+                                name="to_users"
+                                component={renderOutlinedSelectField}
+                                margin={'dense'}
+                                label={'To Users'}
+                                onChange={this._handleToUsers}
+                            >
+                                <MenuItem value={'ALL'}>All</MenuItem>
+                                <MenuItem value={'ACTIVE_USERS'}>Active Users</MenuItem>
+                                <MenuItem value={'ACTIVE'}>Active Subscriptions</MenuItem>
+                                <MenuItem value={'INACTIVE'}>Inactive Subscriptions</MenuItem>
+                                <MenuItem value={'BATCH'}>Batch</MenuItem>
+                            </Field>
+                        </div>
+                    </div>
+                    {this._renderBatchMenu()}
 
 
                     <div style={{float: 'right'}}>
@@ -124,6 +173,15 @@ const ReduxForm = reduxForm({
     }
 })(withStyles(useStyle, {withTheme: true})(NotificationComponent));
 
+function mapStateToProps(state) {
+    return {
+        batches: state.batch.present,
+    }
+};
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        actionFetchBatch: actionFetchBatch,
+    }, dispatch);
+}
 
-
-export default connect(null, null)(ReduxForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxForm);

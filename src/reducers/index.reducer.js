@@ -23,6 +23,8 @@ import PendingPlanReducer from './PendingPlan.reducer';
 import BatchReducer from './Batch.reducer';
 import BatchProcessingReducer from './BatchProcessing.reducer';
 import BatchForecastingReducer from './BatchForecasting.reducer';
+import GeofenceReducer from './Geofence.reducer';
+
 
 const rootReducer = combineReducers({
     state: (state = {}) => state,
@@ -46,6 +48,7 @@ const rootReducer = combineReducers({
     batch: BatchReducer,
     batch_processing: BatchProcessingReducer,
     batch_forecasting: BatchForecastingReducer,
+    geofence: GeofenceReducer,
     // form: formReducer,
 });
 

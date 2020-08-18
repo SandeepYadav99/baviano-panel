@@ -64,22 +64,22 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
             if (action.payload) {
                 let tempIndex = null;
                 const prevState = state.all;
-                prevState.some((val, index)=> {
-                    if (val.id == action.payload) {
-                        tempIndex = index;
-                        return true;
-                    }
-                });
-                if (tempIndex != null) {
-                    prevState.splice(tempIndex, 1);
-                }
-                // const newState = state.all.map((val) => {
-                //     if (val.id == action.payload.id) {
-                //         return { ...val, status: action.payload.status == 'SUSPEND' ? 'SUSPEND' : 'ACTIVE' };
-                //     } return { ...val };
+                // prevState.some((val, index)=> {
+                //     if (val.id == action.payload) {
+                //         tempIndex = index;
+                //         return true;
+                //     }
                 // });
-                const tableData = mapPresetPRequest(prevState, state.currentPage);
-                return { ...state, all: prevState, present: tableData };
+                // if (tempIndex != null) {
+                //     prevState.splice(tempIndex, 1);
+                // }
+                const newState = state.all.map((val) => {
+                    if (val.id == action.payload.id) {
+                        return { ...val, status: action.payload.status == 'SUSPENDED' ? 'SUSPENDED' : 'ACTIVE' };
+                    } return { ...val };
+                });
+                const tableData = mapPresetPRequest(newState, state.currentPage);
+                return { ...state, all: newState, present: tableData };
             }
             return state;
         }

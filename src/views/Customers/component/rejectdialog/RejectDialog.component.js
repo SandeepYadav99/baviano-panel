@@ -66,7 +66,7 @@ class RejectDialog extends Component {
                 <DialogTitle id="alert-dialog-slide-title">{"Are You Sure?"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Do you really want to suspend the order?
+                        Do you really want to suspend the user as the user will not be able to login and use the app in future?
                         <br/>
                     </DialogContentText>
                 </DialogContent>

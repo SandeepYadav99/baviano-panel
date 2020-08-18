@@ -198,11 +198,12 @@ class CustomerList extends Component {
             const { id } = this.props.match.params;
             return (<CreateProvider data={this.state.edit_data}
                                     listData={this.state.listData}
+                                    changeStatus={this._handleChangeStatus}
                                     handleDataSave={this._handleDataSave}></CreateProvider>);
         } return null;
     }
-    _handleChangeStatus(data, type) {
-        this.props.actionChangeStatus({...data, type: type});
+    _handleChangeStatus(data) {
+        this.props.actionChangeStatus({...data});
         this.setState({
             side_panel: !this.state.side_panel,
             edit_data: null,

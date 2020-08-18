@@ -2,87 +2,107 @@ import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Button, withStyles} from "@material-ui/core";
+import {Button, ButtonBase, withStyles} from "@material-ui/core";
 import Table from '../../components/Table/Table.component'
 import styles from './styles.module.css'
 import SubscriptionList from './component/subscriptions/Subscriptions.component';
 import TransactionsList from './component/transactions/Transactions.component';
 import CouponList from './component/coupons/CouponsList.component';
+import Constants from "../../config/constants";
+import RejectDialog from "./component/rejectdialog/RejectDialog.component";
 
 class CustomerInfo extends Component{
     constructor(props){
         super(props);
 
-        this.state={}
+        this.state={
+            is_reject_dialog: false
+        };
         this._handleReject = this._handleReject.bind(this);
         this._handleApprove = this._handleApprove.bind(this);
+        this._handleRejectDialogClose = this._handleRejectDialogClose.bind(this);
+        this._handleRejectDialog = this._handleRejectDialog.bind(this);
     }
 
     _handleApprove() {
         const {data} = this.props;
-        this.props.changeStatus([data.id], 'APPROVE');
+        this.props.changeStatus({
+            id: data.id,
+            status: 'ACTIVE',
+            type: 'ACTIVE'
+        });
     }
+
+    _handleRejectDialog(obj) {
+        const {data} = this.props;
+        this.props.changeStatus({
+            id: data.id,
+            status: 'SUSPENDED',
+            type: 'SUSPENDED'
+        });
+    }
+
+    _handleRejectDialogClose() {
+        this.setState({
+            is_reject_dialog: false,
+        })
+    }
+
 
     _handleReject() {
-        const {data} = this.props;
-        this.props.changeStatus([data.id], 'REJECT');
-    }
-
-    _renderApprove() {
-        const { data } = this.props;
-        if (data.status != 'ACTIVE') {
-            return (
-                <Button variant={'contained'} className={this.props.classes.btnSuccess} onClick={this._handleApprove}
-                        type="button">
-                    Approve
-                </Button>
-            )
-        }
+        this.setState({
+            is_reject_dialog: true,
+        })
     }
 
     _renderReject() {
-        const { data } = this.props;
-        if (data.status == 'ACTIVE' || data.status == 'PENDING') {
+        const {data, is_submit} = this.props;
+        if (is_submit) {
+            return null;
+        }
+        if (data.status == 'ACTIVE') {
             return (
                 <Button variant={'contained'} className={this.props.classes.btnError}
                         onClick={this._handleReject}
                         type="button">
-                    Reject
+                    Suspend User
                 </Button>
             )
         }
     }
 
-    _renderImages(){
-        const {data} = this.props;
-        return data.images.map((val)=>{
-            return(
-                <div style={{marginRight:'10px'}}>
-                    <a href={val} target='_blank'> <img src={val} style={{height:'80px',width:'80px'}}/> </a>
+    _renderApprove() {
+        const {data, classes, is_submit} = this.props;
+        if (data.status == 'SUSPENDED') {
+            return (
+                <div className={styles.approveCont}>
+                    <Button variant={'contained'} className={this.props.classes.btnSuccess}
+                            onClick={this._handleApprove}
+                            type="button">
+                        Activate
+                    </Button>
                 </div>
             )
-        })
+        } return null;
     }
 
-    _renderRoute(){
-        const {data} = this.props;
-        return data.routes.map((val,index)=>{
-            return(
-                <div>
-                    {index+1}-{val.name}
-                    <div>Waiting Time: {val.waiting}Min</div>
-                    <hr/>
-                </div>
-            )
-        })
-    }
 
     render(){
         const {data} = this.props;
         return(
             <div className={'toursinfo'} style={{padding: '10px'}}>
-                <h3>Customer Details</h3>
+                <div className={styles.topHeader}>
+                    <div className={styles.headingCont}>
+                        <h3>Customer Details</h3>
+                    </div>
+                    <div className={styles.processButtons}>
+                        {this._renderApprove()}
+                        {this._renderReject()}
+                    </div>
+                </div>
+
                 <hr/>
+
 
                 <div className={'formFlex'}>
                     {/*<div className={'formGroup'}>*/}
@@ -170,7 +190,11 @@ class CustomerInfo extends Component{
                     {/*{this._renderApprove()}*/}
                     {/*{this._renderReject()}*/}
                 </div>
-
+                <RejectDialog
+                    open={this.state.is_reject_dialog}
+                    handleClose={this._handleRejectDialogClose}
+                    handleSubmit={this._handleRejectDialog}
+                />
             </div>
         )
     }

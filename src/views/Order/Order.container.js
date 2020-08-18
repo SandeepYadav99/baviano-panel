@@ -116,8 +116,8 @@ class Order extends Component {
             )
         } else if (data.status == Constants.ORDER_STATUS.ACCEPTED && data.retry_dispatching) {
             return (<Button variant={'contained'} className={this.props.classes.btnSuccess}
-                    onClick={this._handleDriverDialog}
-                    type="button">
+                            onClick={this._handleDriverDialog}
+                            type="button">
                 Assign Driver Manually
             </Button>);
         }
@@ -128,15 +128,13 @@ class Order extends Component {
         if (is_submit) {
             return null;
         }
-        if (data.status == 'ACTIVE' || data.status == 'PENDING') {
-            return (
-                <Button variant={'contained'} className={this.props.classes.btnError}
-                        onClick={this._handleReject}
-                        type="button">
-                    Reject
-                </Button>
-            )
-        }
+        return (
+            <Button variant={'contained'} className={this.props.classes.btnError}
+                    onClick={this._handleReject}
+                    type="button">
+                Suspend Order
+            </Button>
+        )
     }
 
     _renderRejectReason = (reason) => {
@@ -148,7 +146,8 @@ class Order extends Component {
                     <TableCell classes={{root: classes.tableCell}}>{reason}</TableCell>
                 </TableRow>
             )
-        } return null;
+        }
+        return null;
     }
 
     _renderDriver(driver) {
@@ -163,7 +162,8 @@ class Order extends Component {
                     </TableCell>
                 </TableRow>
             )
-        } return null;
+        }
+        return null;
     }
 
     _renderStatus(val) {
@@ -197,7 +197,7 @@ class Order extends Component {
 
                     <div className={styles.processButtons}>
                         {/*{this._renderApprove()}*/}
-                        {/*{this._renderReject()}*/}
+                        {this._renderReject()}
                     </div>
                     {/*<h3>Order Details</h3>*/}
                     {/*<hr/>*/}
@@ -225,9 +225,11 @@ class Order extends Component {
                                             <TableCell classes={{root: classes.tableCell}}>Address</TableCell>
                                             <TableCell
                                                 classes={{root: classes.tableCell}}>
-                                                <a href={"https://www.google.com/maps/search/?api=1&query="+data.loc.coordinates[1]+','+data.loc.coordinates[0]} target={'_blank'}>
-                                                {data.address.address} - {data.address.area} <br/>
-                                                {data.address.landmark} {data.address.landmark ? '-' : ''} <div className={styles.badge}>{data.address.city}</div>
+                                                <a href={"https://www.google.com/maps/search/?api=1&query=" + data.loc.coordinates[1] + ',' + data.loc.coordinates[0]}
+                                                   target={'_blank'}>
+                                                    {data.address.address} - {data.address.area} <br/>
+                                                    {data.address.landmark} {data.address.landmark ? '-' : ''}
+                                                    <div className={styles.badge}>{data.address.city}</div>
                                                 </a>
                                             </TableCell>
                                         </TableRow>
@@ -256,7 +258,8 @@ class Order extends Component {
                                         {/*    </TableCell>*/}
                                         {/*</TableRow>*/}
                                         <TableRow>
-                                            <TableCell classes={{root: classes.tableCell}}>Delivery Preference</TableCell>
+                                            <TableCell classes={{root: classes.tableCell}}>Delivery
+                                                Preference</TableCell>
                                             <TableCell classes={{root: classes.tableCell}}>
                                                     <span className={styles.capitalize}>
                                                         {data.delivery_preference}
@@ -270,7 +273,8 @@ class Order extends Component {
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell classes={{root: classes.tableCell}}>User Wallet Amount</TableCell>
+                                            <TableCell classes={{root: classes.tableCell}}>User Wallet
+                                                Amount</TableCell>
                                             <TableCell classes={{root: classes.tableCell}}>
                                                 Rs. {data.user.wallet_amount} /-
                                             </TableCell>
@@ -296,12 +300,6 @@ class Order extends Component {
                         </div>
                     </div>
 
-
-                    <DriversDialog
-                        handleClick={this._handleDriverClick}
-                        data={this.state.drivers}
-                        handleClose={this._handleDriverDialog}
-                        is_open={this.state.is_driver_dialog}></DriversDialog>
                     <RejectDialog
                         open={this.state.is_reject_dialog}
                         handleClose={this._handleRejectDialogClose}
@@ -352,7 +350,7 @@ class Order extends Component {
                     <Tab label="Order Details" {...this.a11yProps(0)} />
                 </Tabs>
                 {this._renderInformation()}
-                <div style={{ height: '75px' }}></div>
+                <div style={{height: '75px'}}></div>
             </div>
         )
     }
