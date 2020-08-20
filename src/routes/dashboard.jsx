@@ -16,6 +16,8 @@ import PendingPlan from '../views/PendingPlans/PendingPlanList.container';
 import BatchProcessing from '../views/BatchProcessing/BatchList.container';
 import BatchForecasting from '../views/BatchForecastring/ForecastingList.container';
 import GeofenceList from '../views/Geofences/GeofenceList.container';
+import VerificationList from '../views/Verification/VerificationList.container';
+
 // import TableList from "views/TableList/TableList.jsx";
 // import Typography from "views/Typography/Typography.jsx";
 // import Icons from "views/Icons/Icons.jsx";
@@ -140,6 +142,15 @@ const dashboardRoutes = [
         navbarName: "Geofences",
         icon: Dashboard,
         component: GeofenceList,
+        is_sidebar: true,
+        is_protect: true,
+    },
+    {
+        path: "/verifications",
+        sidebarName: "Verifications",
+        navbarName: "Verifications",
+        icon: Dashboard,
+        component: VerificationList,
         is_sidebar: true,
         is_protect: true,
     },

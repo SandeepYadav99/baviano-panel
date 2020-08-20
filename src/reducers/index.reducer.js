@@ -24,7 +24,7 @@ import BatchReducer from './Batch.reducer';
 import BatchProcessingReducer from './BatchProcessing.reducer';
 import BatchForecastingReducer from './BatchForecasting.reducer';
 import GeofenceReducer from './Geofence.reducer';
-
+import VerificationReducer from './Verification.reducer';
 
 const rootReducer = combineReducers({
     state: (state = {}) => state,
@@ -49,6 +49,7 @@ const rootReducer = combineReducers({
     batch_processing: BatchProcessingReducer,
     batch_forecasting: BatchForecastingReducer,
     geofence: GeofenceReducer,
+    verification: VerificationReducer
     // form: formReducer,
 });
 
