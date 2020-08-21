@@ -16,6 +16,10 @@
 .fieldCont {
     width: 200px;
 }
+.fieldContainer {
+    margin-left: 20px;
+    width: 200px;
+}
 .formFlex {
     display: flex;
     align-items: center;

@@ -8,13 +8,17 @@ import {Bookmark, BookmarkBorder, Check, AddCircle as AddIcon} from "@material-u
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Field, reduxForm} from "redux-form";
-import {renderOutlinedSelectField} from "../../../../libs/redux-material.utils";
+import {
+    renderOutlinedSelectField,
+    renderOutlinedTextField,
+    renderTimePicker
+} from "../../../../libs/redux-material.utils";
 import EventEmitter from "../../../../libs/Events.utils";
 import {serviceGetFreeDrivers} from "../../../../services/BatchProcessing.service";
 
 
 const validate = (values) => {
-    const requiredFields = ['driver_id'];
+    const requiredFields = ['driver_id','taken_time','temperature'];
     const errors = {};
     requiredFields.forEach(field => {
         if (!values[field] && values[field] != 0) {
@@ -92,6 +96,28 @@ class BottomDriverAction extends Component{
                             }
                         </Field>
                     </div>
+
+                    <div className={styles.fieldContainer}>
+                        <Field fullWidth={true}
+                               name="temperature"
+                               component={renderOutlinedTextField}
+                               margin={'dense'}
+                               type={'number'}
+                               label="Temperature"
+                        />
+                    </div>
+                    <div className={styles.fieldContainer}>
+                        <Field fullWidth={true}
+                               name="taken_time"
+                               component={renderTimePicker}
+                               margin={'dense'}
+                               label="Taken Time"
+                               // ampm={false}
+                               // is_utc={true}
+                               minDate={new Date()}
+                        />
+                    </div>
+
                     <div className={styles.buttonCont}>
                         <Button
                             type={'submit'}
