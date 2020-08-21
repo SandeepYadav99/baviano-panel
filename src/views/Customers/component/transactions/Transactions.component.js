@@ -21,6 +21,12 @@ const useStyles = {
     table: {
         minWidth: 450,
     },
+    root: {
+        width: '100%',
+    },
+    container: {
+        maxHeight: 300,
+    },
 };
 
 function createData(name, calories, fat, carbs, protein) {
@@ -59,7 +65,7 @@ class WalletTransactions extends Component {
         const { data, isCalling } = this.state;
         if (!isCalling) {
             return (
-                <TableContainer component={Paper}>
+                <TableContainer className={classes.container} component={Paper}>
                     <Table className={classes.table} size="small" aria-label="a dense table">
                         <TableHead>
                             <TableRow>

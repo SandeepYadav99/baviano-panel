@@ -16,7 +16,8 @@ import {
     SET_SERVER_PAGE,
     CREATE_DATA,
     UPDATE_DATA,
-    ADD_AMOUNT_CUSTOMERS
+    ADD_AMOUNT_CUSTOMERS,
+    DEDUCT_PACKING_CUSTOMERS
 } from '../actions/Customers.action';
 import Constants from '../config/constants';
 
@@ -95,6 +96,30 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
                 });
                 if (tempIndex != null) {
                     (prevState[tempIndex]).wallet = action.payload.wallet;
+                }
+                // const newState = state.all.map((val) => {
+                //     if (val.id == action.payload.id) {
+                //         return { ...val, status: action.payload.status == 'SUSPEND' ? 'SUSPEND' : 'ACTIVE' };
+                //     } return { ...val };
+                // });
+                const tableData = mapPresetPRequest(prevState, state.currentPage);
+                return { ...state, all: prevState, present: tableData };
+            }
+            return state;
+        }
+        case DEDUCT_PACKING_CUSTOMERS: {
+            if (action.payload) {
+                let tempIndex = null;
+                const prevState = state.all;
+                prevState.some((val, index)=> {
+                    if (val.id == action.payload.user_id) {
+                        tempIndex = index;
+                        return true;
+                    }
+                });
+                if (tempIndex != null) {
+                    (prevState[tempIndex]).wallet = action.payload.wallet;
+                    (prevState[tempIndex]).packages_pending = action.payload.packages_pending;
                 }
                 // const newState = state.all.map((val) => {
                 //     if (val.id == action.payload.id) {

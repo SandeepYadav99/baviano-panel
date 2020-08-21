@@ -66,6 +66,7 @@ class CustomerList extends Component {
         this._handleChangeStatus = this._handleChangeStatus.bind(this);
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleCloseAmountDialog = this._handleCloseAmountDialog.bind(this);
+        this._handleSideBarClose = this._handleSideBarClose.bind(this);
     }
 
     componentDidMount() {
@@ -182,6 +183,11 @@ class CustomerList extends Component {
         })
     }
 
+    _handleSideBarClose() {
+        this.setState({
+            side_panel: false,
+        });
+    }
     _handleSideToggle() {
         this.setState({
             side_panel: !this.state.side_panel,
@@ -199,6 +205,7 @@ class CustomerList extends Component {
             return (<CreateProvider data={this.state.edit_data}
                                     listData={this.state.listData}
                                     changeStatus={this._handleChangeStatus}
+                                    handleClose={this._handleSideBarClose}
                                     handleDataSave={this._handleDataSave}></CreateProvider>);
         } return null;
     }
@@ -287,13 +294,13 @@ class CustomerList extends Component {
                 style: { width: '20%'},
                 render: (temp, all) => <div style={{wordBreak:'break-word'}}>{this._renderContact(all)}</div>,
             },
-            // {
-            //     key: 'country',
-            //     label: 'Country',
-            //     sortable: true,
-            //     style: { width: '20%'},
-            //     render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.country}</div>,
-            // },
+            {
+                key: 'packages_pending',
+                label: 'Pending Packages',
+                sortable: true,
+                style: { width: '20%'},
+                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.packages_pending}</div>,
+            },
             // {
             //     key: 'start_loc',
             //     label: 'Start - End Location',

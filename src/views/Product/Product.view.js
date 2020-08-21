@@ -445,6 +445,12 @@ class Product extends Component {
                     <div className={'formFlex'}>
                         <div className={'formGroup'}>
                             {this._renderFeatured()}
+                            <Field
+                                fullWidth={true}
+                                name="return_packaging"
+                                component={renderCheckbox}
+                                margin={'dense'}
+                                label="ReturnPackage?"/>
                         </div>
                         <div className={'formGroup'}>
                             {this._renderActive()}

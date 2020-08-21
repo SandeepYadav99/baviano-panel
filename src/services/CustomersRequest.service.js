@@ -20,8 +20,14 @@ export async function serviceGetCustomerSubscriptions(params) {
 export async function serviceCustomerAddWallet(params) {
     return await postRequest('customers/wallet/add', params);
 }
+export async function serviceCustomerDeductPacking(params) {
+    return await postRequest('customers/packing/deduct', params);
+}
 export async function serviceCustomerWalletTransactions(params) {
     return await postRequest('customers/wallet/transactions', params);
+}
+export async function serviceCustomerPackageTransaction(params) {
+    return await postRequest('customers/package/transactions', params);
 }
 
 

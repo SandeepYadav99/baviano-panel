@@ -7,6 +7,7 @@ import Table from '../../components/Table/Table.component'
 import styles from './styles.module.css'
 import SubscriptionList from './component/subscriptions/Subscriptions.component';
 import TransactionsList from './component/transactions/Transactions.component';
+import PackageTransactionsList from './component/transactions/PackageTransactions.component';
 import CouponList from './component/coupons/CouponsList.component';
 import Constants from "../../config/constants";
 import RejectDialog from "./component/rejectdialog/RejectDialog.component";
@@ -22,6 +23,7 @@ class CustomerInfo extends Component{
         this._handleApprove = this._handleApprove.bind(this);
         this._handleRejectDialogClose = this._handleRejectDialogClose.bind(this);
         this._handleRejectDialog = this._handleRejectDialog.bind(this);
+        this._handlePackagingDeduct = this._handlePackagingDeduct.bind(this);
     }
 
     _handleApprove() {
@@ -86,7 +88,9 @@ class CustomerInfo extends Component{
         } return null;
     }
 
-
+    _handlePackagingDeduct() {
+        this.props.handleClose();
+    }
     render(){
         const {data} = this.props;
         return(
@@ -172,6 +176,12 @@ class CustomerInfo extends Component{
                         </div>
                     </div>
                 </div>
+                <div className={'formFlex'}>
+                    <div className={'formGroup'}>
+                            <PackageTransactionsList handlePackagingDeduct={this._handlePackagingDeduct} pending={data.packages_pending} userId={data.id}/>
+                    </div>
+                </div>
+
 
                 <div className={'formFlex'}>
                     <div className={'formGroup'}>

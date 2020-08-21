@@ -9,7 +9,7 @@ import Constants from '../config/constants';
 import {
     serviceChangeStatusCustomers,
     serviceCreateCustomers,
-    serviceCustomerAddWallet,
+    serviceCustomerAddWallet, serviceCustomerDeductPacking,
     serviceGetCustomers,
     serviceUpdateCustomers
 } from "../services/CustomersRequest.service";
@@ -32,6 +32,7 @@ export const SET_SERVER_PAGE = 'SET_SERVER_PAGE_CUSTOMERS';
 export const CREATE_DATA = 'CREATE_CUSTOMERS';
 export const UPDATE_DATA = 'UPDATE_CUSTOMERS';
 export const ADD_AMOUNT_CUSTOMERS = 'ADD_AMOUNT_CUSTOMERS';
+export const DEDUCT_PACKING_CUSTOMERS = 'DEDUCT_PACKING_CUSTOMERS';
 
 
 export function actionFetchCustomers(index = 1, sorting = {}, filter = {}, shouldReset=false) {
@@ -96,6 +97,16 @@ export function actionCustomerAddAmount(data) {
         request.then((data) => {
             if (!data.error) {
                 dispatch({type: ADD_AMOUNT_CUSTOMERS, payload: data.data})
+            }
+        })
+    }
+}
+export function actionCustomerDeductPackaging(data) {
+    const request = serviceCustomerDeductPacking(data);
+    return (dispatch) => {
+        request.then((data) => {
+            if (!data.error) {
+                dispatch({type: DEDUCT_PACKING_CUSTOMERS, payload: data.data})
             }
         })
     }
