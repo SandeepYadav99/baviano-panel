@@ -17,6 +17,7 @@ import BatchProcessing from '../views/BatchProcessing/BatchList.container';
 import BatchForecasting from '../views/BatchForecastring/ForecastingList.container';
 import GeofenceList from '../views/Geofences/GeofenceList.container';
 import VerificationList from '../views/Verification/VerificationList.container';
+import BatchJobList from '../views/BatchJobs/BatchJobsList.container';
 
 // import TableList from "views/TableList/TableList.jsx";
 // import Typography from "views/Typography/Typography.jsx";
@@ -179,6 +180,15 @@ const dashboardRoutes = [
         navbarName: "Batch Forecasting",
         icon: Dashboard,
         component: BatchForecasting,
+        is_sidebar: true,
+        is_protect: true,
+    },
+    {
+        path: "/batch/jobs",
+        sidebarName: "Batch Jobs",
+        navbarName: "Batch Jobs",
+        icon: Dashboard,
+        component: BatchJobList,
         is_sidebar: true,
         is_protect: true,
     },

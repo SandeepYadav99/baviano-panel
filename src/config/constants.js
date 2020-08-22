@@ -95,25 +95,32 @@ export default {
         COMPANY_DRIVER_ADD: SOCKET_PROJECT+'COMPANY_DRIVER_ADD',
         COMPANY_DRIVER_REMOVE: SOCKET_PROJECT+'COMPANY_DRIVER_REMOVE',
     },
+    DRIVER_JOB_STATUS: {
+        PENDING: 'PENDING',
+        COMPLETED: 'COMPLETED',
+        REJECTED: 'REJECTED',
+        IN_PROCESS: 'IN_PROCESS',
+    },
+
     DELIVERY_SLOTS: [{
+        time: '07:00',
+        time_min: 420,
+        unformatted: '07:00 - 08:00am',
+        index: 0,
+    }, {
+        time: '08:00',
+        time_min: 480,
+        unformatted: '08:00 - 09:00am',
+        index: 1,
+    }, {
+        time: '09:00',
+        time_min: 540,
+        unformatted: '09:00 - 10:00am',
+        index: 2,
+    }, {
         time: '10:00',
         time_min: 600,
         unformatted: '10:00 - 11:00am',
-        index: 0,
-    }, {
-        time: '11:00',
-        time_min: 660,
-        unformatted: '11:00 - 12:00pm',
-        index: 1,
-    }, {
-        time: '12:00',
-        time_min: 720,
-        unformatted: '12:00 - 01:00pm',
-        index: 2,
-    }, {
-        time: '13:00',
-        time_min: 780,
-        unformatted: '01:00 - 02:00pm',
         index: 3,
     },
     ],

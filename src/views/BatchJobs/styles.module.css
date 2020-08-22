@@ -1,0 +1,130 @@
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.headerContainer .title {
+    font-size: 16px;
+}
+.flex {
+    display: flex;
+    align-items: center;
+}
+.userImage {
+    width:100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.firstCellFlex {
+    display: flex;
+    align-items: center;
+}
+.firstCellFlex img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.firstCellInfo {
+    margin-left: 10px;
+}
+
+.billFlex {
+    display: flex;
+    justify-content: space-around;
+}
+
+.billBorder {
+    border: 1px solid black;
+}
+
+.mainContainer {
+    position: relative;
+    min-height: calc(100% - 60px) ;
+    padding: 10px;
+}
+.processButtons {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.approveCont {
+    display: inline-flex;
+    flex-direction: column;
+}
+.assignToDriver{
+font-size: 10px;
+    text-align: right;
+}
+.infoContainer {
+    position: relative;
+    padding-top: 70px;
+}
+.infoWindow {
+    display: flex;
+    flex-wrap: wrap;
+}
+.detailsWindow {
+    width: 100%;
+    max-width: 500px;
+}
+.listWindow {
+    flex: 1
+
+}
+.capitalize {
+    text-transform: capitalize;
+}
+.timeStampTable {
+    min-width: 200px;
+    padding: 0px 10px;
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+@-webkit-keyframes blinker {
+    from {opacity: 1.0;}
+    to {opacity: 0.0;}
+}
+.blink{
+    text-decoration: blink;
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:ease-in-out;
+    -webkit-animation-direction: alternate;
+}
+.badge {
+    padding: 2px 5px;
+    background: green;
+    color: white;
+    border-radius: 10px;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.bottomSide {
+    flex: 1;
+}
+.bottomSide label {
+    margin-left: 10px;
+}
+.bottomCenter {
+    display: flex;
+    justify-content: center;
+    flex: 2;
+}
+.buttonCont {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.productInfo {
+
+}
+.productName {
+    font-weight: 500;
+    width: 50px;
+    display: inline-block;
+}
+.productQty {
+
+}
