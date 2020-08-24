@@ -25,6 +25,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Slide from "@material-ui/core/Slide";
+import BatchDeliveryList from './component/Batches/Batches.component';
+import SupportMessagesList from './component/SupportMessages/SupportMessage.component';
 
 let requiredFields = [];
 const validate = (values) => {
@@ -394,7 +396,12 @@ class Driver extends Component {
                     </div>
                 </form>
                 {this._renderDialog()}
-
+                {data && (<div>
+                    <BatchDeliveryList driverId={data.id} />
+                </div>)}
+                {data && (<div>
+                    <SupportMessagesList driverId={data.id} />
+                </div>)}
             </div>
 
         )

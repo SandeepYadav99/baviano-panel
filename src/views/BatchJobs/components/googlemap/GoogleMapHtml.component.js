@@ -209,7 +209,7 @@ class GoogleMapHtml extends Component {
             products_count: null,
             status: null,
             user: null,
-            is_set: false,
+            is_set: true,
             map_rendered: false,
             rendered: false,
         };
@@ -237,9 +237,9 @@ class GoogleMapHtml extends Component {
     }
 
     componentDidMount() {
-        const {order_id} = this.props;
+        const {job_id} = this.props;
         if (this._socket) {
-            this._socket.emit('subscribe', order_id);
+            this._socket.emit('subscribe', job_id);
             this.subscribeToSockets();
         }
         // this.getVenues()
@@ -249,14 +249,12 @@ class GoogleMapHtml extends Component {
     subscribeToSockets() {
         if (this._socket) {
             const e = Constants.SOCKET_EVENTS;
-            this._socket.on(Constants.SOCKET_EVENTS.ORDER_DATA, this._orderData);
-            this._socket.on(e.ORDER_ACCEPTED, this._orderUpdate.bind(this, e.ORDER_ACCEPTED));
-            this._socket.on(e.ORDER_ASSIGNED, this._orderUpdate.bind(this, e.ORDER_ASSIGNED));
-            this._socket.on(e.ORDER_ON_PICKUP_LOCATION, this._orderUpdate.bind(this, e.ORDER_ON_PICKUP_LOCATION));
-            this._socket.on(e.ORDER_ON_WAY, this._orderUpdate.bind(this, e.ORDER_ON_WAY));
-            this._socket.on(e.ORDER_ON_DROP_LOCATION, this._orderUpdate.bind(this, e.ORDER_ON_DROP_LOCATION));
+            // this._socket.on(Constants.SOCKET_EVENTS.ORDER_DATA, this._orderData);
+            this._socket.on(e.JOB_START, this._orderUpdate.bind(this, e.JOB_START));
+            this._socket.on(e.JOB_END, this._orderUpdate.bind(this, e.JOB_END));
+            this._socket.on(e.LOCATION_UPDATE, this._orderUpdate.bind(this, e.LOCATION_UPDATE));
             this._socket.on(e.ORDER_DELIVERED, this._orderUpdate.bind(this, e.ORDER_DELIVERED));
-            this._socket.on(e.ORDER_LOCATION_UPDATE, this._orderUpdate.bind(this, e.ORDER_LOCATION_UPDATE));
+            this._socket.on(e.ORDER_UNDELIVERED, this._orderUpdate.bind(this, e.ORDER_UNDELIVERED));
         }
     }
 
@@ -266,7 +264,7 @@ class GoogleMapHtml extends Component {
         if (!is_error) {
             if (this._socket) {
                 // this._socket.emit('unsubscribe', booking_id);
-                this._socket.removeListener(Constants.SOCKET_EVENTS.ORDER_DATA, this._orderData);
+                // this._socket.removeListener(Constants.SOCKET_EVENTS.ORDER_DATA, this._orderData);
             }
         }
     }
@@ -275,7 +273,7 @@ class GoogleMapHtml extends Component {
         console.log(msg, type);
         if (type == Constants.SOCKET_EVENTS.ORDER_LOCATION_UPDATE) {
             const data = msg.message;
-            this._renderTruckMarkers({ lat: data.lat, lng: data.lng })
+            this._renderTruckMarkers({lat: parseFloat(data.lat), lng: parseFloat(data.lng)})
         } else if (type == Constants.SOCKET_EVENTS.ORDER_ASSIGNED) {
 
         } else {
@@ -362,9 +360,10 @@ class GoogleMapHtml extends Component {
     }
 
     _renderTruckMarkers(location) {
-        console.log(this.driverMarker);
+
         const google = window.google;
         if (!this.driverMarker) {
+            console.log('redertruckmarkers', location);
             const icon = {
                 // url: require('../../assets/fire_brigade.svg'),
                 // path: 'M22.1,15.1c0,0-1.4-1.3-3-3l0-1.9c0-0.2-0.2-0.4-0.4-0.4l-0.5,0c-0.2,0-0.4,0.2-0.4,0.4l0,0.7c-0.5-0.5-1.1-1.1-1.6-1.6l0-1.5c0-0.2-0.2-0.4-0.4-0.4l-0.4,0c-0.2,0-0.4,0.2-0.4,0.4l0,0.3c-1-0.9-1.8-1.7-2-1.9c-0.3-0.2-0.5-0.3-0.6-0.4l-0.3-3.8c0-0.2-0.3-0.9-1.1-0.9c-0.8,0-1.1,0.8-1.1,0.9L9.7,6.1C9.5,6.2,9.4,6.3,9.2,6.4c-0.3,0.2-1,0.9-2,1.9l0-0.3c0-0.2-0.2-0.4-0.4-0.4l-0.4,0C6.2,7.5,6,7.7,6,7.9l0,1.5c-0.5,0.5-1.1,1-1.6,1.6l0-0.7c0-0.2-0.2-0.4-0.4-0.4l-0.5,0c-0.2,0-0.4,0.2-0.4,0.4l0,1.9c-1.7,1.6-3,3-3,3c0,0.1,0,1.2,0,1.2s0.2,0.4,0.5,0.4s4.6-4.4,7.8-4.7c0.7,0,1.1-0.1,1.4,0l0.3,5.8l-2.5,2.2c0,0-0.2,1.1,0,1.1c0.2,0.1,0.6,0,0.7-0.2c0.1-0.2,0.6-0.2,1.4-0.4c0.2,0,0.4-0.1,0.5-0.2c0.1,0.2,0.2,0.4,0.7,0.4c0.5,0,0.6-0.2,0.7-0.4c0.1,0.1,0.3,0.1,0.5,0.2c0.8,0.2,1.3,0.2,1.4,0.4c0.1,0.2,0.6,0.3,0.7,0.2c0.2-0.1,0-1.1,0-1.1l-2.5-2.2l0.3-5.7c0.3-0.3,0.7-0.1,1.6-0.1c3.3,0.3,7.6,4.7,7.8,4.7c0.3,0,0.5-0.4,0.5-0.4S22,15.3,22.1,15.1z',
@@ -373,7 +372,7 @@ class GoogleMapHtml extends Component {
                 // origin: new google.maps.Point(0, 0), // origin
                 // anchor: new google.maps.Point(0, 0), // anchor
                 // rotation: 150
-                fillColor: '#F00',
+                fillColor: '#4cff00',
                 fillOpacity: 2,
                 scale: 0.85,
                 anchor: new google.maps.Point(11, 11),
@@ -419,33 +418,45 @@ class GoogleMapHtml extends Component {
     }
 
     _calcRoute() {
-        const {pickup_loc, delivery_loc, driver_location, status} = this.state;
+        const { status} = this.state;
+        const {data} = this.props;
         const google = window.google;
         const locations = []
         let tempStartLoc = null;
         let tempEndLoc = null;
         const tempFilteredData = [];
-        if ([Constants.ORDER_STATUS.ASSIGNED].indexOf(status) >= 0) {
-            tempFilteredData.push(driver_location);
-            tempFilteredData.push(pickup_loc);
-            tempFilteredData.push(delivery_loc);
-        } else {
-            tempFilteredData.push(driver_location);
-            tempFilteredData.push(delivery_loc);
+        // if ([Constants.ORDER_STATUS.ASSIGNED].indexOf(status) >= 0) {
+        //     tempFilteredData.push(driver_location);
+        //     tempFilteredData.push(pickup_loc);
+        //     tempFilteredData.push(delivery_loc);
+        // } else {
+        //     tempFilteredData.push(driver_location);
+        //     tempFilteredData.push(delivery_loc);
+        // }
+        const startLoc = data.start_loc;
+        tempStartLoc = `${startLoc.coordinates[1]},${startLoc.coordinates[0]}`;
+        if (data.end_loc) {
+            const endLoc = data.end_loc
+            tempEndLoc = `${endLoc.coordinates[1]},${endLoc.coordinates[0]}`;
+        } else if (data.locations.length > 0) {
+            const locations = data.locations[data.locations.length - 1];
+            tempEndLoc = `${locations[0]},${locations[1]}`;
         }
-
-
-        tempFilteredData.forEach((val, index) => {
-            if (index == 0) {
-                tempStartLoc = `${val.lat},${val.lng}`;
-            } else if (index + 1 == tempFilteredData.length) {
-                tempEndLoc = `${val.lat},${val.lng}`;
-            } else {
-                const tempLoc = new window.google.maps.LatLng(val.lat, val.lng);
+        let totalWayPointsAdded = 0;
+        data.locations.forEach((val, index) => {
+            const wayPointsLength = data.locations.length;
+            let mod = 1;
+            if (wayPointsLength > 25) {
+                mod = Math.ceil(wayPointsLength / 25);
+            }
+            if (index % mod == 0 && totalWayPointsAdded <= 25) {
+                const location = val.location;
+                const tempLoc = new window.google.maps.LatLng(location[0], location[1]);
                 locations.push({
                     location: tempLoc,
                     stopover: true
                 });
+                totalWayPointsAdded++;
             }
         });
         if (tempEndLoc && tempStartLoc) {
@@ -469,6 +480,7 @@ class GoogleMapHtml extends Component {
             };
             const prop = this;
             this.directionsService.route(request, function (response, status) {
+
                 if (status == google.maps.DirectionsStatus.OK) {
                     prop.directionsDisplay.setDirections(response);
                     console.log('its dragged')
@@ -480,8 +492,6 @@ class GoogleMapHtml extends Component {
     };
 
     _createPolyline(directionResult) {
-        console.log(directionResult);
-
         const google = window.google;
         this.routeLocations = [];
         if (this.line && this.line !== undefined) {
@@ -567,14 +577,14 @@ class GoogleMapHtml extends Component {
         window.initMap = this.initMap
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const {map_rendered, is_set} = this.state;
-        if ((prevState.map_rendered != map_rendered || prevState.is_set != is_set) && (map_rendered && is_set)) {
-            setTimeout(() => {
-                this._renderStartEndLocation();
-            }, 500);
-        }
-    }
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     const {map_rendered, is_set} = this.state;
+    //     if ((prevState.map_rendered != map_rendered || prevState.is_set != is_set) && (map_rendered && is_set)) {
+    //         setTimeout(() => {
+    //             this._renderStartEndLocation();
+    //         }, 500);
+    //     }
+    // }
 
     getVenues = () => {
         const endPoint = "https://api.foursquare.com/v2/venues/explore?"
@@ -599,22 +609,22 @@ class GoogleMapHtml extends Component {
     }
 
 
-    _addMarker(location, address) {
+    _addMarker(location, address, color='red') {
         const google = window.google;
         console.log('addingMarker', location, address);
         var infowindow = new window.google.maps.InfoWindow();
         var contentString = `${address.name} - ${address.address}`;
         const icon = {
-            url: require('../../../../assets/img/icons/station_old.png'),
-            scaledSize: new google.maps.Size(20, 35), // scaled size
+            url: require('../../../../assets/img/icons/'+color+'_marker.png'),
+            scaledSize: new google.maps.Size(21, 34), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(11, 11) // anchor
+            anchor: new google.maps.Point(10, 34) // anchor
         };
         // Create A Marker
         var marker = new window.google.maps.Marker({
             position: {lat: location.lat, lng: location.lng},
             map: this.map,
-            title: address.name,
+            title: location.timestamp,
             icon: icon
         });
 
@@ -638,16 +648,24 @@ class GoogleMapHtml extends Component {
             this.setState({
                 rendered: true
             });
-            const {pickup_loc, pickup_address, delivery_loc, delivery_address, user, driver_location} = this.state;
-            this._addMarker(pickup_loc, pickup_address);
-            this._addMarker(delivery_loc, {...delivery_address, name: user.name});
-            this._calcRoute();
-            if (this.state.show_driver) {
-                console.log(driver_location, 'driverLoacatin');
-                this._renderTruckMarkers(driver_location)
+            const {data, orders} = this.props;
+            this._addMarker({lat: data.start_loc.coordinates[1], lng: data.start_loc.coordinates[0]}, 'Start Location', 'start');
+            if (data.end_loc) {
+                this._addMarker({lat: data.end_loc.coordinates[1], lng: data.end_loc.coordinates[0]}, 'End Location', 'start');
             }
-            console.log('render Method called');
-            this.callCenter([delivery_loc.lat, delivery_loc.lng])
+            orders.forEach((val) => {
+                if ('loc' in val) {
+                    this._addMarker({lat: val.loc.coordinates[1], lng: val.loc.coordinates[0]}, val.address.address, val.status == 'PENDING' ? 'red' : 'green');
+                }
+            })
+            this._calcRoute();
+            const locations = data.locations;
+            if (locations.length > 0) {
+                const lastLoc = locations[locations.length - 1];
+                this._renderTruckMarkers({lat: lastLoc.location[0], lng: lastLoc.location[1]});
+            }
+
+            this.callCenter([data.start_loc.coordinates[1], data.start_loc.coordinates[0]])
         }
     }
 
@@ -673,6 +691,8 @@ class GoogleMapHtml extends Component {
         // });
         this.setState({
             map_rendered: true,
+        }, () => {
+            this._renderStartEndLocation();
         });
 
         // Create An InfoWindow

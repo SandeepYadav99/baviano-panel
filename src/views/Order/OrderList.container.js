@@ -303,6 +303,7 @@ class OrderList extends Component {
         return (
             <div className={styles.flex}>
                 <Checkbox
+                    disabled={!data.user.is_address_verified}
                     onChange={this._handleCheckbox.bind(this, data.id)}
                     checked={this.state.selected.indexOf(data.id) >= 0}
                     value="secondary"

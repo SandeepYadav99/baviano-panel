@@ -605,7 +605,7 @@ class GoogleMapHtml extends Component {
         var infowindow = new window.google.maps.InfoWindow();
         var contentString = `${address.name} - ${address.address}`;
         const icon = {
-            url: require('../../../../assets/img/icons/station_old.png'),
+            url: require('../../../../assets/img/icons/start_marker.png'),
             scaledSize: new google.maps.Size(20, 35), // scaled size
             origin: new google.maps.Point(0, 0), // origin
             anchor: new google.maps.Point(11, 11) // anchor

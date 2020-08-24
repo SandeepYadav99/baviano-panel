@@ -19,7 +19,6 @@ import DataTables from '../../Datatables/Datatable.table';
 import Constants from '../../config/constants';
 import FilterComponent from '../../components/Filter/Filter.component';
 import AmountDialog from './component/wallet/AddDialog.componet';
-
 import {
     actionFetchCustomers,
     actionChangePageCustomers,
@@ -30,7 +29,7 @@ import {
     actionCreateCustomers,
     actionUpdateCustomers
 } from '../../actions/Customers.action';
-import {AddCircle as AddIcon, Delete as DeleteIcon} from '@material-ui/icons';
+import {AddCircle as AddIcon, VerifiedUser as VerifiedIcon, Delete as DeleteIcon} from '@material-ui/icons';
 
 let CreateProvider = null;
 class CustomerList extends Component {
@@ -165,10 +164,10 @@ class CustomerList extends Component {
         return (
             <div className={styles.firstCellFlex}>
                 <div>
-                    {/*<img src={user.user_image} alt=""/>*/}
+
                 </div>
                 <div className={classNames(styles.firstCellInfo, 'openSans')}>
-                    <span><strong>{user.name}</strong></span> <br/>
+                    <span><strong>{user.name}</strong></span>  <br/>
                     <span>{user.address.address}</span>
                 </div>
             </div>
@@ -281,6 +280,14 @@ class CustomerList extends Component {
 
     render() {
         const tableStructure = [
+
+            {
+                key: 'is_address_verified',
+                label: 'V',
+                sortable: true,
+                style: { width: '10px'},
+                render: (temp, all) => <div style={{wordBreak:'break-word'}}>{all.is_address_verified && (<VerifiedIcon></VerifiedIcon>)}</div>,
+            },
             {
                 key: 'name',
                 label: 'Name',

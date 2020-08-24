@@ -15,7 +15,12 @@ export async function serviceDeleteDriver(params) {
     return await formDataRequest('drivers/delete', params);
 }
 
-
+export async function serviceGetDriverBatchesList(params) {
+    return await postRequest('/drivers/batches', params);
+}
+export async function serviceGetDriverSupportList(params) {
+    return await postRequest('/drivers/support/messages', params);
+}
 
 export async function serviceGetDrivers (params) {
     return await postRequest('drivers', params);

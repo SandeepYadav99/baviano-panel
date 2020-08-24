@@ -224,6 +224,21 @@ class DriverList extends Component {
             )
         }
 
+    _renderSupport(data) {
+        if (data.is_support_added) {
+            return (
+                <div>
+                    {data.support.concern}
+                    <br/>
+                    {data.support.message}
+                </div>
+            )
+        } return (
+            <div>
+                No Message In Last 24 Hours
+            </div>
+        )
+    }
     render() {
         const tableStructure = [
             {
@@ -237,12 +252,12 @@ class DriverList extends Component {
                 sortable: true,
                 render: (temp, all) => <div title={all.otp}>{all.contact}</div>,
             },
-            // {
-            //     key: 'license_no',
-            //     label: 'License No',
-            //     sortable: true,
-            //     render: (temp, all) => <div title={all.otp}>{all.license_no}</div>,
-            // },
+            {
+                key: 'distance',
+                label: 'distance',
+                sortable: true,
+                render: (temp, all) => <div title={all.distance}>{all.distance} k.m.</div>,
+            },
             {
                 key: 'address',
                 label: 'Address',
@@ -260,6 +275,12 @@ class DriverList extends Component {
                 label: 'Status',
                 sortable: true,
                 render: (temp, all) => <div>{this.renderStatus(all.status)}</div>,
+            },
+            {
+                key: 'is_support',
+                label: 'Support Message',
+                sortable: true,
+                render: (temp, all) => <div>{this._renderSupport(all)}</div>,
             },
             {
                 key: 'user_id',
