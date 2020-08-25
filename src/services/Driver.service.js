@@ -21,6 +21,10 @@ export async function serviceGetDriverBatchesList(params) {
 export async function serviceGetDriverSupportList(params) {
     return await postRequest('/drivers/support/messages', params);
 }
+export async function serviceGetDriverMonthJobs(params) {
+    return await postRequest('/drivers/month/jobs', params);
+}
+
 
 export async function serviceGetDrivers (params) {
     return await postRequest('drivers', params);

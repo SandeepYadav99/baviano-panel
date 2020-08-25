@@ -23,6 +23,11 @@ export async function serviceCustomerAddWallet(params) {
 export async function serviceCustomerDeductPacking(params) {
     return await postRequest('customers/packing/deduct', params);
 }
+
+export async function serviceCustomerGetMonthOrders(params) {
+    return await postRequest('customers/month/orders', params);
+}
+
 export async function serviceCustomerWalletTransactions(params) {
     return await postRequest('customers/wallet/transactions', params);
 }

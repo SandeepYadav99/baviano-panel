@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form'
 import {connect} from 'react-redux';
-import {MenuItem, Button, IconButton} from '@material-ui/core';
+import {MenuItem, Button, IconButton, Tabs, Tab} from '@material-ui/core';
 import {Delete as DeleteIcon} from '@material-ui/icons';
 import PageBox from '../../components/PageBox/PageBox.component';
 import startsWith from 'lodash.startswith';
@@ -27,6 +27,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Slide from "@material-ui/core/Slide";
 import BatchDeliveryList from './component/Batches/Batches.component';
 import SupportMessagesList from './component/SupportMessages/SupportMessage.component';
+import DriverJobCalender from "./component/JobCalendar/JobCalendar.component";
 
 let requiredFields = [];
 const validate = (values) => {
@@ -112,7 +113,8 @@ class Driver extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            license_proof: null
+            license_proof: null,
+            tab_value: 0,
         };
         this.languages = [{id: 'ENGLISH', name: 'ENGLISH'}, {id: 'GERMANY', name: 'GERMANY'}];
         this._handleSubmit = this._handleSubmit.bind(this);
@@ -120,6 +122,7 @@ class Driver extends Component {
         this._handleDelete = this._handleDelete.bind(this);
         this._handleDialogClose = this._handleDialogClose.bind(this);
         this._suspendItem = this._suspendItem.bind(this);
+        this._handleTabChange = this._handleTabChange.bind(this);
     }
 
     componentDidMount() {
@@ -152,6 +155,7 @@ class Driver extends Component {
         }
 
     }
+
 
     _handleFileChange(file) {
         this.setState({
@@ -221,191 +225,159 @@ class Driver extends Component {
         return null;
     }
 
+    a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
 
-    render() {
-        const {handleSubmit, data, country_code, country_currency} = this.props;
-        return (
-            <div>
-                <div className={styles.headerFlex}>
-                    <h2>Driver Information</h2>
-                    {data && <IconButton variant={'contained'} className={this.props.classes.iconBtnError}
-                                         onClick={this._handleDelete}
-                                         type="button">
-                        <DeleteIcon/>
-                    </IconButton>}
+
+    _handleTabChange(id, handleValue) {
+        this.setState({
+            tab_value: handleValue
+        })
+    }
+
+    _renderForm() {
+        const {tab_value} = this.state;
+        if (tab_value == 0) {
+            const {handleSubmit, data, country_code, country_currency} = this.props;
+            return (
+                <div>
+                    <div className={styles.headerFlex}>
+                        <h2>Driver Information</h2>
+                        {data && <IconButton variant={'contained'} className={this.props.classes.iconBtnError}
+                                             onClick={this._handleDelete}
+                                             type="button">
+                            <DeleteIcon/>
+                        </IconButton>}
+                    </div>
+                    <hr/>
+                    <form onSubmit={handleSubmit(this._handleSubmit)}>
+                        <div className={'formFlex'}>
+                            <div className={'formGroup'}>
+
+                            </div>
+                            <div className={'formGroup'}>
+
+                            </div>
+                        </div>
+                        <div className={'formFlex'}>
+                            <div className={''} style={{marginLeft: '15px', marginRight: '20px'}}>
+                                <Field
+                                    max_size={1024 * 1024 * 5}
+                                    type={['jpg', 'png', 'pdf']}
+                                    fullWidth={true}
+                                    name="user_image"
+                                    component={renderFileField}
+                                    label=""
+                                    show_image
+                                    default_image={data ? data.user_image : null}
+                                />
+                            </div>
+                            <div className={'formGroup'}>
+                                <Field fullWidth={true} name="first_name" component={renderOutlinedTextField}
+                                       margin={'dense'}
+                                       label="Driver First Name"
+                                       errorText="Required"
+                                />
+                                <Field fullWidth={true} name="last_name" component={renderOutlinedTextField}
+                                       margin={'dense'}
+                                       errorText="Required"
+                                       label="Last Name"/>
+                            </div>
+                        </div>
+
+                        <div className={'formFlex'}>
+                            <div className={'formGroup'}>
+                                <Field fullWidth={true} name="contact"
+                                       component={renderCountryContact}
+                                       type={'text'}
+                                       margin={'dense'}
+                                       country_code={country_code}
+                                       label="Contact"
+                                />
+                            </div>
+                            <div className={'formGroup'}>
+                                <Field fullWidth={true} name="email" component={renderOutlinedTextField}
+                                       margin={'dense'}
+                                       errorText="Incorrect Email"
+                                       label="Email"/>
+                            </div>
+                        </div>
+
+                        <div className={'formFlex'}>
+                            <div className={'formGroup'}>
+                                <Field fullWidth={true} name="age" component={renderOutlinedTextField} type={'number'}
+                                       margin={'dense'}
+                                       label="Age"/>
+                            </div>
+                            <div className={'formGroup'}>
+                                <Field fullWidth={true} name="gender" component={renderOutlinedSelectField}
+                                       margin={'dense'}
+                                       label="Gender">
+                                    <MenuItem value={'MALE'}>Male</MenuItem>
+                                    <MenuItem value={'FEMALE'}>Female</MenuItem>
+                                </Field>
+                            </div>
+                        </div>
+
+
+                        <div className={'formFlex'} style={{alignItems: 'center'}}>
+                            <div className={'formGroup'}>
+                                <Field fullWidth={true} name="address" component={renderOutlinedTextField}
+                                       margin={'dense'}
+                                       multiline
+                                       rows={2}
+                                       label="Address"/>
+                            </div>
+
+                        </div>
+                        <div style={{float: 'right'}}>
+                            <Button variant={'contained'} color={'primary'} type={'submit'}>
+                                Submit
+                            </Button>
+                        </div>
+                    </form>
+                    {this._renderDialog()}
+                    {data && (<div>
+                        <BatchDeliveryList driverId={data.id}/>
+                    </div>)}
+                    {data && (<div>
+                        <SupportMessagesList driverId={data.id}/>
+                    </div>)}
                 </div>
-                <hr/>
-                <form onSubmit={handleSubmit(this._handleSubmit)}>
-                    <div className={'formFlex'}>
-                        <div className={'formGroup'}>
 
-                        </div>
-                        <div className={'formGroup'}>
+            )
+        } return null;
+    }
+    _renderCalendar() {
+        const {tab_value} = this.state;
+        const {data} = this.props;
+        if (tab_value == 1) {
+            return (
+                <DriverJobCalender driverId={data.id}/>
+            )
+        }
+        return null;
+    }
 
-                        </div>
-                    </div>
-                    <div className={'formFlex'}>
-                        <div className={''} style={{marginLeft: '15px', marginRight: '20px'}}>
-                            <Field
-                                max_size={1024 * 1024 * 5}
-                                type={['jpg', 'png', 'pdf']}
-                                fullWidth={true}
-                                name="user_image"
-                                component={renderFileField}
-                                label=""
-                                show_image
-                                default_image={data ? data.user_image : null}
-                            />
-                        </div>
-                        <div className={'formGroup'}>
-                            <Field fullWidth={true} name="first_name" component={renderOutlinedTextField}
-                                   margin={'dense'}
-                                   label="Driver First Name"
-                                   errorText="Required"
-                            />
-                            <Field fullWidth={true} name="last_name" component={renderOutlinedTextField}
-                                   margin={'dense'}
-                                   errorText="Required"
-                                   label="Last Name"/>
-                        </div>
-                    </div>
-
-                    <div className={'formFlex'}>
-                        <div className={'formGroup'}>
-                            <Field fullWidth={true} name="contact"
-                                   component={renderCountryContact}
-                                   type={'text'}
-                                   margin={'dense'}
-                                   country_code={country_code}
-                                   label="Contact"
-                            />
-                        </div>
-                        <div className={'formGroup'}>
-                            <Field fullWidth={true} name="email" component={renderOutlinedTextField}
-                                   margin={'dense'}
-                                   errorText="Incorrect Email"
-                                   label="Email"/>
-                        </div>
-                    </div>
-
-                    <div className={'formFlex'}>
-                        <div className={'formGroup'}>
-                            <Field fullWidth={true} name="age" component={renderOutlinedTextField} type={'number'}
-                                   margin={'dense'}
-                                   label="Age"/>
-                        </div>
-                        <div className={'formGroup'}>
-                            <Field fullWidth={true} name="gender" component={renderOutlinedSelectField}
-                                   margin={'dense'}
-                                   label="Gender">
-                                <MenuItem value={'MALE'}>Male</MenuItem>
-                                <MenuItem value={'FEMALE'}>Female</MenuItem>
-                            </Field>
-                        </div>
-                    </div>
-
-                    {/*<div className={'formFlex'} style={{alignItems: 'center'}}>*/}
-
-                    {/*<div className={'formGroup'}>*/}
-                    {/*<div style={{ display: 'flex', alignItems: 'center' }}>*/}
-                    {/*<Field fullWidth={true} name="base_price" component={renderOutlinedTextField}*/}
-                    {/*type={'number'}*/}
-                    {/*margin={'dense'}*/}
-                    {/*label="Base Price"/>*/}
-                    {/*<div style={{ marginLeft: '10px' }}>*/}
-                    {/*{country_currency}*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
-
-                    {/*</div>*/}
-                    {/*</div>*/}
-
-                    {/*<div className={'formFlex'} style={{alignItems: 'center'}}>*/}
-
-                    {/*<div className={'formGroup'}>*/}
-                    {/*<Field fullWidth={true} name="license_no" component={renderOutlinedTextField}*/}
-                    {/*type={'text'}*/}
-                    {/*margin={'dense'}*/}
-                    {/*label="Licence No"*/}
-
-                    {/*/>*/}
-                    {/*</div>*/}
-                    {/*<div className={'formGroup'}>*/}
-                    {/*<Field*/}
-                    {/*max_size={1024 * 1024 * 5}*/}
-                    {/*type={['jpg', 'png', 'pdf']}*/}
-                    {/*fullWidth={true}*/}
-                    {/*name="license_proof"*/}
-                    {/*component={renderFileField}*/}
-                    {/*label="License Proof"*/}
-                    {/*link={data ? data.license_proof : null}*/}
-                    {/*/>*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
-
-                    <div className={'formFlex'} style={{alignItems: 'center'}}>
-                        <div className={'formGroup'}>
-                            <Field fullWidth={true} name="address" component={renderOutlinedTextField}
-                                   margin={'dense'}
-                                   multiline
-                                   rows={2}
-                                   label="Address"/>
-                        </div>
-                        {/*<div className={'formGroup'}>*/}
-                        {/*<Field*/}
-                        {/*inputId={'language'}*/}
-                        {/*fullWidth={true}*/}
-                        {/*name="languages"*/}
-                        {/*margin={'dense'}*/}
-                        {/*label="Language Known"*/}
-                        {/*component={renderOutlinedMultipleSelectField}*/}
-                        {/*extract={{value: 'id', title: 'name'}}*/}
-                        {/*dataObj={this._convertData(this.props.languages)}*/}
-                        {/*data={this.props.languages}>*/}
-                        {/*</Field>*/}
-                        {/*</div>*/}
-                    </div>
-
-                    {/*<div className={'formFlex'} style={{alignItems: 'center'}}>*/}
-                    {/*<div className={'formGroup'}>*/}
-                    {/*<Field fullWidth={true} name="overview" component={renderOutlinedTextFieldWithLimit}*/}
-                    {/*multiline*/}
-                    {/*rows="3"*/}
-                    {/*maxLimit={500}*/}
-                    {/*margin={'dense'}*/}
-                    {/*label="Overview"*/}
-                    {/*normalize={countNormalize}*/}
-                    {/*/>*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
-                    {/*<div className={'formFlex'}>*/}
-                    {/*<div className={'formGroup'}>*/}
-                    {/*<Field fullWidth={true} name="education" component={renderOutlinedTextFieldWithLimit}*/}
-                    {/*multiline*/}
-                    {/*rows="3"*/}
-                    {/*margin={'dense'}*/}
-                    {/*maxLimit={300}*/}
-                    {/*normalize={educationNormalize}*/}
-                    {/*label="Educational Details"/>*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
-                    <div style={{float: 'right'}}>
-                        <Button variant={'contained'} color={'primary'} type={'submit'}>
-                            Submit
-                        </Button>
-                    </div>
-                </form>
-                {this._renderDialog()}
-                {data && (<div>
-                    <BatchDeliveryList driverId={data.id} />
-                </div>)}
-                {data && (<div>
-                    <SupportMessagesList driverId={data.id} />
-                </div>)}
+    render () {
+        const { data } = this.props;
+        const {tab_value} = this.state;
+        return (
+            <div className={styles.mainContainer}>
+                <Tabs value={tab_value} onChange={this._handleTabChange} aria-label="simple tabs example">
+                    <Tab label="Driver Detail" {...this.a11yProps(0)} />
+                    {data && (<Tab label="Driver Calendar" {...this.a11yProps(1)} />)}
+                </Tabs>
+                {this._renderForm()}
+                {this._renderCalendar()}
             </div>
-
         )
     }
+
 }
 
 const useStyle = theme => ({

@@ -84,3 +84,15 @@ body{
 .forgot .MuiInputBase-input {
     border-bottom: 1px solid black;
 }
+.deliveredSlot {
+    background-color: green !important;
+    font-size: 12px;
+}
+.deliverySlot {
+    background-color: orange !important;
+    font-size: 12px;
+}
+.vacationSlot {
+    background-color: red !important;
+    font-size: 12px;
+}
