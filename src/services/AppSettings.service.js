@@ -21,3 +21,11 @@ export async function serviceUpdateOrderAfter(params) {
     return await postRequest('app/settings/order/after', params);
 }
 
+export async function serviceGetHeatMapUsers(params) {
+    return await postRequest('heatmap/users', params);
+}
+
+export async function serviceGetHeatMapOrders(params) {
+    return await postRequest('heatmap/orders', params);
+}
+

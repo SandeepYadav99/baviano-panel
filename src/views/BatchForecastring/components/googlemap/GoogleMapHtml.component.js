@@ -657,7 +657,7 @@ class GoogleMapHtml extends Component {
         // this.google = window.google;
         // Create A Map
         this.map = new window.google.maps.Map(document.getElementById('map'), {
-            center: {lat: 29.0588, lng: 76.0856},
+            center: {lat: Constants.MAP_CENTER.lat, lng: Constants.MAP_CENTER.lng},
             zoom: 8,
             styles: tempGoogleMapStyles,
             mapTypeControl: false,

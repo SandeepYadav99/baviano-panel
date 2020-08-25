@@ -385,7 +385,7 @@ class Geofencing extends Component {
         // this.google = window.google;
         // Create A Map
         this.map = new window.google.maps.Map(document.getElementById('map'), {
-            center: {lat: 30.7333, lng: 76.7794},
+            center: {lat: Constants.MAP_CENTER.lat, lng: Constants.MAP_CENTER.lng},
             zoom: 10,
             // styles: tempGoogleMapStyles,
             mapTypeControl: false,

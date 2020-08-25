@@ -14,7 +14,8 @@ import {WaitingComponent} from "../../components/index.component";
 import {actionUpdateGeoFence, actionUpdateMinValue, actionUpdateOrderAfter} from "../../actions/AppSettings.action";
 import NotificationComponent from './Components/Notifications/Notifications.component';
 import DeliveryDateComponent from './Components/DeliveryDates/DeliveryDates.component';
-
+import UserHeatMap from "./Components/Heatmap/UserHeatMap.component";
+import OrderHeatMap from "./Components/Heatmap/OrderHeatMap.component";
 class AppSettings extends Component {
     constructor(props) {
         super(props);
@@ -40,7 +41,7 @@ class AppSettings extends Component {
 
     _renderPanel(value) {
         const {appSetting, actionUpdateGeoFence, actionUpdateMinValue, actionUpdateOrderAfter} = this.props;
-        if (value == 0) {
+        if (value == -1) {
             return (
                 <Geofencing
                     polygon={appSetting.geofence}
@@ -48,24 +49,32 @@ class AppSettings extends Component {
                 />
             );
         }
-        if (value == 1) {
+        if (value == 0) {
             return (
                 <MinValueComponent
                     data={appSetting.min_value}
                     handleDataSave={actionUpdateMinValue}
                 />
             )
-        } else if (value == 2) {
+        } else if (value == 1) {
             return (
                 <NotificationComponent/>
             )
-        } else if (value == 3) {
+        } else if (value == 2) {
             return (
                 <DeliveryDateComponent
                     data={ {order_after: appSetting.order_after }}
                     handleDataSave={actionUpdateOrderAfter}
                 />
             )
+        } else if (value == 3) {
+            return (
+                <UserHeatMap />
+            );
+        } else if (value == 4) {
+            return (
+                <OrderHeatMap />
+            );
         }
 
         return (
@@ -90,10 +99,14 @@ class AppSettings extends Component {
                             aria-label="Vertical tabs example"
                             className={classes.tabs}
                         >
-                            <Tab label="Geo Fence" {...this.a11yProps(0)} />
-                            <Tab label="Min Values" {...this.a11yProps(1)} />
-                            <Tab label="Notification" {...this.a11yProps(2)} />
-                            <Tab label="Order After" {...this.a11yProps(3)} />
+                            {/*<Tab label="Geo Fence" {...this.a11yProps(0)} />*/}
+                            <Tab label="Min Values" {...this.a11yProps(0)} />
+                            <Tab label="Notification" {...this.a11yProps(1)} />
+                            <Tab label="Order After" {...this.a11yProps(2)} />
+                            <Tab label="Users HeatMap" {...this.a11yProps(3)} />
+                            <Tab label="Orders HeatMap" {...this.a11yProps(4)} />
+
+
                         </Tabs>
                         <div className={styles.tabPanel}>
                         {this._renderPanel(value)}

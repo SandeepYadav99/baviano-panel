@@ -1,6 +1,6 @@
 /* eslint-disable indent,linebreak-style */
 const TABLE_LIMIT = 50;
-const isDev = false;
+const isDev = true;
 const tempLevel = !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 const tempDate = new Date();
 const SOCKET_PROJECT = 'BAVIANO_';
@@ -19,6 +19,7 @@ export default {
     DEFAULT_APP_URL: tempLevel ? url :'http://localhost:2306/api/company/',
     SOCKET_URL: tempLevel ? socketUrl : 'http://localhost:2306',
     // DEFAULT_APP_URL: 'http://35.154.147.169:5055/api/',
+    MAP_CENTER: { lat: 25.362945, lng: 82.975657 },
     DEFAULT_PAGE_VALUE: TABLE_LIMIT,
     GOOGLE_LOGIN_KEY: '1027293586426-qg6lv2vsp57m05tn32m9stku2ljsd1uh.apps.googleusercontent.com',
     GOOGLE_MAP_KEY: 'AIzaSyCFLmHivV8XnwV9qV1vV8oIDI-EOYRCBhY',
