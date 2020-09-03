@@ -74,7 +74,7 @@ class FilterComponent extends Component {
         if ((value[i]).type == 'text') {
             (value[i]).value = event.target.value;
         }
-        if ((value[i]).type == 'select') {
+        if ((value[i]).type == 'select' || (value[i]).type == 'selectObject') {
             (value[i]).value = event.target.value;
         }
         if ((value[i]).type == 'date') {
@@ -122,7 +122,7 @@ class FilterComponent extends Component {
                         name={val.name}
                         variant="outlined"
                         label={val.label.toUpperCase()}
-                        value={val.value ? val.value : '12/05/2019'}
+                        value={val.value ? val.value : new Date()}
                         onChange={this.detailhandleChange.bind(this, i)}
                         format={
                             "MM/dd/yyyy"
@@ -150,15 +150,38 @@ class FilterComponent extends Component {
             return (
                 <FormControl className={classes.formControl}>
                     <InputLabel id={'select'+val.name}>{val.label.toUpperCase()}</InputLabel>
-                <Select
-                    classes={{select: classes.selectRoot, root: classes.selectRoot}}
-                    labelId={'select'+val.name}
-                    // floatingLabelText={val.name.toUpperCase()}
-                    value={this.state.filter[i].value}
-                    onChange={this.detailhandleChange.bind(this, i)}
-                >
-                    {uiItems}
-                </Select>
+                    <Select
+                        classes={{select: classes.selectRoot, root: classes.selectRoot}}
+                        labelId={'select'+val.name}
+                        // floatingLabelText={val.name.toUpperCase()}
+                        value={this.state.filter[i].value}
+                        onChange={this.detailhandleChange.bind(this, i)}
+                    >
+                        {uiItems}
+                    </Select>
+                </FormControl>
+            );
+        }
+        if (val.type == 'selectObject') {
+            const { classes } = this.props;
+            const uiItems = [];
+            val.fields.forEach((obj) => {
+                uiItems.push(
+                    <MenuItem key={obj[val.custom.extract.id]} value={obj[val.custom.extract.id]}>{obj[val.custom.extract.title]}</MenuItem>
+                );
+            });
+            return (
+                <FormControl className={classes.formControl}>
+                    <InputLabel id={'select'+val.name}>{val.label.toUpperCase()}</InputLabel>
+                    <Select
+                        classes={{select: classes.selectRoot, root: classes.selectRoot}}
+                        labelId={'select'+val.name}
+                        // floatingLabelText={val.name.toUpperCase()}
+                        value={this.state.filter[i].value}
+                        onChange={this.detailhandleChange.bind(this, i)}
+                    >
+                        {uiItems}
+                    </Select>
                 </FormControl>
             );
         }
@@ -199,7 +222,7 @@ class FilterComponent extends Component {
             this.props.handleFilterDataChange(newFilter);
         } else {
             selectedFilters.push(val.name);
-            newFilter = [...filter, { label: val.label, name: val.name, value: '', type: val.type, fields: val.fields }];
+            newFilter = [...filter, { custom: val.custom, label: val.label, name: val.name, value: '', type: val.type, fields: val.fields }];
         }
         this.setState({ filter: newFilter, selectedFilters });
 
@@ -207,12 +230,12 @@ class FilterComponent extends Component {
     createMenu(items) {
         const uiItems = [];
         items.forEach((val) => {
-                if (this.state.selectedFilters.indexOf(val.name) < 0) {
-                    uiItems.push(
-                        <MenuItem key={val.name} onClick={this.handleMenuClick.bind(this, val)} >{val.label}</MenuItem>,
-                    );
-                }
-            });
+            if (this.state.selectedFilters.indexOf(val.name) < 0) {
+                uiItems.push(
+                    <MenuItem key={val.name} onClick={this.handleMenuClick.bind(this, val)} >{val.label}</MenuItem>,
+                );
+            }
+        });
         return uiItems;
     }
     _renderProgress() {
@@ -226,44 +249,43 @@ class FilterComponent extends Component {
     _renderCheckboxes(items) {
         const tempCheckboxes = items.map((val) => {
             const isThere = (this.state.selectedFilters.indexOf(val.name) >= 0);
-                return (
-                    <FormControlLabel
-                        control={
-                            <Checkbox checked={isThere} onChange={() => { this.handleMenuClick(val)}} value={val.name}/>
-                        }
-                        label={val.label}
-                    />);
+            return (
+                <FormControlLabel
+                    control={
+                        <Checkbox checked={isThere} onChange={() => { this.handleMenuClick(val)}} value={val.name}/>
+                    }
+                    label={val.label}
+                />);
         });
 
-                return (
-                    <FormGroup row>
-                        {tempCheckboxes}
-                    </FormGroup>
-                )
+        return (
+            <FormGroup row>
+                {tempCheckboxes}
+            </FormGroup>
+        )
     }
 
     render() {
-        const { theme } = this.props;
         return (
             <div style={{}}>
                 <br/>
                 <div style={{ display: 'flex', width: '100%', alignItems: 'flex-end', }}>
                     <div style={{ flex: 1 }}>
-                    <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #f4f4f4', paddingLeft: '10px', backgroundColor: theme.palette.textColor, color: theme.palette.bgColor.main}}>
-                        <SearchIcon style={{ width: 30, height: 30, marginRight: 10 }}/>
-                        <input onBlur={this._handleSearchBlur} value={this.state.query} onChange={this._handleSearchChange} style={{ width: '100%', height: '30px', border: 'none', padding: 10, fontSize: 20 }} placeholder={'Search'}/>
-                    </div>
+                        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px solid #f4f4f4', padding: '0px 5px'}}>
+                            <SearchIcon style={{ width: 30, height: 30, marginRight: 10 }}/>
+                            <input onBlur={this._handleSearchBlur} value={this.state.query} onChange={this._handleSearchChange} style={{ width: '100%', height: '30px', border: 'none', padding: 10, fontSize: 20 }} placeholder={'Search'}/>
+                        </div>
                         {this._renderProgress()}
                     </div>
                     <div style={{ padding: 10, marginLeft: 5 }}>
-                {/*<FlatButton*/}
-                {/*    style={styles.flatButton}*/}
-                {/*    onClick={this.handleTouchTap}*/}
-                {/*    icon={<Add />}*/}
-                {/*    containerElement={<FilterIcon/>}*/}
-                {/*    primary*/}
-                {/*/>*/}
-                <Button style={styles.flatButton} onClick={this.handleTouchTap} ><FilterIcon/></Button>
+                        {/*<FlatButton*/}
+                        {/*    style={styles.flatButton}*/}
+                        {/*    onClick={this.handleTouchTap}*/}
+                        {/*    icon={<Add />}*/}
+                        {/*    containerElement={<FilterIcon/>}*/}
+                        {/*    primary*/}
+                        {/*/>*/}
+                        <Button style={styles.flatButton} onClick={this.handleTouchTap} ><FilterIcon/></Button>
                         {/*<Menu*/}
                         {/*    id="simple-menu"*/}
                         {/*    anchorEl={this.state.anchorEl}*/}
@@ -308,4 +330,4 @@ FilterComponent.propTypes = {
     is_progress: PropTypes.bool
 }
 
-export default withStyles(useStyles, { withTheme: true })(FilterComponent);
+export default withStyles(useStyles)(FilterComponent);

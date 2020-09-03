@@ -149,6 +149,13 @@ class CustomerInfo extends Component{
                                 {data.verification_code}
                             </div>
                         </div>
+                        {data.location_image && (<div className={'formGroup'}>
+                            <div><label htmlFor="">Location Image</label></div>
+                            <a href={data.location_image} target={'_blank'}>
+
+                            <img src={data.location_image} style={{ width: '70px' }} alt=""/>
+                            </a>
+                        </div>)}
                     </div>
 
 

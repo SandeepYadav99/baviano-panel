@@ -23,7 +23,7 @@ class TableTask extends Component {
     }
 
     _renderDelivery(row) {
-        let deliverDate = moment(row.next_date);
+        let deliverDate = moment(row.start_date);
         deliverDate = deliverDate.format('DD-MM-YYYY');
         if (row.type == 'CUSTOM') {
             let weekData = '';

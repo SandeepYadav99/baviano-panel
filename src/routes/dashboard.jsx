@@ -11,6 +11,7 @@ import PromotionList from '../views/Promotion/PromotionList.container';
 import CustomerList from '../views/Customers/CustomerList.container';
 import DriverList from '../views/driver/DriversList.container';
 import OrderList from '../views/Order/OrderList.container'
+import AcceptedOrderList from '../views/AcceptedOrder/OrderList.container'
 import AppSettings from '../views/AppSettings/AppSettings.container';
 import PendingPlan from '../views/PendingPlans/PendingPlanList.container';
 import BatchProcessing from '../views/BatchProcessing/BatchList.container';
@@ -189,6 +190,15 @@ const dashboardRoutes = [
         navbarName: "Batch Jobs",
         icon: Dashboard,
         component: BatchJobList,
+        is_sidebar: true,
+        is_protect: true,
+    },
+    {
+        path: "/accepted",
+        sidebarName: "Accepted Orders",
+        navbarName: "Accepted Orders",
+        icon: Dashboard,
+        component: AcceptedOrderList,
         is_sidebar: true,
         is_protect: true,
     },

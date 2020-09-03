@@ -26,6 +26,7 @@ import BatchForecastingReducer from './BatchForecasting.reducer';
 import GeofenceReducer from './Geofence.reducer';
 import VerificationReducer from './Verification.reducer';
 import BatchJobReducer from './BatchJob.reducer';
+import AcceptedOrderReducer from './AcceptedOrder.reducer';
 
 const rootReducer = combineReducers({
     state: (state = {}) => state,
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
     customers: Customers,
     drivers: DRequestReducer,
     order: OrderReducer,
+    accepted_order: AcceptedOrderReducer,
     pending_plan: PendingPlanReducer,
     batch: BatchReducer,
     batch_processing: BatchProcessingReducer,

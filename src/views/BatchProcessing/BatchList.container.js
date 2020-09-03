@@ -2,7 +2,7 @@
  * Created by charnjeetelectrovese@gmail.com on 12/3/2019.
  */
 import React, {Component} from 'react';
-import {Button, Paper, Checkbox} from '@material-ui/core';
+import {Button, Paper, Checkbox, ButtonBase} from '@material-ui/core';
 
 import classNames from 'classnames';
 import {bindActionCreators} from 'redux';
@@ -43,7 +43,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import {actionFetchBatch} from "../../actions/Batch.action";
 import BottomAction from "./components/BottomActions/BottomAction.component";
 import {ProductAggComponent} from "../../components/index.component";
-import {serviceGetBatchDriverAssigned} from "../../services/BatchProcessing.service";
+import {serviceGetBatchDriverAssigned, serviceGetBatchProcessingDownload} from "../../services/BatchProcessing.service";
 
 
 let CreateProvider = null;
@@ -87,7 +87,7 @@ class BatchProcessingList extends Component {
         this._handleBatchChange = this._handleBatchChange.bind(this);
         this._handleDriverSelection = this._handleDriverSelection.bind(this);
         this._handleSelectAll = this._handleSelectAll.bind(this);
-
+        this._handleDownload = this._handleDownload.bind(this);
     }
 
     componentDidMount() {
@@ -146,6 +146,16 @@ class BatchProcessingList extends Component {
 
     _handleRowSize(page) {
         console.log(page);
+    }
+
+    async _handleDownload() {
+        const { batch_id } = this.state;
+        const req = await serviceGetBatchProcessingDownload({ batch_id: batch_id });
+        if (!req.error) {
+            const data = req.data;
+            window.open(
+                data, "_blank");
+        }
     }
 
     renderStatus(val) {
@@ -463,6 +473,9 @@ class BatchProcessingList extends Component {
                                     {this._renderMenu()}
                                 </Select>
                             </FormControl>
+                            {this.state.batch_id && (<div style={{ textAlign: 'right' }}>
+                            <ButtonBase onClick={this._handleDownload}>Export Data</ButtonBase>
+                            </div>)}
                         </div>
                         {/*<Button onClick={this._handleSideToggle} variant={'contained'} color={'primary'} disabled={this.state.listData==null}>*/}
                         {/*<Add></Add> Create*/}

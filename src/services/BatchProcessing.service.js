@@ -6,6 +6,11 @@ import {postRequest} from '../libs/AxiosService.util';
 export async function serviceGetBatchProcessing(params) {
     return await postRequest('batch/orders', params);
 }
+
+export async function serviceGetBatchProcessingDownload(params) {
+    return await postRequest('batch/orders/download', params);
+}
+
 export async function serviceAssignDriverToJob(params) {
     return await postRequest('batch/assign/driver', params);
 }

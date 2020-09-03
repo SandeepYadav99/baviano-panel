@@ -13,6 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {serviceGetCustomerSubscriptions} from "../../../../services/CustomersRequest.service";
 import {CircularProgress} from "@material-ui/core";
+import moment from "moment";
 
 const useStyles = {
     table: {
@@ -68,6 +69,14 @@ class UserSubscriptions extends Component {
                 <br/>
                 <span style={{ textTransform: 'capitalize' }}>{weekData}</span>
             </div>);
+        } else if (row.is_adhoc) {
+            return (
+                <div>
+                    {row.start_date} - {row.next_date}
+                    <br/>
+                    <span style={{ textTransform: 'capitalize' }}>ADHOC</span>
+                </div>
+            )
         } else {
             return (
                 <div>
