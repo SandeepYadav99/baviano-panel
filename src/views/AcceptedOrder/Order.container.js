@@ -1,24 +1,28 @@
 import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-    Button, withStyles,
-    ButtonBase, Paper,
-    Card, CardHeader,
-    Divider, Table,
-    TableBody, TableCell,
-    TableContainer, TableRow,
-    Tabs, Tab,
+    Button,
+    ButtonBase,
+    Card,
+    CardHeader,
+    Divider,
+    Paper,
+    Tab,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    Tabs,
+    withStyles,
 } from "@material-ui/core";
 import OrderTable from '../../components/Table/OrderTable.component'
 import styles from './styles.module.css'
 import {serviceGetOnlineDrivers} from "../../services/Driver.service";
-import DriversDialog from './components/driverdialog/DriversDialog.component';
 import Constants from '../../config/constants';
-import GoogleMap from './components/googlemap/GoogleMapHtml.component';
 import TimeStamps from './components/timestamps/TimeStampsTable.component';
 import RejectDialog from './components/rejectdialog/RejectDialog.component';
+import {DialogComponent} from "../../components/index.component";
 
 class Order extends Component {
     constructor(props) {
@@ -27,16 +31,20 @@ class Order extends Component {
             is_driver_dialog: false,
             drivers: [],
             tab_value: 0,
-            is_reject_dialog: false
+            is_reject_dialog: false,
+            is_release_dialog: false
         };
         this.googleMap = null;
         this._handleReject = this._handleReject.bind(this);
+        this._handleRelease = this._handleRelease.bind(this);
         this._handleApprove = this._handleApprove.bind(this);
         this._handleDriverDialog = this._handleDriverDialog.bind(this);
         this._handleDriverClick = this._handleDriverClick.bind(this);
         this._handleTabChange = this._handleTabChange.bind(this);
         this._handleRejectDialogClose = this._handleRejectDialogClose.bind(this);
         this._handleRejectDialog = this._handleRejectDialog.bind(this);
+        this._handleReleaseDialogClose = this._handleReleaseDialogClose.bind(this);
+        this._handleReleaseDialog = this._handleReleaseDialog.bind(this);
     }
 
     _handleApprove() {
@@ -50,6 +58,12 @@ class Order extends Component {
         })
     }
 
+    _handleRelease() {
+        this.setState({
+            is_release_dialog: true,
+        })
+    }
+
     _handleRejectDialog(obj) {
         const {data} = this.props;
         this.props.changeStatus({
@@ -59,9 +73,23 @@ class Order extends Component {
         }, 'REJECT');
     }
 
+    _handleReleaseDialog(obj) {
+        const {data} = this.props;
+        this.props.releaseBatch({
+            order_id: data.id,
+            id: data.id, ...obj
+        });
+    }
+
     _handleRejectDialogClose() {
         this.setState({
             is_reject_dialog: false,
+        })
+    }
+
+    _handleReleaseDialogClose() {
+        this.setState({
+            is_release_dialog: false,
         })
     }
 
@@ -137,6 +165,19 @@ class Order extends Component {
         )
     }
 
+    _renderRelease() {
+        const {data, is_submit} = this.props;
+        if (data.batch_id) {
+            return (
+                <Button variant={'contained'} className={this.props.classes.btnWarning}
+                        onClick={this._handleRelease}
+                        type="button">
+                    Release Batch
+                </Button>
+            )
+        } return null;
+    }
+
     _renderRejectReason = (reason) => {
         if (reason) {
             const {classes} = this.props;
@@ -198,6 +239,7 @@ class Order extends Component {
                     <div className={styles.processButtons}>
                         {/*{this._renderApprove()}*/}
                         {this._renderReject()}
+                        {this._renderRelease()}
                     </div>
                     {/*<h3>Order Details</h3>*/}
                     {/*<hr/>*/}
@@ -249,14 +291,14 @@ class Order extends Component {
                                             <TableCell
                                                 classes={{root: classes.tableCell}}>{data.payment_mode}</TableCell>
                                         </TableRow>
-                                        {/*<TableRow>*/}
-                                        {/*    <TableCell classes={{root: classes.tableCell}}>Instructions</TableCell>*/}
-                                        {/*    <TableCell classes={{root: classes.tableCell}}>*/}
-                                        {/*            <span className={styles.capitalize}>*/}
-                                        {/*                {data.instructions ? data.instructions : 'N/A'}*/}
-                                        {/*            </span>*/}
-                                        {/*    </TableCell>*/}
-                                        {/*</TableRow>*/}
+                                        {data.batch_id && (<TableRow>
+                                            <TableCell classes={{root: classes.tableCell}}>Batch</TableCell>
+                                            <TableCell classes={{root: classes.tableCell}}>
+                                                    <span className={styles.capitalize}>
+                                                        {data.batch_name}
+                                                    </span>
+                                            </TableCell>
+                                        </TableRow>)}
                                         <TableRow>
                                             <TableCell classes={{root: classes.tableCell}}>Delivery
                                                 Preference</TableCell>
@@ -304,6 +346,13 @@ class Order extends Component {
                         open={this.state.is_reject_dialog}
                         handleClose={this._handleRejectDialogClose}
                         handleSubmit={this._handleRejectDialog}
+                    />
+
+                    <DialogComponent
+                        content={'Do you really want to release the batch?'}
+                        open={this.state.is_release_dialog}
+                        handleClose={this._handleReleaseDialogClose}
+                        handleOk={this._handleReleaseDialog}
                     />
                 </div>
             )
@@ -373,6 +422,15 @@ const useStyle = theme => ({
         marginRight: 5,
         '&:hover': {
             backgroundColor: theme.palette.error.main,
+        }
+    },
+    btnWarning: {
+        backgroundColor: theme.palette.warning.dark,
+        color: 'white',
+        marginLeft: 5,
+        marginRight: 5,
+        '&:hover': {
+            backgroundColor: theme.palette.warning.main,
         }
     },
     rightText: {

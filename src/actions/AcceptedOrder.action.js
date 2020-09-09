@@ -6,7 +6,11 @@
 // import { fetchPRequests } from '../services/User.service';
 import store from '../store';
 import Constants from '../config/constants';
-import {serviceGetAcceptedOrder, serviceUpdateAcceptedOrder} from "../services/AcceptedOrder.service";
+import {
+    serviceGetAcceptedOrder,
+    serviceReleaseBatchAcceptedOrder,
+    serviceUpdateAcceptedOrder
+} from "../services/AcceptedOrder.service";
 
 export const FETCH_INIT = 'FETCH_INIT_ACCEPTED_ORDER';
 export const FETCHED = 'FETCHED_ACCEPTED_ORDER';
@@ -22,6 +26,7 @@ export const SET_FILTER = 'SET_FILTER_ACCEPTED_ORDER';
 export const SET_PAGE = 'SET_PAGE_ACCEPTED_ORDER';
 export const CHANGE_PAGE = 'CHANGE_PAGE_ACCEPTED_ORDER';
 export const CHANGE_STATUS = 'CHANGE_STATE_ACCEPTED_ORDER';
+export const RELEASE_BATCH = 'RELEASE_BATCH_ACCEPTED_ORDER';
 export const SET_SERVER_PAGE = 'SET_SERVER_PAGE_ACCEPTED_ORDER';
 export const CREATE_DATA = 'CREATE_ACCEPTED_ORDER';
 export const UPDATE_DATA = 'UPDATE_ACCEPTED_ORDER';
@@ -105,6 +110,16 @@ export function actionChangeStatusAcceptedOrder(params) {
         });
     };
 }
+
+export function actionReleaseBatch(params) {
+    const request = serviceReleaseBatchAcceptedOrder({id: params.id});
+    return (dispatch) => {
+        request.then((data) => {
+            dispatch({type: RELEASE_BATCH, payload: {id: params.id }});
+        });
+    };
+}
+
 
 export function actionResetFilterAcceptedOrder() {
     return {

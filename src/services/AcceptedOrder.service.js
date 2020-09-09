@@ -7,6 +7,11 @@ export async function serviceUpdateAcceptedOrder(params) {
     return await formDataRequest('accepted/orders/update', params);
 }
 
+export async function serviceReleaseBatchAcceptedOrder(params) {
+    return await formDataRequest('accepted/release/batch', params);
+}
+
+
 export async function serviceGetAcceptedOrder(params) {
     return await postRequest('accepted/orders', params);
 }

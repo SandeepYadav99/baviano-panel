@@ -7,6 +7,7 @@ import WaitingComponent from './Waiting.component';
 import CountryPhone from './country/index'
 import ProductAggComponent from "./ProductAgg/ProductAgg.component";
 import Geofencing from "./Geofencing/Geofencing.component";
+import DialogComponent from './Dialog/Dialog.component';
 
 export {
     Header,
@@ -14,5 +15,6 @@ export {
     WaitingComponent,
     CountryPhone,
     ProductAggComponent,
-    Geofencing
+    Geofencing,
+    DialogComponent
 }

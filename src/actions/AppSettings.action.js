@@ -5,7 +5,7 @@ import {
     serviceGetAppSettings,
     serviceUpdateGeoFence,
     serviceUpdateMinValue,
-    serviceUpdateOrderAfter
+    serviceUpdateOrderAfter, serviceUpdateReferAmount
 } from "../services/AppSettings.service";
 
 export const APP_SETTINGS_INIT = 'APP_SETTINGS_INIT';
@@ -14,6 +14,7 @@ export const APP_SETTINGS_UPDATE_GEOFENCE = 'APP_SETTINGS_UPDATE_GEOFENCE';
 export const APP_SETTINGS_CHANGE_THEME = 'APP_SETTINGS_CHANGE_THEME';
 export const APP_SETTINGS_UPDATE_MIN_VALUE = 'APP_SETTINGS_UPDATE_MIN_VALUE';
 export const APP_SETTINGS_UPDATE_ORDER_AFTER = 'APP_SETTINGS_UPDATE_ORDER_AFTER';
+export const APP_SETTINGS_UPDATE_REFER_AMOUNT = 'APP_SETTINGS_UPDATE_REFER_AMOUNT';
 
 export function actionGetAppSettings(data) {
     const req = serviceGetAppSettings({});
@@ -47,6 +48,13 @@ export function actionUpdateOrderAfter(data) {
     const request = serviceUpdateOrderAfter({ ...data } );
     return (dispatch) => {
         dispatch({ type: APP_SETTINGS_UPDATE_ORDER_AFTER, payload: data })
+    }
+}
+
+export function actionUpdateReferAmount(data) {
+    const request = serviceUpdateReferAmount({ data: data } );
+    return (dispatch) => {
+        dispatch({ type: APP_SETTINGS_UPDATE_REFER_AMOUNT, payload: data })
     }
 }
 

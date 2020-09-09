@@ -24,6 +24,7 @@ import {
     actionFetchAcceptedOrder,
     actionChangePageAcceptedOrder,
     actionChangeStatusAcceptedOrder,
+    actionReleaseBatch,
     actionFilterAcceptedOrder,
     actionResetFilterAcceptedOrder,
     actionSetPageAcceptedOrder,
@@ -69,6 +70,7 @@ class AcceptedOrderList extends Component {
         this._handleEdit = this._handleEdit.bind(this);
         this._handleChangeStatus = this._handleChangeStatus.bind(this);
         this._handleDataSave = this._handleDataSave.bind(this);
+        this._handleReleaseBatch = this._handleReleaseBatch.bind(this);
     }
 
     componentDidMount() {
@@ -211,11 +213,21 @@ class AcceptedOrderList extends Component {
             const { id } = this.props.match.params;
             return (<CreateProvider data={this.state.edit_data}
                                     listData={this.state.listData}
-                                    changeStatus={this._handleDataSave}></CreateProvider>);
+                                    changeStatus={this._handleDataSave}
+                                    releaseBatch={this._handleReleaseBatch}
+            ></CreateProvider>);
         } return null;
     }
     _handleChangeStatus(data, type) {
         this.props.actionChangeStatus({...data, type: type});
+        this.setState({
+            side_panel: !this.state.side_panel,
+            edit_data: null,
+        });
+    }
+
+    _handleReleaseBatch(data) {
+        this.props.actionReleaseBatch({...data});
         this.setState({
             side_panel: !this.state.side_panel,
             edit_data: null,
@@ -284,6 +296,13 @@ class AcceptedOrderList extends Component {
                 sortable: true,
                 // style: { width: '20%'},
                 render: (temp, all) => <div>{this._renderOrderId(all)}</div>,
+            },
+            {
+                key: 'batch_name',
+                label: 'Batch',
+                sortable: false,
+                // style: { width: '20%'},
+                render: (temp, all) => <div>{all.batch_name}</div>,
             },
             {
                 key: 'user_info',
@@ -457,6 +476,7 @@ function mapDispatchToProps(dispatch) {
         actionChangeStatus: actionChangeStatusAcceptedOrder,
         actionCreate: actionCreateAcceptedOrder,
         actionUpdate: actionUpdateAcceptedOrder,
+        actionReleaseBatch: actionReleaseBatch
     }, dispatch);
 }
 

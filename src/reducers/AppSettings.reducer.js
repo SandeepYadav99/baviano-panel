@@ -5,7 +5,8 @@
 import {
     APP_SETTINGS_UPDATE_GEOFENCE,
     APP_SETTINGS_DONE,
-    APP_SETTINGS_INIT, APP_SETTINGS_CHANGE_THEME, APP_SETTINGS_UPDATE_MIN_VALUE, APP_SETTINGS_UPDATE_ORDER_AFTER
+    APP_SETTINGS_INIT, APP_SETTINGS_CHANGE_THEME, APP_SETTINGS_UPDATE_MIN_VALUE, APP_SETTINGS_UPDATE_ORDER_AFTER,
+    APP_SETTINGS_UPDATE_REFER_AMOUNT
 } from "../actions/AppSettings.action";
 
 const initialState = {
@@ -39,6 +40,11 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
             }
         }
         case APP_SETTINGS_UPDATE_MIN_VALUE: {
+            if (action.payload) {
+                return {...state, min_value: action.payload};
+            }
+        }
+        case APP_SETTINGS_UPDATE_REFER_AMOUNT: {
             if (action.payload) {
                 return {...state, min_value: action.payload};
             }

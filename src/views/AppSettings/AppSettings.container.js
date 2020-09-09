@@ -11,11 +11,18 @@ import {withStyles, Tabs, Tab} from "@material-ui/core";
 import Geofencing from './Components/Geofencing/Geofencing.component';
 import MinValueComponent from './Components/MinValues/MinValues.component';
 import {WaitingComponent} from "../../components/index.component";
-import {actionUpdateGeoFence, actionUpdateMinValue, actionUpdateOrderAfter} from "../../actions/AppSettings.action";
+import {
+    actionUpdateGeoFence,
+    actionUpdateMinValue,
+    actionUpdateOrderAfter,
+    actionUpdateReferAmount
+} from "../../actions/AppSettings.action";
 import NotificationComponent from './Components/Notifications/Notifications.component';
 import DeliveryDateComponent from './Components/DeliveryDates/DeliveryDates.component';
 import UserHeatMap from "./Components/Heatmap/UserHeatMap.component";
 import OrderHeatMap from "./Components/Heatmap/OrderHeatMap.component";
+import ReferAmount from './Components/ReferAmounts/ReferAmounts.component';
+
 class AppSettings extends Component {
     constructor(props) {
         super(props);
@@ -40,7 +47,7 @@ class AppSettings extends Component {
     }
 
     _renderPanel(value) {
-        const {appSetting, actionUpdateGeoFence, actionUpdateMinValue, actionUpdateOrderAfter} = this.props;
+        const {appSetting, actionUpdateGeoFence, actionUpdateMinValue, actionUpdateOrderAfter, actionUpdateReferAmount} = this.props;
         if (value == -1) {
             return (
                 <Geofencing
@@ -75,6 +82,11 @@ class AppSettings extends Component {
             return (
                 <OrderHeatMap />
             );
+        } else if (value == 5) {
+            return (
+                <ReferAmount data={appSetting.refer_amount}
+                             handleDataSave={actionUpdateReferAmount} />
+            );
         }
 
         return (
@@ -101,11 +113,12 @@ class AppSettings extends Component {
                         >
                             {/*<Tab label="Geo Fence" {...this.a11yProps(0)} />*/}
                             <Tab label="Min Values" {...this.a11yProps(0)} />
+
                             <Tab label="Notification" {...this.a11yProps(1)} />
                             <Tab label="Order After" {...this.a11yProps(2)} />
                             <Tab label="Users HeatMap" {...this.a11yProps(3)} />
                             <Tab label="Orders HeatMap" {...this.a11yProps(4)} />
-
+                            <Tab label="Refer Amount" {...this.a11yProps(5)} />
 
                         </Tabs>
                         <div className={styles.tabPanel}>
@@ -141,7 +154,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         actionUpdateGeoFence: actionUpdateGeoFence,
         actionUpdateMinValue: actionUpdateMinValue,
-        actionUpdateOrderAfter: actionUpdateOrderAfter
+        actionUpdateOrderAfter: actionUpdateOrderAfter,
+        actionUpdateReferAmount: actionUpdateReferAmount,
     }, dispatch);
 }
 

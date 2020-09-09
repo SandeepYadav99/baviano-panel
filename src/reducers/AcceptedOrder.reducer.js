@@ -15,7 +15,8 @@ import {
     CHANGE_STATUS,
     SET_SERVER_PAGE,
     CREATE_DATA,
-    UPDATE_DATA
+    UPDATE_DATA,
+    RELEASE_BATCH
 } from '../actions/AcceptedOrder.action';
 import Constants from '../config/constants';
 
@@ -64,7 +65,7 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
                 let tempIndex = null;
                 const prevState = state.all;
                 prevState.some((val, index) => {
-                    if (val.id == action.payload) {
+                    if (val.id == action.payload.id) {
                         tempIndex = index;
                         return true;
                     }
@@ -82,6 +83,28 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
             }
             return state;
         }
+        case RELEASE_BATCH: {
+            if (action.payload) {
+                let tempIndex = null;
+                const prevState = state.all;
+                prevState.some((val, index) => {
+                    if (val.id == action.payload.id) {
+                        val.batch_name = 'N/A';
+                        val.batch_id = null;
+                        return true;
+                    }
+                });
+                // const newState = state.all.map((val) => {
+                //     if (val.id == action.payload.id) {
+                //         return { ...val, status: action.payload.status == 'SUSPEND' ? 'SUSPEND' : 'ACTIVE' };
+                //     } return { ...val };
+                // });
+                const tableData = mapPresetPRequest(prevState, state.currentPage);
+                return {...state, all: prevState, present: tableData};
+            }
+            return state;
+        }
+
         // case NEX: {
         //     const tableData = mapPresetPRequest(state.all, state.currentPage + 1);
         //     return { ...state, present: tableData, currentPage: (state.currentPage + 1) };

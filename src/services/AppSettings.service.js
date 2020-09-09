@@ -21,6 +21,10 @@ export async function serviceUpdateOrderAfter(params) {
     return await postRequest('app/settings/order/after', params);
 }
 
+export async function serviceUpdateReferAmount(params) {
+    return await postRequest('app/settings/refer/amount', params);
+}
+
 export async function serviceGetHeatMapUsers(params) {
     return await postRequest('heatmap/users', params);
 }
