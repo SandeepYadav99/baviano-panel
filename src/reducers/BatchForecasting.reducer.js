@@ -19,9 +19,11 @@ import {
     UPDATE_DATA,
     UPDATE_BATCH_ID,
     ASSIGN_DRIVER_TO_JOB,
-    CLEAN_LIST
+    CLEAN_LIST,
+    CHANGE_DATE
 } from '../actions/BatchForecasting.action';
 import Constants from '../config/constants';
+import DateUtils from "../libs/DateUtils.lib";
 
 function mapPresetPRequest(all, pageId) {
     return all.filter((val, index) => {
@@ -30,6 +32,8 @@ function mapPresetPRequest(all, pageId) {
         }
     });
 }
+const date = new Date();
+date.setDate(date.getDate() + 1);
 
 const initialState = {
     all: [],
@@ -41,12 +45,16 @@ const initialState = {
     sorting_data: {row: null, order: null},
     is_fetching: false,
     batch_id: null,
+    date: DateUtils.changeTimeStamp(date, 'YYYY-MM-DD')
 };
 
 export default function (state = JSON.parse(JSON.stringify(initialState)), action) {
     switch (action.type) {
         case CLEAN_LIST: {
-            return { ...state, ...JSON.parse(JSON.stringify(initialState)) };
+            return { ...state,
+                ...JSON.parse(JSON.stringify(initialState)),
+                date: state.date
+            };
         }
         case FETCH_INIT: {
             return {...state, is_fetching: true};
@@ -69,6 +77,12 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
         }
         case SET_SORTING: {
             return {...state, sorting_data: action.payload};
+        }
+        case CHANGE_DATE: {
+            return {
+                ...state,
+                date: action.payload,
+            }
         }
         case CHANGE_STATUS: {
             if (action.payload) {

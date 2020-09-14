@@ -25,10 +25,11 @@ export const UPDATE_DATA = 'UPDATE_BATCH_FORECASTING';
 export const UPDATE_BATCH_ID = 'UPDATE_BATCH_ID_BATCH_FORECASTING';
 export const ASSIGN_DRIVER_TO_JOB = 'ASSIGN_DRIVER_TO_JOB';
 export const CLEAN_LIST = 'CLEAN_LIST_BATCH_FORECASTING';
+export const CHANGE_DATE = 'CHANGE_FORECASTING_DATE';
 
-export function actionFetchBatchForecasting(query = {}, index = 1, sorting = {}, filter = {}, shouldReset = false) {
+export function actionFetchBatchForecasting( index = 1, sorting = {}, filter = {}, shouldReset = false) {
     const stateData = store.getState().batch_forecasting;
-    const request = serviceGetBatchForecasting({...query, index, row: sorting.row, order: sorting.order, batch_id: stateData.batch_id,  ...filter}); // GetOrder
+    const request = serviceGetBatchForecasting({ date: stateData.date, index, row: sorting.row, order: sorting.order, batch_id: stateData.batch_id,  ...filter}); // GetOrder
     return (dispatch) => {
         if (shouldReset) {
             dispatch({
@@ -97,10 +98,10 @@ export function actionFilterBatchForecasting(value) {
         });
     };
 }
-export function actionChangeBatchId(date, batchId) {
+export function actionChangeBatchId(batchId) {
     return (dispatch) => {
         dispatch({type: UPDATE_BATCH_ID, payload: batchId});
-        dispatch(actionFetchBatchForecasting({date: date}) );
+        dispatch(actionFetchBatchForecasting());
     }
 }
 
@@ -125,6 +126,13 @@ export function actionCleanBatchForecasting() {
         type: CLEAN_LIST,
         payload: null,
     };
+}
+
+export function actionChangeForecastingDate(date) {
+    return {
+        type: CHANGE_DATE,
+        payload: date
+    }
 }
 
 export function actionSetPageBatchForecasting(page) {

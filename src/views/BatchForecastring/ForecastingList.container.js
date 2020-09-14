@@ -22,7 +22,8 @@ import {
     actionFilterBatchForecasting,
     actionResetFilterBatchForecasting,
     actionSetPageBatchForecasting,
-    actionUpdateBatchForecasting
+    actionUpdateBatchForecasting,
+    actionChangeForecastingDate
 } from '../../actions/BatchForecasting.action';
 import DateUtils from '../../libs/DateUtils.lib';
 import Select from "@material-ui/core/Select";
@@ -32,6 +33,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import {actionFetchBatch} from "../../actions/Batch.action";
 import ReduxDatePicker from "../../components/ReduxDatePicker/ReduxDatePicker.component";
 import {ProductAggComponent} from "../../components/index.component";
+import {serviceGetCustomersDownload} from "../../services/CustomersRequest.service";
+import {serviceGetBatchForecastingDownload} from "../../services/BatchForecasting.service";
+import {serviceGetCustomList} from "../../services/Common.service";
 
 
 let CreateProvider = null;
@@ -57,10 +61,10 @@ class BatchForecastingList extends Component {
             maxDate: null
         };
         this.configFilter = [
-            {label: 'Country', name: 'country', type: 'text'},
-            {label: 'City', name: 'city', type: 'text'},
-            {label: 'Request Date', name: 'createdAt', type: 'date'},
-            {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'ACTIVE']},
+            // {label: 'Country', name: 'country', type: 'text'},
+            // {label: 'City', name: 'city', type: 'text'},
+            // {label: 'Request Date', name: 'createdAt', type: 'date'},
+            {label: 'Product', name: 'product_id', type: 'selectObject', custom: { extract: { id: 'id', title: 'name' } } , fields: []},
         ];
 
         this._handleFilterDataChange = this._handleFilterDataChange.bind(this);
@@ -75,7 +79,7 @@ class BatchForecastingList extends Component {
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleBatchChange = this._handleBatchChange.bind(this);
         this._handleDateChange = this._handleDateChange.bind(this);
-
+        this._handleDownload = this._handleDownload.bind(this);
     }
 
     componentDidMount() {
@@ -87,9 +91,20 @@ class BatchForecastingList extends Component {
             selectedDate: date,
             minDate: date,
             maxDate: maxDate
-        })
-        this.props.actionFetchData({ date: DateUtils.changeTimeStamp(date, 'YYYY-MM-DD')});
+        });
+        this.props.actionChangeForecastingDate(DateUtils.changeTimeStamp(date, 'YYYY-MM-DD'));
+        this.props.actionFetchData();
         this.props.actionFetchBatch();
+
+        const request = serviceGetCustomList(['PRODUCT']);
+
+        request.then((data) => {
+            if (!data.error) {
+                this.configFilter[0].fields = data.data.products;
+            } else {
+
+            }
+        })
 
     }
 
@@ -188,7 +203,8 @@ class BatchForecastingList extends Component {
         this.setState({
             selectedDate: date,
         });
-        this.props.actionFetchData({ date: DateUtils.changeTimeStamp(date, 'YYYY-MM-DD')});
+        this.props.actionChangeForecastingDate(DateUtils.changeTimeStamp(date, 'YYYY-MM-DD'));
+        this.props.actionFetchData();
     }
 
     _renderCreateForm() {
@@ -221,7 +237,7 @@ class BatchForecastingList extends Component {
         });
         const  { selectedDate } = this.state;
         this.props.actionCleanBatchForecasting();
-        this.props.actionChangeBatchId(DateUtils.changeTimeStamp(selectedDate, 'YYYY-MM-DD'), batchId);
+        this.props.actionChangeBatchId(batchId);
     }
 
     async _handleDataSave(data, type) {
@@ -293,6 +309,17 @@ class BatchForecastingList extends Component {
         })
     }
 
+    async _handleDownload() {
+        const  { sorting_data, query, query_data, date, batch_id } = this.props;
+        const req = await serviceGetBatchForecastingDownload({ date: date, batch_id: batch_id, row: sorting_data.row, order: sorting_data.order, query, query_data });
+        if (!req.error) {
+
+            const data = req.data;
+            window.open(
+                data, "_blank");
+        }
+    }
+
     render() {
         const { minDate, maxDate } = this.state;
         const tableStructure = [
@@ -328,12 +355,21 @@ class BatchForecastingList extends Component {
                 </div>,
             },
             {
-                key: 'status',
-                label: 'Status',
-                sortable: false,
+                key: 'price',
+                label: 'Wallet',
+                sortable: true,
                 // style: { width: '20%'},
-                render: (temp, all) => <div>{this.renderStatus(all)}</div>,
+                render: (temp, all) => <div style={{wordBreak: 'break-word'}}>{ this.ccyFormat(all.wallet_amount) }
+                </div>,
             },
+
+            // {
+            //     key: 'status',
+            //     label: 'Status',
+            //     sortable: false,
+            //     // style: { width: '20%'},
+            //     render: (temp, all) => <div>{this.renderStatus(all)}</div>,
+            // },
             // {
             //     key: 'createdAt',
             //     label: 'Date',
@@ -373,7 +409,7 @@ class BatchForecastingList extends Component {
                         <div style={{width: '80%', display: 'flex', }}>
                             <div style={{ marginRight: '10px' }}>
                             <ReduxDatePicker
-                                minDate={minDate}
+                                // minDate={minDate}
                                 maxDate={maxDate}
                                 onChange={this._handleDateChange}
                                 value={this.state.selectedDate}
@@ -398,9 +434,9 @@ class BatchForecastingList extends Component {
                                 </Select>
                             </FormControl>
                         </div>
-                        {/*<Button onClick={this._handleSideToggle} variant={'contained'} color={'primary'} disabled={this.state.listData==null}>*/}
-                        {/*<Add></Add> Create*/}
-                        {/*</Button>*/}
+                        <Button onClick={this._handleDownload} variant={'contained'} color={'primary'}>
+                            Export
+                        </Button>
                     </div>
 
                     <div>
@@ -414,7 +450,7 @@ class BatchForecastingList extends Component {
 
                             <br/>
                             <div>
-                                <ProductAggComponent data={this.props.data} />
+                                <ProductAggComponent data={this.props.all} />
                             </div>
                             <div style={{width: '100%'}}>
                                 <DataTables
@@ -439,6 +475,7 @@ class BatchForecastingList extends Component {
 function mapStateToProps(state) {
     return {
         data: state.batch_forecasting.present,
+        all: state.batch_forecasting.all,
         total_count: state.batch_forecasting.all.length,
         currentPage: state.batch_forecasting.currentPage,
         serverPage: state.batch_forecasting.serverPage,
@@ -446,6 +483,8 @@ function mapStateToProps(state) {
         is_fetching: state.batch_forecasting.is_fetching,
         query: state.batch_forecasting.query,
         query_data: state.batch_forecasting.query_data,
+        batch_id: state.batch_forecasting.batch_id,
+        date: state.batch_forecasting.date,
         batches: state.batch.present,
     };
 }
@@ -461,7 +500,8 @@ function mapDispatchToProps(dispatch) {
         actionUpdate: actionUpdateBatchForecasting,
         actionChangeBatchId: actionChangeBatchId,
         actionFetchBatch: actionFetchBatch,
-        actionCleanBatchForecasting: actionCleanBatchForecasting
+        actionCleanBatchForecasting: actionCleanBatchForecasting,
+        actionChangeForecastingDate: actionChangeForecastingDate
     }, dispatch);
 }
 

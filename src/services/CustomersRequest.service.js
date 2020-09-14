@@ -13,6 +13,11 @@ export async function serviceGetCustomers(params) {
     return await postRequest('customers', params);
 }
 
+export async function serviceGetCustomersDownload(params) {
+    return await postRequest('customers/download', params);
+}
+
+
 export async function serviceGetCustomerSubscriptions(params) {
     return await postRequest('customers/subscriptions', params);
 }
@@ -31,6 +36,11 @@ export async function serviceCustomerGetMonthOrders(params) {
 export async function serviceCustomerWalletTransactions(params) {
     return await postRequest('customers/wallet/transactions', params);
 }
+
+export async function serviceCustomerReferred(params) {
+    return await postRequest('customers/referred', params);
+}
+
 export async function serviceCustomerPackageTransaction(params) {
     return await postRequest('customers/package/transactions', params);
 }

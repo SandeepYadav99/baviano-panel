@@ -54,7 +54,6 @@ class OrderList extends Component {
             selected: [],
         };
         this.configFilter = [
-            {label: 'Country', name: 'country', type: 'text'},
             {label: 'City', name: 'city', type: 'text'},
             {label: 'Request Date', name: 'createdAt', type: 'date'},
             {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'ACTIVE']},
@@ -353,29 +352,7 @@ class OrderList extends Component {
                 label: 'GeoTag',
                 sortable: true,
                 // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.geotag_name}</div>,
-            },
-            {
-                key: 'distance',
-                label: 'Est. Distance',
-                sortable: true,
-                // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.distance} Km</div>,
-            },
-            {
-                key: 'total_products',
-                label: 'Total Products',
-                sortable: true,
-                // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.products.length}</div>,
-            },
-
-            {
-                key: 'total_amount',
-                label: 'Total Amount',
-                sortable: true,
-                // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.amount.total}</div>,
+                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.geotag_name} <br/>{all.distance} Km</div>,
             },
             {
                 key: 'status',
@@ -385,10 +362,22 @@ class OrderList extends Component {
                 render: (temp, all) => <div>{this.renderStatus(all)}</div>,
             },
             {
-                key: 'createdAt',
-                label: 'Date',
+                key: 'total_amount',
+                label: 'Subscription',
                 sortable: true,
-                render: (temp, all) => <div>{DateUtils.changeTimezoneFromUtc(all.createdAt)}</div>,
+                // style: { width: '20%'},
+                render: (temp, all) => <div style={{wordBreak:'break-word'}} >Products - {all.products.length} <br/>
+                    Rs. {all.amount.total}
+                </div>,
+            },
+
+            {
+                key: 'payment_mode',
+                label: 'Payment Preference',
+                sortable: true,
+                render: (temp, all) => <div>{all.payment_mode} <br/>
+                    Rs. {all.user.wallet_amount}
+                </div>,
             },
             // {
             //     key: 'start_loc',

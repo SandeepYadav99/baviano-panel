@@ -92,16 +92,16 @@ class Dashboard extends React.Component {
                 <Grid container spacing={3}>
                     <Grid item lg={3} md={4} sm={6} xs={12}>
                         <StatCard
-                            title={'Total Customers'}
-                            value={dashboard.total_customers}
+                            title={'Active/Total Customers'}
+                            value={`${dashboard.active_customers}/${dashboard.total_customers}`}
                             icon={VerifiedUser}
                         ></StatCard>
                     </Grid>
 
                     <Grid item lg={3} md={4} sm={6} xs={12}>
                         <StatCard
-                            title={'Total Orders'}
-                            value={dashboard.total_orders}
+                            title={'Active/Total Orders'}
+                            value={`${dashboard.active_orders}/${dashboard.total_orders}`}
                             icon={ShopIcon}
                         />
                     </Grid>

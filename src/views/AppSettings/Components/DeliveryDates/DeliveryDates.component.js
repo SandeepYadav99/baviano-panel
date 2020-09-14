@@ -28,6 +28,11 @@ const validate = (values) => {
             errors[field] = 'Required'
         }
     });
+    if (!values['order_after']) {
+        errors['order_after'] = 'Required'
+    } else if (values['order_after'] == 0) {
+        errors['order_after'] = 'Order After cannot be 0'
+    }
     return errors
 };
 

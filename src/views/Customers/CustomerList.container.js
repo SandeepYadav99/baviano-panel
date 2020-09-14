@@ -30,6 +30,7 @@ import {
     actionUpdateCustomers
 } from '../../actions/Customers.action';
 import {AddCircle as AddIcon, VerifiedUser as VerifiedIcon, Delete as DeleteIcon} from '@material-ui/icons';
+import {serviceGetCustomersDownload} from "../../services/CustomersRequest.service";
 
 let CreateProvider = null;
 class CustomerList extends Component {
@@ -48,10 +49,10 @@ class CustomerList extends Component {
             showAmountDialog: false,
         };
         this.configFilter = [
-            {label: 'Country', name: 'country', type: 'text'},
             {label: 'City', name: 'city', type: 'text'},
             {label: 'Request Date', name: 'createdAt', type: 'date'},
-            {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'ACTIVE']},
+            {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'ACTIVE', 'SUSPENDED']},
+            {label: 'Verified?', name: 'is_address_verified', type: 'selectObject', custom: { extract: { id: 'id', title: 'name' } } , fields: [{ id: true, name: 'Verified' }, { id: false, name: 'Not Verified' } ]},
         ];
 
         this._handleFilterDataChange = this._handleFilterDataChange.bind(this);
@@ -66,6 +67,7 @@ class CustomerList extends Component {
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleCloseAmountDialog = this._handleCloseAmountDialog.bind(this);
         this._handleSideBarClose = this._handleSideBarClose.bind(this);
+        this._handleDownload = this._handleDownload.bind(this);
     }
 
     componentDidMount() {
@@ -168,7 +170,7 @@ class CustomerList extends Component {
                 </div>
                 <div className={classNames(styles.firstCellInfo, 'openSans')}>
                     <span><strong>{user.name}</strong></span>  <br/>
-                    <span>{user.address.address}</span>
+                    <span title={user.verification_code}>{user.contact}</span>
                 </div>
             </div>
         );
@@ -278,6 +280,17 @@ class CustomerList extends Component {
         })
     }
 
+    async _handleDownload() {
+        const  { sorting_data, query, query_data } = this.props;
+        const req = await serviceGetCustomersDownload({ row: sorting_data.row, order: sorting_data.order, query, query_data });
+        if (!req.error) {
+
+            const data = req.data;
+            window.open(
+                data, "_blank");
+        }
+    }
+
     render() {
         const tableStructure = [
 
@@ -285,7 +298,7 @@ class CustomerList extends Component {
                 key: 'is_address_verified',
                 label: 'V',
                 sortable: true,
-                style: { width: '10px'},
+                style: { width: '10px', backgroundColor: 'inherit'},
                 render: (temp, all) => <div style={{wordBreak:'break-word'}}>{all.is_address_verified && (<VerifiedIcon></VerifiedIcon>)}</div>,
             },
             {
@@ -295,19 +308,43 @@ class CustomerList extends Component {
                 style: { width: '20%'},
                 render: (temp, all) => <div style={{wordBreak:'break-word'}}>{this.renderFirstCell(all)}</div>,
             },{
-                key: 'contact',
-                label: 'Contact',
+                key: 'address',
+                label: 'Address - Slot',
                 sortable: true,
                 style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}}>{this._renderContact(all)}</div>,
+                render: (temp, all) => {
+                    if (all.status != 'PENDING') {
+                        return (<div>
+                        <span>
+                            <a href={"https://www.google.com/maps/search/?api=1&query=" + all.loc.coordinates[1] + ',' + all.loc.coordinates[0]}
+                               target={'_blank'}><div
+                                style={{wordBreak: 'break-word'}}>{all.address.address}, {all.address.area}
+                                <br/>
+                                {all.address.landmark} , {all.address.city}
+                        </div></a>
+                        </span>
+                            <span style={{fontWeight: 'bold'}}>
+                            {all.delivery_slot.unformatted}
+                        </span>
+                        </div>)
+                    } return (<div>N/A</div>)
+                },
             },
             {
-                key: 'packages_pending',
-                label: 'Pending Packages',
+                key: 'geotag_name',
+                label: 'GeoTag',
                 sortable: true,
-                style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.packages_pending}</div>,
+                // style: { width: '20%'},
+                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.geotag_name} <br/>{all.distance} Km</div>,
             },
+
+            // {
+            //     key: 'packages_pending',
+            //     label: 'Pending Packages',
+            //     sortable: true,
+            //     style: { width: '20%'},
+            //     render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.packages_pending}</div>,
+            // },
             // {
             //     key: 'start_loc',
             //     label: 'Start - End Location',
@@ -337,10 +374,13 @@ class CustomerList extends Component {
             },
             {
                 key: 'wallet_balance',
-                label: 'Wallet Balance',
+                label: 'Payment Preference',
                 sortable: true,
-                render: (temp, all) => <div>{all.wallet.amount}</div>,
+                render: (temp, all) => <div>
+                    {all.payment_mode} <br/>
+                    Rs. {all.wallet.amount}</div>,
             },
+
             {
                 key: 'user_id',
                 label: 'Action',
@@ -378,9 +418,9 @@ class CustomerList extends Component {
                 <PageBox>
                     <div className={styles.headerContainer}>
                         <span className={styles.title}>Customers List</span>
-                        {/*<Button onClick={this._handleSideToggle} variant={'contained'} color={'primary'} disabled={this.state.listData==null}>*/}
-                            {/*<Add></Add> Create*/}
-                        {/*</Button>*/}
+                        <Button onClick={this._handleDownload} variant={'contained'} color={'primary'}>
+                            Export
+                        </Button>
                     </div>
 
                     <div>

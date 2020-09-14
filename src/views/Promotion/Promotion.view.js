@@ -11,7 +11,7 @@ import {
     renderOutlinedTextField,
     renderOutlinedSelectField,
     renderFileField,
-    renderOutlinedMultipleSelectField
+    renderOutlinedMultipleSelectField, renderDatePicker
 } from '../../libs/redux-material.utils';
 import EventEmitter from "../../libs/Events.utils";
 import {CountryPhone} from '../../components/index.component';
@@ -272,7 +272,7 @@ class Promotion extends Component {
                         <div className={''} style={{ margin: '0px 20px'}}>
                             <Field
                                 max_size={2 * 1024 * 1024}
-                                type={['jpg', 'png', 'pdf']}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
                                 fullWidth={true}
                                 name="image"
                                 component={renderFileField}
@@ -289,8 +289,16 @@ class Promotion extends Component {
                                    label="Promotion Title"/>
                         </div>
                     </div>
-
                     <br/>
+                    <div className="formFlex">
+                            <div className={'formGroup'}>
+                                <Field fullWidth={true} name="description" component={renderOutlinedTextField}
+                                       margin={'dense'}
+                                       multiline
+                                       rows={3}
+                                       label="Promotion Description"/>
+                            </div>
+                    </div>
                     <div className={'formFlex'}>
                         <div className={'formGroup'}>
                             <Field
@@ -303,13 +311,23 @@ class Promotion extends Component {
                                 onChange={this._handleType}
                             >
                                 <MenuItem value={'GENERAL'}>General</MenuItem>
-                                <MenuItem value={'CATEGORY'}>Category</MenuItem>
+                                <MenuItem value={'OTHER'}>Other</MenuItem>
                             </Field>
                         </div>
 
-                        <div className={'formGroup'}>
-                            {this._renderTypeRef()}
+                        <div className="formGroup">
+                            <Field fullWidth={true}
+                                   name="start_date"
+                                   component={renderDatePicker}
+                                   margin={'dense'}
+                                   label="Date"
+                                   ampm={false}
+                                   minDate={new Date()}
+                            />
                         </div>
+                        {/*<div className={'formGroup'}>*/}
+                        {/*    {this._renderTypeRef()}*/}
+                        {/*</div>*/}
                     </div>
 
                     <div className={'formFlex'}>

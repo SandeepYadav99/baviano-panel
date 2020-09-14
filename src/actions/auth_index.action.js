@@ -6,6 +6,9 @@ import { browserHistory } from 'react-router';
 import { setAuthorizationToken } from '../libs/set_auth_token.utils';
 import history from '../libs/history.utils';
 import {serviceGetProfile} from "../services/index.services";
+import store from "../store";
+import {actionGetDashboard} from "./Dashboard.action";
+import {actionGetAppSettings} from "./AppSettings.action";
 
 
 export const AUTH_USER = 'AUTH_USER';
@@ -21,6 +24,8 @@ export function actionLoginUser(data) {
             localStorage.setItem('user', JSON.stringify({ name: data.name,  id: data.user_id }));
             setAuthorizationToken(data.token);
             dispatch({ type: AUTH_USER, payload: { token: data.token, name: data.name, id: data.user_id } });
+            store.dispatch(actionGetDashboard());
+            store.dispatch(actionGetAppSettings());
             // dispatch(actionGetProfile());
             history.push(`/dashboard`);
         }

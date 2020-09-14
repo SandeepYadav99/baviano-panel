@@ -12,6 +12,8 @@ import CouponList from './component/coupons/CouponsList.component';
 import Constants from "../../config/constants";
 import RejectDialog from "./component/rejectdialog/RejectDialog.component";
 import OrderCalendarComponent from "./component/OrderCalendar/OrderCalendar.component";
+import ReferredComponent from './component/ReferredData/ReferredList.component';
+
 
 class CustomerInfo extends Component{
     constructor(props){
@@ -138,6 +140,14 @@ class CustomerInfo extends Component{
                                 {data.country_code}-{data.contact}
                             </div>
                         </div>
+                        <div className="formGroup">
+                            {data.refer_code && (<div>
+                                <label>Refer Code</label>
+                                <div>
+                                    {data.refer_code}
+                                </div>
+                            </div>)}
+                        </div>
                     </div>
 
                     <div className={'formFlex'}>
@@ -180,7 +190,6 @@ class CustomerInfo extends Component{
                     </div>
                     <div className={'formFlex'}>
                         <div className={'formGroup'}>
-                            <label>Subscriptions</label>
                             <div>
                                 <SubscriptionList userId={data.id}/>
                             </div>
@@ -200,6 +209,13 @@ class CustomerInfo extends Component{
                                                      pending={data.packages_pending} userId={data.id}/>
                         </div>
                     </div>
+                    <div className={'formFlex'}>
+                        <div className={'formGroup'}>
+                            <label>Referred List</label>
+                            <ReferredComponent userId={data.id}/>
+                        </div>
+                    </div>
+
 
 
                     <div className={'formFlex'}>

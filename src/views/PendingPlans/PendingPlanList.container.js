@@ -52,7 +52,6 @@ class OrderList extends Component {
             selected: [],
         };
         this.configFilter = [
-            {label: 'Country', name: 'country', type: 'text'},
             {label: 'City', name: 'city', type: 'text'},
             {label: 'Request Date', name: 'createdAt', type: 'date'},
             {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'ACTIVE']},
