@@ -139,7 +139,7 @@ class ContactView extends Component {
                                 <div>
                                     <Field
                                         max_size={1024 * 1024 * 5}
-                                        type={['jpg', 'png', 'pdf']}
+                                        type={['jpg', 'png', 'pdf', 'jpeg']}
                                         fullWidth={true}
                                         name="company_logo"
                                         component={renderFileField}

@@ -162,7 +162,7 @@ class LoginView extends Component {
                 </div>
                 <div className={styles.loginFlex2}>
                     <div style={{textAlign:'center',marginBottom:'40px'}}>
-                        <img src={require('../../assets/img/logo.png')}/>
+                        <img style={{ height: '100px' }} src={require('../../assets/img/logo.png')}/>
                     </div>
                     <br/>
                     <h1 className={styles.headingText}>Login</h1>

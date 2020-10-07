@@ -27,6 +27,7 @@ import GeofenceReducer from './Geofence.reducer';
 import VerificationReducer from './Verification.reducer';
 import BatchJobReducer from './BatchJob.reducer';
 import AcceptedOrderReducer from './AcceptedOrder.reducer';
+import MinBalanceReducer from './MinBalance.reducer';
 
 const rootReducer = combineReducers({
     state: (state = {}) => state,
@@ -53,7 +54,8 @@ const rootReducer = combineReducers({
     batch_forecasting: BatchForecastingReducer,
     geofence: GeofenceReducer,
     verification: VerificationReducer,
-    batch_job: BatchJobReducer
+    batch_job: BatchJobReducer,
+    min_balance: MinBalanceReducer
     // form: formReducer,
 });
 

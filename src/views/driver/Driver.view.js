@@ -267,7 +267,7 @@ class Driver extends Component {
                             <div className={''} style={{marginLeft: '15px', marginRight: '20px'}}>
                                 <Field
                                     max_size={1024 * 1024 * 5}
-                                    type={['jpg', 'png', 'pdf']}
+                                    type={['jpg', 'png', 'pdf', 'jpeg']}
                                     fullWidth={true}
                                     name="user_image"
                                     component={renderFileField}

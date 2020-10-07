@@ -116,6 +116,7 @@ class UserSubscriptions extends Component {
                                     <TableRow>
                                         <TableCell component="th" scope="row">
                                             {row.product_name} {row.is_trial ? ' - (Trial)' : ''}
+                                            <br/><strong>{row.is_order_updated ? 'Updated Plan' : ''}</strong>
                                         </TableCell>
                                         <TableCell align="right">{this._renderDeliveryData(row)}</TableCell>
                                         <TableCell align="right">{row.quantity * row.unit_step} {row.unit}</TableCell>
@@ -147,6 +148,7 @@ class UserSubscriptions extends Component {
                                     <TableRow>
                                         <TableCell component="th" scope="row">
                                             {row.product_name} {row.is_trial ? ' - (Trial)' : ''}
+
                                         </TableCell>
                                         <TableCell align="right">{this._renderDeliveryData(row, true)}</TableCell>
                                         <TableCell align="right">{row.quantity * row.unit_step} {row.unit}</TableCell>

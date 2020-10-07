@@ -104,7 +104,7 @@ class OrderCalendarComponent extends Component {
         const { events } = this.state;
         const localizer = momentLocalizer(moment);
         return (
-            <div>
+            <div style={{ background: 'white', color: 'black' }}>
                 <Calendar
                     views={[Views.MONTH]}
                     components={{

@@ -265,6 +265,18 @@ class DriverList extends Component {
                 render: (temp, all) => <div>{all.address}</div>,
             },
             {
+                key: 'refer_code',
+                label: 'Refer Code',
+                sortable: true,
+                render: (temp, all) => <div>{all.refer_code}</div>,
+            },
+            {
+                key: 'wallet',
+                label: 'Wallet',
+                sortable: true,
+                render: (temp, all) => <div>Wallet: {all.wallet} <br/>Refer: {all.refer_amount}</div>,
+            },
+            {
                 key: 'createdAt',
                 label: 'Date',
                 sortable: true,

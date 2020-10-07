@@ -262,7 +262,7 @@ class Vehicle extends Component {
                         <div className={'formGroup'}>
                             <Field
                                 max_size={1024 * 1024 * 2}
-                                type={['jpg', 'png', 'pdf']}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
                                 fullWidth={true}
                                 name="vehicle_docs"
                                 multiple
@@ -285,7 +285,7 @@ class Vehicle extends Component {
                         <div className={'formGroup'} style={{ textAlign: 'center' }}>
                             <Field
                                 max_size={1024 * 1024 * 5}
-                                type={['jpg', 'png', 'pdf']}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
                                 fullWidth={true}
                                 name="vehicle_front"
                                 component={renderFileField}
@@ -297,7 +297,7 @@ class Vehicle extends Component {
                         <div className={'formGroup'} style={{ textAlign: 'center' }}>
                             <Field
                                 max_size={1024 * 1024 * 5}
-                                type={['jpg', 'png', 'pdf']}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
                                 fullWidth={true}
                                 name="vehicle_rear"
                                 component={renderFileField}
@@ -309,7 +309,7 @@ class Vehicle extends Component {
                         <div className={'formGroup'} style={{ textAlign: 'center' }}>
                             <Field
                                 max_size={1024 * 1024 * 5}
-                                type={['jpg', 'png', 'pdf']}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
                                 fullWidth={true}
                                 name="vehicle_side"
                                 component={renderFileField}
@@ -321,7 +321,7 @@ class Vehicle extends Component {
                         <div className={'formGroup'} style={{ textAlign: 'center' }}>
                             <Field
                                 max_size={1024 * 1024 * 5}
-                                type={['jpg', 'png', 'pdf']}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
                                 fullWidth={true}
                                 name="vehicle_plate"
                                 component={renderFileField}

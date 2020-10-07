@@ -162,7 +162,7 @@ class KYC extends Component{
                         <div className={'formGroup'}>
                             <Field
                                 max_size={1024*1024*5}
-                                type={['jpg', 'png', 'pdf']}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
                                 fullWidth={true}
                                 name="kyc_proof"
                                 component={renderFileField}

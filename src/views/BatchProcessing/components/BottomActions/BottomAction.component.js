@@ -8,6 +8,7 @@ import {Bookmark, BookmarkBorder, Check, AddCircle as AddIcon} from "@material-u
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Field, reduxForm} from "redux-form";
+import moment from 'moment';
 import {
     renderOutlinedSelectField,
     renderOutlinedTextField,
@@ -65,6 +66,8 @@ class BottomDriverAction extends Component{
 
     _handleSubmit(tData) {
         const { batch_id } = this.props;
+        const time = moment(tData.taken_time);
+        tData.taken_time = time.format('HH:mm');
         this.props.handleAssign({...tData, batch_id: batch_id});
     }
 

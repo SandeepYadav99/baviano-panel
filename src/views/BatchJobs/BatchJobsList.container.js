@@ -61,10 +61,10 @@ class BatchJobList extends Component {
             driver_name: '',
         };
         this.configFilter = [
-            {label: 'Country', name: 'country', type: 'text'},
-            {label: 'City', name: 'city', type: 'text'},
+            // {label: 'Country', name: 'country', type: 'text'},
+            // {label: 'City', name: 'city', type: 'text'},
             {label: 'Request Date', name: 'createdAt', type: 'date'},
-            {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'ACTIVE']},
+            {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'COMPLETED', 'REJECTED', 'IN_PROCESS']},
         ];
 
         this._handleFilterDataChange = this._handleFilterDataChange.bind(this);

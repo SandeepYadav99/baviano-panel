@@ -14,6 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {Button, CircularProgress} from "@material-ui/core";
 import {serviceGetBatchJobDetail} from "../../../../services/BatchJob.service";
+import styles from "../../../BatchProcessing/styles.module.css";
 
 const useStyles = {
     table: {
@@ -50,6 +51,15 @@ class PackageTransaction extends Component {
 
     }
 
+    _renderProducts(products) {
+        return products.map((val) => {
+            return (<div className={styles.productInfo1}>
+                <span className={styles.productName1}>{val.name}</span>
+                <span
+                    className={styles.productQty1}> {parseFloat(val.qty * val.unit_step).toFixed(2)} {val.unit} = Rs.{parseFloat(val.qty * val.price).toFixed(2)} </span>
+            </div>)
+        })
+    }
 
 
     render() {
@@ -74,8 +84,9 @@ class PackageTransaction extends Component {
                                 <TableRow>
                                     <TableCell>Order No</TableCell>
                                     <TableCell align="right">User</TableCell>
+                                    <TableCell align="right">Products</TableCell>
                                     <TableCell align="right">Status</TableCell>
-                                    {/*<TableCell align="right">Duration</TableCell>*/}
+                                    <TableCell align="right">Image</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -85,9 +96,20 @@ class PackageTransaction extends Component {
                                             {row.order_no}
                                         </TableCell>
                                         <TableCell align="right">{row.user.name} <br/>{row.user.contact}</TableCell>
+
+                                        <TableCell style={{ width: '30%' }} align="right">
+                                            {this._renderProducts(row.products)}
+                                        </TableCell>
                                         <TableCell align="right">
                                             {row.status}
                                         </TableCell>
+                                        <TableCell align="right">
+                                            <a href={row.delivery_image} target={'_blank'}>
+                                                <img src={row.delivery_image} style={{ width: '50px' }}  alt=""/>
+                                            </a>
+                                        </TableCell>
+
+
                                         {/*<TableCell align="right">*/}
                                         {/*    {row.duration} Hr.*/}
                                         {/*</TableCell>*/}

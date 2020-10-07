@@ -18,22 +18,18 @@ import styles from './styles.module.css';
 import DataTables from '../../Datatables/Datatable.table';
 import Constants from '../../config/constants';
 import FilterComponent from '../../components/Filter/Filter.component';
-import AmountDialog from './component/wallet/AddDialog.componet';
 import {
-    actionFetchCustomers,
-    actionChangePageCustomers,
-    actionChangeStatusCustomers,
-    actionFilterCustomers,
-    actionResetFilterCustomers,
-    actionSetPageCustomers,
-    actionCreateCustomers,
-    actionUpdateCustomers
-} from '../../actions/Customers.action';
+    actionFetchMinBalance,
+    actionFilterMinBalance,
+    actionResetFilterMinBalance,
+    actionSetPageMinBalance,
+
+} from '../../actions/MinBalance.action';
 import {AddCircle as AddIcon, VerifiedUser as VerifiedIcon, Delete as DeleteIcon} from '@material-ui/icons';
-import {serviceGetCustomersDownload} from "../../services/CustomersRequest.service";
+// import {serviceGetMinBalanceDownload} from "../../services/MinBalanceRequest.service";
 
 let CreateProvider = null;
-class CustomerList extends Component {
+class MinBalanceList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -49,11 +45,11 @@ class CustomerList extends Component {
             showAmountDialog: false,
         };
         this.configFilter = [
-            {label: 'City', name: 'city', type: 'text'},
+            // {label: 'City', name: 'city', type: 'text'},
             {label: 'Request Date', name: 'createdAt', type: 'date'},
-            {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'ACTIVE', 'SUSPENDED']},
-            {label: 'Verified?', name: 'is_address_verified', type: 'selectObject', custom: { extract: { id: 'id', title: 'name' } } , fields: [{ id: true, name: 'Verified' }, { id: false, name: 'Not Verified' } ]},
-            {label: 'Pending Pack.', name: 'pending_packages', type: 'select', fields: ['Yes', 'No']},
+            {label: 'PayMode', name: 'payment_mode', type: 'select', fields: ['COD', 'WALLET']},
+            // {label: 'Status', name: 'status', type: 'select', fields: ['PENDING', 'ACTIVE', 'SUSPENDED']},
+            // {label: 'Verified?', name: 'is_address_verified', type: 'selectObject', custom: { extract: { id: 'id', title: 'name' } } , fields: [{ id: true, name: 'Verified' }, { id: false, name: 'Not Verified' } ]},
         ];
 
         this._handleFilterDataChange = this._handleFilterDataChange.bind(this);
@@ -66,7 +62,6 @@ class CustomerList extends Component {
         this._handleEdit = this._handleEdit.bind(this);
         this._handleChangeStatus = this._handleChangeStatus.bind(this);
         this._handleDataSave = this._handleDataSave.bind(this);
-        this._handleCloseAmountDialog = this._handleCloseAmountDialog.bind(this);
         this._handleSideBarClose = this._handleSideBarClose.bind(this);
         this._handleDownload = this._handleDownload.bind(this);
     }
@@ -198,25 +193,25 @@ class CustomerList extends Component {
     }
 
     _renderCreateForm () {
-        if (CreateProvider == null) {
-            // import CreateProvider from './Create.container';
-            CreateProvider = require('./Customer.container').default;
-        }
-        if (this.state.side_panel) {
-            const { id } = this.props.match.params;
-            return (<CreateProvider data={this.state.edit_data}
-                                    listData={this.state.listData}
-                                    changeStatus={this._handleChangeStatus}
-                                    handleClose={this._handleSideBarClose}
-                                    handleDataSave={this._handleDataSave}></CreateProvider>);
-        } return null;
+        // if (CreateProvider == null) {
+        //     // import CreateProvider from './Create.container';
+        //     CreateProvider = require('./MinBalance.container').default;
+        // }
+        // if (this.state.side_panel) {
+        //     const { id } = this.props.match.params;
+        //     return (<CreateProvider data={this.state.edit_data}
+        //                             listData={this.state.listData}
+        //                             changeStatus={this._handleChangeStatus}
+        //                             handleClose={this._handleSideBarClose}
+        //                             handleDataSave={this._handleDataSave}></CreateProvider>);
+        // } return null;
     }
     _handleChangeStatus(data) {
-        this.props.actionChangeStatus({...data});
-        this.setState({
-            side_panel: !this.state.side_panel,
-            edit_data: null,
-        });
+        // this.props.actionChangeStatus({...data});
+        // this.setState({
+        //     side_panel: !this.state.side_panel,
+        //     edit_data: null,
+        // });
     }
 
     _handleDataSave(data, type) {
@@ -268,12 +263,6 @@ class CustomerList extends Component {
             }}>{isOrder ? 'Subscribed' : 'Not Subscribed'}</span>);
     }
 
-    _handleCloseAmountDialog () {
-        this.setState({
-            userId: null,
-            showAmountDialog: false,
-        })
-    }
     _handleAddAmount(userId) {
         this.setState({
             userId: userId,
@@ -282,14 +271,14 @@ class CustomerList extends Component {
     }
 
     async _handleDownload() {
-        const  { sorting_data, query, query_data } = this.props;
-        const req = await serviceGetCustomersDownload({ row: sorting_data.row, order: sorting_data.order, query, query_data });
-        if (!req.error) {
-
-            const data = req.data;
-            window.open(
-                data, "_blank");
-        }
+        // const  { sorting_data, query, query_data } = this.props;
+        // const req = await serviceGetMinBalanceDownload({ row: sorting_data.row, order: sorting_data.order, query, query_data });
+        // if (!req.error) {
+        //
+        //     const data = req.data;
+        //     window.open(
+        //         data, "_blank");
+        // }
     }
 
     render() {
@@ -339,13 +328,13 @@ class CustomerList extends Component {
                 render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.geotag_name} <br/>{all.distance} Km</div>,
             },
 
-            {
-                key: 'packages_pending',
-                label: 'Pending Packages',
-                sortable: true,
-                // style: { width: '20%'},
-                render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.packages_pending}</div>,
-            },
+            // {
+            //     key: 'packages_pending',
+            //     label: 'Pending Packages',
+            //     sortable: true,
+            //     style: { width: '20%'},
+            //     render: (temp, all) => <div style={{wordBreak:'break-word'}} >{all.packages_pending}</div>,
+            // },
             // {
             //     key: 'start_loc',
             //     label: 'Start - End Location',
@@ -368,32 +357,39 @@ class CustomerList extends Component {
                 render: (temp, all) => <div>{this.renderStatus(all.status)}</div>,
             },
             {
-                key: 'subscription',
-                label: 'Subscription',
-                sortable: true,
-                render: (temp, all) => <div>{this._renderSubscription(all.is_order)}</div>,
-            },
-            {
                 key: 'wallet_balance',
                 label: 'Payment Preference',
                 sortable: true,
                 render: (temp, all) => <div>
                     {all.payment_mode} <br/>
-                    Rs. {all.wallet.amount}</div>,
+                    <strong>Rs. {all.wallet.amount}</strong></div>,
+            },
+            {
+                key: 'min_balance_required',
+                label: 'Min Balance Req.',
+                sortable: true,
+                render: (temp, all) => <div>{all.min_balance_required}</div>,
+            },
+            {
+                key: 'order_monthly_price',
+                label: 'Monthly Price',
+                sortable: true,
+                render: (temp, all) => <div>{all.order_monthly_price}</div>,
             },
 
-            {
-                key: 'user_id',
-                label: 'Action',
-                render: (temp, all) => (<div>
-                    <IconButton variant={'contained'}
-                                onClick={this._handleAddAmount.bind(this, all.id)}
-                                type="button">
-                        <AddIcon />
-                    </IconButton>
-                    <Button onClick={this._handleEdit.bind(this, all)}>Info</Button>
-                </div>),
-            },
+
+            // {
+            //     key: 'user_id',
+            //     label: 'Action',
+            //     render: (temp, all) => (<div>
+            //         <IconButton variant={'contained'}
+            //                     onClick={this._handleAddAmount.bind(this, all.id)}
+            //                     type="button">
+            //             <AddIcon />
+            //         </IconButton>
+            //         <Button onClick={this._handleEdit.bind(this, all)}>Info</Button>
+            //     </div>),
+            // },
 
 
         ];
@@ -418,10 +414,10 @@ class CustomerList extends Component {
             <div>
                 <PageBox>
                     <div className={styles.headerContainer}>
-                        <span className={styles.title}>Customers List</span>
-                        <Button onClick={this._handleDownload} variant={'contained'} color={'primary'}>
-                            Export
-                        </Button>
+                        <span className={styles.title}>MinBalance List</span>
+                        {/*<Button onClick={this._handleDownload} variant={'contained'} color={'primary'}>*/}
+                        {/*    Export*/}
+                        {/*</Button>*/}
                     </div>
 
                     <div>
@@ -445,14 +441,9 @@ class CustomerList extends Component {
                 </PageBox>
                 <SidePanelComponent
                     handleToggle={this._handleSideToggle}
-                    title={'Customers '} open={this.state.side_panel} side={'right'}>
+                    title={'MinBalance '} open={this.state.side_panel} side={'right'}>
                     {this._renderCreateForm()}
                 </SidePanelComponent>
-                <AmountDialog
-                    userId={this.state.userId}
-                    open={this.state.showAmountDialog}
-                    handleClose={this._handleCloseAmountDialog}
-                />
             </div>
         )
     }
@@ -460,27 +451,24 @@ class CustomerList extends Component {
 
 function mapStateToProps(state) {
     return {
-        data: state.customers.present,
-        total_count: state.customers.all.length,
-        currentPage: state.customers.currentPage,
-        serverPage: state.customers.serverPage,
-        sorting_data: state.customers.sorting_data,
-        is_fetching: state.customers.is_fetching,
-        query: state.customers.query,
-        query_data: state.customers.query_data,
+        data: state.min_balance.present,
+        total_count: state.min_balance.all.length,
+        currentPage: state.min_balance.currentPage,
+        serverPage: state.min_balance.serverPage,
+        sorting_data: state.min_balance.sorting_data,
+        is_fetching: state.min_balance.is_fetching,
+        query: state.min_balance.query,
+        query_data: state.min_balance.query_data,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        actionFetchData: actionFetchCustomers,
-        actionSetPage: actionSetPageCustomers,
-        actionResetFilter: actionResetFilterCustomers,
-        actionSetFilter: actionFilterCustomers,
-        actionChangeStatus: actionChangeStatusCustomers,
-        actionCreate: actionCreateCustomers,
-        actionUpdate: actionUpdateCustomers
+        actionFetchData: actionFetchMinBalance,
+        actionSetPage: actionSetPageMinBalance,
+        actionResetFilter: actionResetFilterMinBalance,
+        actionSetFilter: actionFilterMinBalance,
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerList);
+export default connect(mapStateToProps, mapDispatchToProps)(MinBalanceList);

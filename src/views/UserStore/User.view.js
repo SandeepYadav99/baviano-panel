@@ -242,7 +242,7 @@ class ProviderUser extends Component {
                         <div className={''} style={{marginRight: '20px'}}>
                             <Field
                                 max_size={2 * 1024 * 1024}
-                                type={['jpg', 'png', 'pdf']}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
                                 fullWidth={true}
                                 name="image"
                                 component={renderFileField}
