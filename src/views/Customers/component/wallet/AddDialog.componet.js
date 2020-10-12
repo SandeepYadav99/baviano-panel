@@ -18,7 +18,7 @@ function Transition(props) {
 }
 
 const validate = (values) => {
-    const requiredFields = ['amount'];
+    const requiredFields = ['amount', 'note'];
     const errors = {};
     requiredFields.forEach(field => {
         if (!values[field] && values[field] != 0) {
@@ -49,6 +49,7 @@ class AddAmountDialog extends Component {
             });
         }
         this.props.handleClose();
+        this.props.reset();
     }
 
     render() {
@@ -79,6 +80,17 @@ class AddAmountDialog extends Component {
                                        margin={'dense'}
                                        type={'number'}
                                        label="Amount"
+                                />
+                            </div>
+                        </div>
+                        <div className={'formFlex'}>
+                            <div className={'formGroup'}>
+                                <Field fullWidth={true}
+                                       name="note"
+                                       component={renderOutlinedTextField}
+                                       margin={'dense'}
+                                       type={'text'}
+                                       label="Note"
                                 />
                             </div>
                         </div>

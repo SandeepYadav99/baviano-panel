@@ -3,6 +3,7 @@
  */
 import React, {Component} from 'react';
 import {Button, MenuItem, withStyles, FormControlLabel, Switch,IconButton} from '@material-ui/core';
+import { Delete as DeleteIcon } from '@material-ui/icons';
 import {Field, reduxForm} from 'redux-form'
 import {connect} from 'react-redux';
 import {
@@ -10,6 +11,11 @@ import {
 } from '../../../../libs/redux-material.utils';
 import EventEmitter from "../../../../libs/Events.utils";
 import styles from '../../Style.module.css';
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
 import {bindActionCreators} from "redux";
 
 let requiredFields = [];
@@ -22,11 +28,6 @@ const validate = (values) => {
             errors[field] = 'Required'
         }
     });
-    if (!values['order_after']) {
-        errors['order_after'] = 'Required'
-    } else if (values['order_after'] == 0) {
-        errors['order_after'] = 'Order After cannot be 0'
-    }
     return errors
 };
 
@@ -43,7 +44,7 @@ class MinValue extends Component {
     componentDidMount() {
         const {data} = this.props;
         if (data) {
-            requiredFields = ['order_after'];
+            requiredFields = ['delivery_amount'];
             Object.keys(data).forEach((val) => {
                 if (['status'].indexOf(val) == -1) {
                     const temp = data[val];
@@ -51,7 +52,7 @@ class MinValue extends Component {
                 }
             });
         } else {
-            requiredFields = ['order_after'];
+            requiredFields = ['delivery_amount'];
         }
     }
 
@@ -70,17 +71,18 @@ class MinValue extends Component {
         return (
             <div>
                 <div className={styles.headerFlex}>
-                    <h2>Order After Sign-up (In Days)</h2>
+                    <h2>Payout Per Delivery</h2>
                 </div>
                 <hr/>
                 <form onSubmit={handleSubmit(this._handleSubmit)}>
                     <div className={'formFlex'}>
                         <div className={'formGroup'}>
-                            <Field fullWidth={true} name="order_after" component={renderOutlinedTextField}
+                            <Field fullWidth={true} name="delivery_amount" component={renderOutlinedTextField}
                                    margin={'dense'}
                                    type={'number'}
-                                   label="Order After (Days)"/>
+                                   label="Amount Per Delivery"/>
                         </div>
+
                     </div>
 
 

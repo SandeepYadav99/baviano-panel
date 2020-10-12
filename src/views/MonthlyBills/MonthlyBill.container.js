@@ -15,7 +15,7 @@ import OrderCalendarComponent from "./component/OrderCalendar/OrderCalendar.comp
 import ReferredComponent from './component/ReferredData/ReferredList.component';
 
 
-class CustomerInfo extends Component{
+class MonthlyBills extends Component{
     constructor(props){
         super(props);
 
@@ -303,4 +303,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({}, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)((withStyles(useStyle, {withTheme: true})(CustomerInfo)));
+export default connect(mapStateToProps, mapDispatchToProps)((withStyles(useStyle, {withTheme: true})(MonthlyBills)));

@@ -25,6 +25,10 @@ export async function serviceUpdateReferAmount(params) {
     return await postRequest('app/settings/refer/amount', params);
 }
 
+export async function serviceUpdateDriverPayout(params) {
+    return await postRequest('/app/settings/driver/payout', params);
+}
+
 export async function serviceGetHeatMapUsers(params) {
     return await postRequest('heatmap/users', params);
 }

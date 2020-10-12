@@ -21,13 +21,13 @@ export function actionLoginUser(data) {
     return (dispatch) => {
         if (data) {
             localStorage.setItem('jwt_token', data.token);
-            localStorage.setItem('user', JSON.stringify({ name: data.name,  id: data.user_id }));
+            localStorage.setItem('user', JSON.stringify({ name: data.name,  id: data.user_id, role: data.role }));
             setAuthorizationToken(data.token);
-            dispatch({ type: AUTH_USER, payload: { token: data.token, name: data.name, id: data.user_id } });
+            dispatch({ type: AUTH_USER, payload: { token: data.token, name: data.name, id: data.user_id, role: data.role } });
             store.dispatch(actionGetDashboard());
             store.dispatch(actionGetAppSettings());
             // dispatch(actionGetProfile());
-            history.push(`/dashboard`);
+            history.push(`/`);
         }
     };
     // return ({type: AUTH_USER, payload: data});

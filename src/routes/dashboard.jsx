@@ -1,8 +1,6 @@
 import DashboardPage from "../views/dashboard/Dashboard";
 import CategoryList from "../views/Category/CategoryList.container";
-import Individual from '../views/Individualinfo/Individual.view';
-import Vehicles from '../views/Vehicle/VehiclesList.container'
-import Tour from '../views/Tour/TourList.container'
+import Constants from '../config/constants';
 import UnitList from '../views/Unit/UnitList.container';
 import ProductList from '../views/Product/ProductList.container'
 import UserList from '../views/UserStore/UserList.container'
@@ -20,6 +18,7 @@ import GeofenceList from '../views/Geofences/GeofenceList.container';
 import VerificationList from '../views/Verification/VerificationList.container';
 import BatchJobList from '../views/BatchJobs/BatchJobsList.container';
 import MinBalanceList from "../views/MinBalance/MinBalanceList.container";
+import MonthlyBillsList from "../views/MonthlyBills/MonthlyBillsList.container";
 // import TableList from "views/TableList/TableList.jsx";
 // import Typography from "views/Typography/Typography.jsx";
 // import Icons from "views/Icons/Icons.jsx";
@@ -35,6 +34,7 @@ import {
     Notifications
 } from "@material-ui/icons";
 
+const roles = Constants.ROLES;
 const dashboardRoutes = [
     {
         path: "/",
@@ -43,6 +43,7 @@ const dashboardRoutes = [
         icon: Dashboard,
         component: DashboardPage,
         is_sidebar: true,
+        roles: [roles.ALL]
     },
     {
         path: "/customers",
@@ -52,6 +53,7 @@ const dashboardRoutes = [
         component: CustomerList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.ALL]
     },
     {
         path: "/low/balance",
@@ -61,6 +63,7 @@ const dashboardRoutes = [
         component: MinBalanceList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.ALL]
     },
 
     {
@@ -71,6 +74,7 @@ const dashboardRoutes = [
         component: VerificationList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.ALL]
     },
 
     {
@@ -81,6 +85,7 @@ const dashboardRoutes = [
         component: OrderList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO, roles.MANAGER]
     },
 
     {
@@ -91,6 +96,7 @@ const dashboardRoutes = [
         component: AcceptedOrderList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO, roles.MANAGER]
     },
     {
         path: "/batch/forecasting",
@@ -100,6 +106,7 @@ const dashboardRoutes = [
         component: BatchForecasting,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO, roles.MANAGER]
     },
     {
         path: "/batch/processing",
@@ -109,6 +116,7 @@ const dashboardRoutes = [
         component: BatchProcessing,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO, roles.MANAGER]
     },
     {
         path: "/batch/jobs",
@@ -118,6 +126,7 @@ const dashboardRoutes = [
         component: BatchJobList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO, roles.MANAGER]
     },
     {
         path: "/driver",
@@ -127,6 +136,7 @@ const dashboardRoutes = [
         component: DriverList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO, roles.MANAGER]
     },
     {
         path: "/products",
@@ -136,6 +146,7 @@ const dashboardRoutes = [
         component: ProductList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO]
     },
     {
         path: "/categories",
@@ -145,6 +156,7 @@ const dashboardRoutes = [
         component: CategoryList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO]
     },
     {
         path: "/units",
@@ -154,6 +166,7 @@ const dashboardRoutes = [
         component: UnitList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO]
     },
     {
         path: "/coupons",
@@ -163,6 +176,7 @@ const dashboardRoutes = [
         component: CouponList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO]
     },
 
     {
@@ -173,6 +187,7 @@ const dashboardRoutes = [
         component: PromotionList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO]
     },
     {
         path: "/users",
@@ -182,6 +197,7 @@ const dashboardRoutes = [
         component: UserList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO]
     },
 
     {
@@ -192,6 +208,7 @@ const dashboardRoutes = [
         component: GeofenceList,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO]
     },
 
     {
@@ -202,7 +219,19 @@ const dashboardRoutes = [
         component: AppSettings,
         is_sidebar: true,
         is_protect: true,
+        roles: [roles.CEO]
     },
+    {
+        path: "/monthly/bills",
+        sidebarName: "Monthly Bills",
+        navbarName: "Monthly Bills",
+        icon: Dashboard,
+        component: MonthlyBillsList,
+        is_sidebar: true,
+        is_protect: true,
+        roles: [roles.CEO, roles.MANAGER]
+    },
+
 
 
     // {

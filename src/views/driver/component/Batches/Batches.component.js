@@ -68,7 +68,7 @@ class PackageTransaction extends Component {
         const {data, isCalling} = this.state;
         if (!isCalling) {
             return (
-                <div style={{ marginTop: '60px', padding: '10px' }}>
+                <div style={{ marginTop: '20px', padding: '10px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <div>
                     <label style={{

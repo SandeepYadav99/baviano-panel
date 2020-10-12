@@ -72,7 +72,7 @@ class App extends React.Component {
     _switchRoutes() {
         const tempRoutes = [];
         dashboardRoutes.forEach((prop, key) => {
-            if (this.props.user_profile.is_verified || !prop.is_protect) {
+            if ((this.props.user_profile.is_verified || !prop.is_protect) && (prop.roles.indexOf('ALL') || prop.roles.indexOf(this.props.user.role))) {
                 tempRoutes.push(<CustomRouter is_protect={prop.is_protect} private exact path={prop.path}
                                               component={prop.component} desktopComponent={prop.desktopComponent}
                                               key={key}
@@ -86,7 +86,7 @@ class App extends React.Component {
 
     _sideBarRoutes() {
         return dashboardRoutes.filter((val, index) => {
-            if (this.props.user_profile.is_verified || !val.is_protect) {
+            if ((this.props.user_profile.is_verified || !val.is_protect) && (val.roles.indexOf('ALL') > -1 || val.roles.indexOf(this.props.user.role) > -1)) {
                 return true;
             }
         })
@@ -134,6 +134,7 @@ App.propTypes = {
 function mapStateToProps(state) {
     return {
         user_profile: state.auth.user_profile,
+        user: state.auth.user
     };
 }
 

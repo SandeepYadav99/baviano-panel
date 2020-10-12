@@ -300,7 +300,8 @@ class ProviderUser extends Component {
                                    margin={'dense'}
                                    label="User Role">
                                 <MenuItem value={'MANAGER'}>Manager</MenuItem>
-                                <MenuItem value={'OWNER'}>Owner</MenuItem>
+                                <MenuItem value={'CUSTOMER_CARE'}>Customer Care</MenuItem>
+                                <MenuItem value={'CEO'}>CEO</MenuItem>
                             </Field>
                         </div>
                     </div>

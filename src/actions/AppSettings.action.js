@@ -5,7 +5,8 @@ import {
     serviceGetAppSettings,
     serviceUpdateGeoFence,
     serviceUpdateMinValue,
-    serviceUpdateOrderAfter, serviceUpdateReferAmount
+    serviceUpdateOrderAfter, serviceUpdateReferAmount,
+    serviceUpdateDriverPayout
 } from "../services/AppSettings.service";
 
 export const APP_SETTINGS_INIT = 'APP_SETTINGS_INIT';
@@ -15,6 +16,7 @@ export const APP_SETTINGS_CHANGE_THEME = 'APP_SETTINGS_CHANGE_THEME';
 export const APP_SETTINGS_UPDATE_MIN_VALUE = 'APP_SETTINGS_UPDATE_MIN_VALUE';
 export const APP_SETTINGS_UPDATE_ORDER_AFTER = 'APP_SETTINGS_UPDATE_ORDER_AFTER';
 export const APP_SETTINGS_UPDATE_REFER_AMOUNT = 'APP_SETTINGS_UPDATE_REFER_AMOUNT';
+export const APP_SETTINGS_UPDATE_DRIVER_PAYOUT = 'APP_SETTINGS_UPDATE_DRIVER_PAYOUT';
 
 export function actionGetAppSettings(data) {
     const req = serviceGetAppSettings({});
@@ -58,6 +60,12 @@ export function actionUpdateReferAmount(data) {
     }
 }
 
+export function actionUpdateDriverPayout(data) {
+    const request = serviceUpdateDriverPayout({ data: data } );
+    return (dispatch) => {
+        dispatch({ type: APP_SETTINGS_UPDATE_DRIVER_PAYOUT, payload: data })
+    }
+}
 
 export function actionChangeTheme(theme) {
     return (dispatch) => {

@@ -191,7 +191,7 @@ class CustomerInfo extends Component{
                     <div className={'formFlex'}>
                         <div className={'formGroup'}>
                             <div>
-                                <SubscriptionList userId={data.id}/>
+                                <SubscriptionList userId={data.id} showUnsubscribe={true}/>
                             </div>
                         </div>
                     </div>

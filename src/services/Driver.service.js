@@ -41,3 +41,12 @@ export async function serviceDriverCheck (params) {
 export async function serviceGetOnlineDrivers(params) {
     return await postRequest('drivers/online', params);
 }
+
+export async function serviceGetReferredList(params) {
+    return await postRequest('drivers/referred', params);
+}
+
+export async function serviceGetDriverMonthlyDeliveries(params) {
+    return await postRequest('drivers/month/deliveries', params);
+}
+

@@ -12,6 +12,7 @@ import Geofencing from './Components/Geofencing/Geofencing.component';
 import MinValueComponent from './Components/MinValues/MinValues.component';
 import {WaitingComponent} from "../../components/index.component";
 import {
+    actionUpdateDriverPayout,
     actionUpdateGeoFence,
     actionUpdateMinValue,
     actionUpdateOrderAfter,
@@ -22,6 +23,7 @@ import DeliveryDateComponent from './Components/DeliveryDates/DeliveryDates.comp
 import UserHeatMap from "./Components/Heatmap/UserHeatMap.component";
 import OrderHeatMap from "./Components/Heatmap/OrderHeatMap.component";
 import ReferAmount from './Components/ReferAmounts/ReferAmounts.component';
+import DriverPayout from './Components/DriverPayout/DriverPayout.component';
 
 class AppSettings extends Component {
     constructor(props) {
@@ -87,6 +89,12 @@ class AppSettings extends Component {
                 <ReferAmount data={appSetting.refer_amount}
                              handleDataSave={actionUpdateReferAmount} />
             );
+        } else if (value == 6) {
+            return (
+                <DriverPayout data={appSetting.driver_payout}
+                              handleDataSave={actionUpdateDriverPayout}
+                ></DriverPayout>
+            );
         }
 
         return (
@@ -119,7 +127,7 @@ class AppSettings extends Component {
                             <Tab label="Users HeatMap" {...this.a11yProps(3)} />
                             <Tab label="Orders HeatMap" {...this.a11yProps(4)} />
                             <Tab label="Refer Amount" {...this.a11yProps(5)} />
-
+                            <Tab label="Driver Payout" {...this.a11yProps(6)} />
                         </Tabs>
                         <div className={styles.tabPanel}>
                         {this._renderPanel(value)}
@@ -156,6 +164,7 @@ function mapDispatchToProps(dispatch) {
         actionUpdateMinValue: actionUpdateMinValue,
         actionUpdateOrderAfter: actionUpdateOrderAfter,
         actionUpdateReferAmount: actionUpdateReferAmount,
+        actionUpdateDriverPayout: actionUpdateDriverPayout
     }, dispatch);
 }
 

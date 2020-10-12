@@ -15,6 +15,7 @@ const initialState = {
     geofence: [],
     theme: 'dark',
     order_after: 0,
+    driver_payout: null,
 };
 
 export default function (state = JSON.parse(JSON.stringify(initialState)), action) {
@@ -47,6 +48,11 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
         case APP_SETTINGS_UPDATE_REFER_AMOUNT: {
             if (action.payload) {
                 return {...state, min_value: action.payload};
+            }
+        }
+        case APP_SETTINGS_UPDATE_REFER_AMOUNT: {
+            if (action.payload) {
+                return {...state, driver_payout: action.payload};
             }
         }
         case APP_SETTINGS_UPDATE_ORDER_AFTER: {

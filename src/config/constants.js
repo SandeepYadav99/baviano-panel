@@ -1,6 +1,6 @@
 /* eslint-disable indent,linebreak-style */
 const TABLE_LIMIT = 50;
-const isDev = false;
+const isDev = true;
 const tempLevel = !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 const tempDate = new Date();
 const SOCKET_PROJECT = 'BAVIANO_';
@@ -14,6 +14,7 @@ if (!isDev) {
 
 export default {
     TIME_ZONE: -(tempDate.getTimezoneOffset()/60),
+    ROLES: { MANAGER: 'MANAGER', CEO: 'CEO', CUSTOMER_CARE: 'CUSTOMER_CARE', ALL: 'ALL'},
     DEFAULT_TIME_FORMAT: 'DD-MM-YYYY, HH:mm',
     APP_NAME: 'Baviano - CompanyPanel',
     DEFAULT_APP_URL: tempLevel ? url :'http://localhost:2306/api/company/',

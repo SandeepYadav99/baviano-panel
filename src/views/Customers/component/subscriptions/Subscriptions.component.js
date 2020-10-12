@@ -13,7 +13,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {serviceGetCustomerSubscriptions} from "../../../../services/CustomersRequest.service";
 import {CircularProgress} from "@material-ui/core";
-import moment from "moment";
 
 const useStyles = {
     table: {
@@ -94,7 +93,7 @@ class UserSubscriptions extends Component {
     }
 
     render() {
-        const {handleSubmit, classes} = this.props;
+        const {handleSubmit, classes, showUnsubscribe} = this.props;
         const {data, isCalling} = this.state;
         if (!isCalling) {
             return (
@@ -131,7 +130,7 @@ class UserSubscriptions extends Component {
                         </Table>
                     </TableContainer>
                     <br/>
-                    <label>Unsubscribed History</label>
+                    {showUnsubscribe && (<><label>Unsubscribed History</label>
                     <TableContainer className={classes.container} component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>
@@ -161,7 +160,7 @@ class UserSubscriptions extends Component {
                                 ))}
                             </TableBody>
                         </Table>
-                    </TableContainer>
+                    </TableContainer></>) }
                 </>
             )
         } else {

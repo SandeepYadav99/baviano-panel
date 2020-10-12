@@ -28,6 +28,8 @@ import Slide from "@material-ui/core/Slide";
 import BatchDeliveryList from './component/Batches/Batches.component';
 import SupportMessagesList from './component/SupportMessages/SupportMessage.component';
 import DriverJobCalender from "./component/JobCalendar/JobCalendar.component";
+import ReferredList from './component/ReferredData/ReferredList.component';
+import DriverPayouts from './component/DriverPayouts/DriverPayouts.component';
 
 let requiredFields = [];
 const validate = (values) => {
@@ -347,6 +349,11 @@ class Driver extends Component {
                     {data && (<div>
                         <SupportMessagesList driverId={data.id}/>
                     </div>)}
+                    {data && (
+                        <div>
+                            <ReferredList userId={data.id}></ReferredList>
+                        </div>
+                    )}
                 </div>
 
             )
@@ -363,6 +370,17 @@ class Driver extends Component {
         return null;
     }
 
+    _renderMonthlyDeliveries() {
+        const {tab_value} = this.state;
+        const {data} = this.props;
+        if (tab_value == 2) {
+            return (
+                <DriverPayouts driverId={data.id}/>
+            )
+        }
+        return null;
+    }
+
     render () {
         const { data } = this.props;
         const {tab_value} = this.state;
@@ -371,9 +389,11 @@ class Driver extends Component {
                 <Tabs value={tab_value} onChange={this._handleTabChange} aria-label="simple tabs example">
                     <Tab label="Driver Detail" {...this.a11yProps(0)} />
                     {data && (<Tab label="Driver Calendar" {...this.a11yProps(1)} />)}
+                    {data && (<Tab label="Monthly Deliveries" {...this.a11yProps(2)} />)}
                 </Tabs>
                 {this._renderForm()}
                 {this._renderCalendar()}
+                {this._renderMonthlyDeliveries()}
             </div>
         )
     }

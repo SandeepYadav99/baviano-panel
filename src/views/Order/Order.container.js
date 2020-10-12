@@ -19,6 +19,7 @@ import Constants from '../../config/constants';
 import GoogleMap from './components/googlemap/GoogleMapHtml.component';
 import TimeStamps from './components/timestamps/TimeStampsTable.component';
 import RejectDialog from './components/rejectdialog/RejectDialog.component';
+import SubscriptionList from "../Customers/component/subscriptions/Subscriptions.component";
 
 class Order extends Component {
     constructor(props) {
@@ -293,7 +294,8 @@ class Order extends Component {
                                 <div className={'formGroup'} style={{padding: '0px 10px'}}>
                                     <div>
                                         {/*{data.address}*/}
-                                        <OrderTable data={data.products} amount={data.amount.total}/>
+                                        {/*<OrderTable data={data.products} amount={data.amount.total}/>*/}
+                                        <SubscriptionList userId={data.user_id} showUnsubscribe={false}/>
                                     </div>
                                 </div>
                             </div>
