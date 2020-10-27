@@ -112,7 +112,7 @@ class Product extends Component {
         if (data) {
             requiredFields = ['name', 'unit_id', 'list_price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step', 'min_value', 'min_percentage']; //'label',
             Object.keys(data).forEach((val) => {
-                if (['status', 'image','is_featured'].indexOf(val) == -1) {
+                if (['status', 'image','is_featured', 'gallery_images'].indexOf(val) == -1) {
                     const temp = data[val];
                     this.props.change(val, temp);
                 }
@@ -122,7 +122,7 @@ class Product extends Component {
                 is_featured: data.is_featured
             })
         } else {
-            requiredFields = ['name', 'image', 'unit_id', 'list_price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step', 'min_value', 'min_percentage']; //'label',
+            requiredFields = ['name', 'image', 'unit_id', 'list_price', 'tags', 'category_ids',  'quantity', 'max_quantity', 'unit_step', 'min_value', 'min_percentage', 'gallery_images']; //'label',
         }
     }
 
@@ -130,8 +130,15 @@ class Product extends Component {
         console.log(tData)
         const fd = new FormData();
         Object.keys(tData).forEach((key) => {
-            fd.append(key, tData[key]);
+            if ((['gallery_images']).indexOf(key) <= 0) {
+                fd.append(key, tData[key]);
+            }
         });
+        if ('gallery_images' in tData) {
+            tData.gallery_images.forEach((val) => {
+                fd.append('gallery_images', val);
+            })
+        }
         fd.append('status', (this.state.is_active ? 'ACTIVE' : 'INACTIVE'));
         fd.append('is_featured', (this.state.is_featured));
         const {data} = this.props;
@@ -293,6 +300,16 @@ class Product extends Component {
                                 data={categories}
                                 label="Category">
                             </Field>
+                            <Field
+                                max_size={2 * 1024 * 1024}
+                                type={['jpg', 'png', 'pdf', 'jpeg']}
+                                fullWidth={true}
+                                name="gallery_images"
+                                component={renderFileField}
+                                label="Gallery Images"
+                                multiple
+                                errorText={'Maximum size 2MB & jpg, png, jpeg, files are allowed'}
+                            />
                         </div>
 
                     </div>

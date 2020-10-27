@@ -104,7 +104,7 @@ class Promotion extends Component {
                 type: data.type,
             })
         } else {
-            requiredFields = ['name', 'image', 'type'];
+            requiredFields = ['name', 'type'];
         }
     }
 
