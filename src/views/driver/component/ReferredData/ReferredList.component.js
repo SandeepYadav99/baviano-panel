@@ -74,7 +74,7 @@ class WalletTransactions extends Component {
                                 display: 'block',
                                 fontSize: '16px',
                                 fontWeight: '400'
-                            }} htmlFor="">Support Messages</label>
+                            }} htmlFor="">Referred List</label>
                         </div>
                     </div>
                 <TableContainer className={classes.container} component={Paper}>

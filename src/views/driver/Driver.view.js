@@ -30,6 +30,7 @@ import SupportMessagesList from './component/SupportMessages/SupportMessage.comp
 import DriverJobCalender from "./component/JobCalendar/JobCalendar.component";
 import ReferredList from './component/ReferredData/ReferredList.component';
 import DriverPayouts from './component/DriverPayouts/DriverPayouts.component';
+import Constants from '../../config/constants';
 
 let requiredFields = [];
 const validate = (values) => {
@@ -240,6 +241,14 @@ class Driver extends Component {
             tab_value: handleValue
         })
     }
+    _renderCardButton() {
+        const { data } = this.props;
+        return (
+            <Button >
+                <a target={'_blank'} href={`${Constants.DEFAULT_APP_URL}/drivers/qrcode/${data.id}`}>Download Card</a>
+            </Button>
+        )
+    }
 
     _renderForm() {
         const {tab_value} = this.state;
@@ -249,11 +258,11 @@ class Driver extends Component {
                 <div>
                     <div className={styles.headerFlex}>
                         <h2>Driver Information</h2>
-                        {data && <IconButton variant={'contained'} className={this.props.classes.iconBtnError}
+                        {data && (<div>{this._renderCardButton()}<IconButton variant={'contained'} className={this.props.classes.iconBtnError}
                                              onClick={this._handleDelete}
                                              type="button">
                             <DeleteIcon/>
-                        </IconButton>}
+                        </IconButton></div>)}
                     </div>
                     <hr/>
                     <form onSubmit={handleSubmit(this._handleSubmit)}>

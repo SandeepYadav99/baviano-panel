@@ -2,7 +2,7 @@
  * Created by charnjeetelectrovese@gmail.com on 12/3/2019.
  */
 import React, {Component} from 'react';
-import {Button} from '@material-ui/core';
+import {Button, Chip} from '@material-ui/core';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import PageBox from '../../components/PageBox/PageBox.component';
@@ -54,7 +54,7 @@ class BatchForecastingList extends Component {
             listData: null,
             is_submit: false,
             selected: [],
-            batch_id: null,
+            batch_id: [],
             allSelected: false,
             selectedDate: null,
             minDate: null,
@@ -229,7 +229,8 @@ class BatchForecastingList extends Component {
         });
     }
 
-    _handleBatchChange(e) {
+    _handleBatchChange(e, data) {
+        console.log('handleBatchChange', e.target.value)
         const batchId = e.target.value;
         this.setState({
             batch_id: batchId,
@@ -275,7 +276,7 @@ class BatchForecastingList extends Component {
         const temp =  batches.map((val) => {
             return (<MenuItem value={val.id}>{val.name} - {val.delivery_slot.unformatted}</MenuItem>);
         });
-        temp.unshift(<MenuItem value={''}>NONE</MenuItem>)
+        // temp.unshift(<MenuItem value={''}>NONE</MenuItem>)
         return temp;
     }
 
@@ -427,8 +428,10 @@ class BatchForecastingList extends Component {
                                     fullWidth={true}
                                     labelId="selectBatchLabel"
                                     id="selectBatch"
-                                    value={this.state.batchId}
+                                    value={this.state.batch_id}
+                                    multiple={true}
                                     onChange={this._handleBatchChange}
+
                                 >
                                     {this._renderMenu()}
                                 </Select>

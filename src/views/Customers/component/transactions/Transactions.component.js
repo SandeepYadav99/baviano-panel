@@ -73,6 +73,7 @@ class WalletTransactions extends Component {
                                 <TableCell align="right">Amount</TableCell>
                                 <TableCell align="right">Type</TableCell>
                                 <TableCell align="right">By</TableCell>
+                                <TableCell align="right">Note</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -84,6 +85,7 @@ class WalletTransactions extends Component {
                                     <TableCell align="right">{row.amount}</TableCell>
                                     <TableCell align="right">{row.type}</TableCell>
                                     <TableCell align="right">{row.transaction_type}</TableCell>
+                                    <TableCell align="right">{row.note}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

@@ -98,6 +98,7 @@ export function actionFilterBatchForecasting(value) {
         });
     };
 }
+
 export function actionChangeBatchId(batchId) {
     return (dispatch) => {
         dispatch({type: UPDATE_BATCH_ID, payload: batchId});

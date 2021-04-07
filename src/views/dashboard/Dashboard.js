@@ -12,7 +12,7 @@ import {
 import {
     VerifiedUser,
     ShoppingCart as ShopIcon,
-    AttachMoney as MoneyIcon,
+    Payment as MoneyIcon,
     Store as ProductIcon
 } from '@material-ui/icons';
 import LineStat from './components/LineStat/LineStat.component';
