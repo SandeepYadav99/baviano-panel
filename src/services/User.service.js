@@ -19,3 +19,7 @@ export async function fetchUsers(params) {
     const tempParams = { page_id: 1, row: null, order: null, ...params };
     return await postRequest('users', tempParams);
 }
+
+export async function serviceAddPostOrder(params) {
+    return await postRequest('post/order', params);
+}

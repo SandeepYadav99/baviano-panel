@@ -29,8 +29,15 @@ import {
     actionCreateCustomers,
     actionUpdateCustomers
 } from '../../actions/Customers.action';
-import {AddCircle as AddIcon, VerifiedUser as VerifiedIcon, Delete as DeleteIcon} from '@material-ui/icons';
+import {AddCircle as AddIcon,
+    VerifiedUser as VerifiedIcon,
+    InputRounded as EditIcon,
+    AddShoppingCartOutlined as ShoppingIcon
+} from '@material-ui/icons';
 import {serviceGetCustomersDownload} from "../../services/CustomersRequest.service";
+import PostOrder from "./component/PostOrder/PostOrder.component";
+import {serviceAddPostOrder} from "../../services/User.service";
+import EventEmitter from "../../libs/Events.utils";
 
 let CreateProvider = null;
 class CustomerList extends Component {
@@ -45,8 +52,9 @@ class CustomerList extends Component {
             side_panel: false,
             edit_data: null,
             listData: null,
-            userId: null,
             showAmountDialog: false,
+            postOpen: false,
+            userId: null
         };
         this.configFilter = [
             {label: 'City', name: 'city', type: 'text'},
@@ -69,6 +77,9 @@ class CustomerList extends Component {
         this._handleCloseAmountDialog = this._handleCloseAmountDialog.bind(this);
         this._handleSideBarClose = this._handleSideBarClose.bind(this);
         this._handleDownload = this._handleDownload.bind(this);
+        this._handlePostOrderClose = this._handlePostOrderClose.bind(this);
+        this._handlePostOrderSubmit = this._handlePostOrderSubmit.bind(this);
+        this._handlePostOrder = this._handlePostOrder.bind(this);
     }
 
     componentDidMount() {
@@ -292,7 +303,39 @@ class CustomerList extends Component {
         }
     }
 
+    _handlePostOrderClose() {
+        this.setState({
+            postOpen: false,
+            userId: null,
+        });
+    }
+
+    _handlePostOrder(userId) {
+        this.setState({
+            postOpen: true,
+            userId: userId,
+        });
+    }
+
+    _handlePostOrderSubmit(data, date) {
+        const { userId } = this.state;
+        if (data.length > 0) {
+            serviceAddPostOrder({
+                user_id: userId,
+                date: date,
+                products: data
+            });
+            this.setState({
+                userId: null,
+                postOpen: false,
+            })
+        } else {
+            EventEmitter.dispatch(EventEmitter.THROW_ERROR, {error: 'Product should be more than one.', type: 'error'});
+        }
+    }
+
     render() {
+        const { postOpen, userId } = this.state;
         const tableStructure = [
 
             {
@@ -385,13 +428,18 @@ class CustomerList extends Component {
             {
                 key: 'user_id',
                 label: 'Action',
+                style: { width: '140px'},
                 render: (temp, all) => (<div>
                     <IconButton variant={'contained'}
                                 onClick={this._handleAddAmount.bind(this, all.id)}
                                 type="button">
                         <AddIcon />
                     </IconButton>
-                    <Button onClick={this._handleEdit.bind(this, all)}>Info</Button>
+                    <IconButton className={'tableActionBtn'} onClick={this._handleEdit.bind(this, all)}>
+                        <EditIcon fontSize={'small'} /></IconButton>
+                    <IconButton className={'tableActionBtn'} onClick={this._handlePostOrder.bind(this, all.id)}>
+                        <ShoppingIcon fontSize={'small'} /></IconButton>
+
                 </div>),
             },
 
@@ -452,6 +500,12 @@ class CustomerList extends Component {
                     userId={this.state.userId}
                     open={this.state.showAmountDialog}
                     handleClose={this._handleCloseAmountDialog}
+                />
+                <PostOrder
+                    open={postOpen}
+                    userId={userId}
+                    handleClose={this._handlePostOrderClose}
+                    handleSubmit={this._handlePostOrderSubmit}
                 />
             </div>
         )
