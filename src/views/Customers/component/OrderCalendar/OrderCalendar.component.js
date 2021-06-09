@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { Calendar, momentLocalizer, Views  } from 'react-big-calendar'
 import moment from 'moment'
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {serviceCustomerGetMonthOrders} from "../../../../services/CustomersRequest.service";
+import {
+    serviceCustomerDeliveryDetail,
+    serviceCustomerGetMonthOrders
+} from "../../../../services/CustomersRequest.service";
+import DetailDialog from './DetailDialog';
 
 let allViews = Object.keys(Views).map(k => Views[k])
 
@@ -18,9 +22,13 @@ class OrderCalendarComponent extends Component {
         super(props);
         this.state = {
             events: [],
+            isOpen: false,
+            detailData: [],
         };
         this._handleNavigation = this._handleNavigation.bind(this);
         this._getData = this._getData.bind(this);
+        this._handleEventClick = this._handleEventClick.bind(this);
+        this._handleClose = this._handleClose.bind(this);
     }
     componentDidMount() {
        this._getData();
@@ -87,7 +95,6 @@ class OrderCalendarComponent extends Component {
             return {
                 className: 'deliverySlot',
                 style: {
-
                 },
             }
         } else if (e.title == 'Vacation') {
@@ -100,8 +107,28 @@ class OrderCalendarComponent extends Component {
         }
         return {};
     }
+
+    async _handleEventClick(e) {
+        if (e.title === 'Delivered') {
+            const { userId } = this.props;
+            const req = await serviceCustomerDeliveryDetail({ user_id: userId,date: moment(e.start).format('YYYY-MM-DD') });
+            if (!req.error) {
+                this.setState({
+                    isOpen: true,
+                    detailData: req.data
+                });
+            }
+        }
+    }
+
+    _handleClose() {
+        this.setState({
+            isOpen: false,
+        })
+    }
+
     render () {
-        const { events } = this.state;
+        const { events, isOpen, detailData } = this.state;
         const localizer = momentLocalizer(moment);
         return (
             <div style={{ background: 'white', color: 'black' }}>
@@ -116,8 +143,14 @@ class OrderCalendarComponent extends Component {
                     eventPropGetter={this._eventPropGetter}
                     defaultView="month"
                     events={events}
+                    onSelectEvent={this._handleEventClick}
                     style={{ padding: '20px', height: "90vh" }}
                 />
+                <DetailDialog
+                    isOpen={isOpen}
+                    handleClose={this._handleClose}
+                    data={detailData}
+                ></DetailDialog>
             </div>
         )
     }

@@ -66,6 +66,14 @@ class PostOrder extends Component {
     componentDidMount() {
         this._initializeData();
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.open != this.props.open) {
+            this.setState({
+                cart: {},
+                selectedDate: new Date()
+            })
+        }
+    }
 
     _processData() {
         const {data, currentData, currentPage, totalShow} = this.state;

@@ -49,3 +49,7 @@ export async function serviceCustomerPackageTransaction(params) {
 export async function serviceCustomerCouponsUsed(params) {
     return await postRequest('customers/coupons/used', params);
 }
+
+export async function serviceCustomerDeliveryDetail(params) {
+    return await postRequest('customers/delivery/detail', params);
+}

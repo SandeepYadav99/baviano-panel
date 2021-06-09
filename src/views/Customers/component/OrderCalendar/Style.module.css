@@ -1,0 +1,34 @@
+
+.mainContainer {
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.headingTuxi {
+    text-align: center;
+}
+
+.loginHeading {
+    /*margin-bottom: 10px;*/
+    color: black;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    margin-top: 10px;
+}
+
+.signUpButton {
+    padding: 10px 30px !important;
+    border-radius: 5px !important;
+    background-image: linear-gradient(to left, #04AFB7 , #1BB380);
+    color: white !important;
+}
+.dialogCont {
+    width: calc(30vw);
+    min-width: 500px;
+    padding: 20px;
+}
+.formAction {
+    display: flex;
+    justify-content: flex-end;
+}
