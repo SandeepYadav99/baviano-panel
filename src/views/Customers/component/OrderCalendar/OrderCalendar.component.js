@@ -71,6 +71,16 @@ class OrderCalendarComponent extends Component {
                     });
                 }
             })
+            data.undelivered.forEach((val) => {
+                if (datesArr.indexOf(val) < 0) {
+                    datesArr.push(val);
+                    events.push({
+                        start: moment(val),
+                        end: moment(val),
+                        title: "Undelivered"
+                    });
+                }
+            })
 
 
             this.setState({
@@ -105,11 +115,19 @@ class OrderCalendarComponent extends Component {
                 },
             }
         }
+        else if (e.title == 'Undelivered') {
+            return {
+                className: 'vacationSlot',
+                style: {
+
+                },
+            }
+        }
         return {};
     }
 
     async _handleEventClick(e) {
-        if (e.title === 'Delivered') {
+        if (e.title === 'Delivered' || e.title === 'Undelivered') {
             const { userId } = this.props;
             const req = await serviceCustomerDeliveryDetail({ user_id: userId,date: moment(e.start).format('YYYY-MM-DD') });
             if (!req.error) {

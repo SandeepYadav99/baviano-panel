@@ -334,14 +334,25 @@ class Product extends Component {
                     </div>
 
                     <div className={'formFlex'}>
-                        {/*<div className={'formGroup'}>*/}
-                            {/*<Field fullWidth={true}*/}
-                                   {/*name="price"*/}
-                                   {/*component={renderOutlinedTextField}*/}
-                                   {/*type={'number'}*/}
-                                   {/*margin={'dense'}*/}
-                                   {/*label="MRP"/>*/}
-                        {/*</div>*/}
+                        <div className={'formGroup'}>
+                            <Field fullWidth={true}
+                                   name="price"
+                                   component={renderOutlinedTextField}
+                                   type={'number'}
+                                   margin={'dense'}
+                                   label="MRP"/>
+                        </div>
+
+                        <div className={'formGroup'}>
+                            <Field fullWidth={true}
+                                   name="list_price"
+                                   component={renderOutlinedTextField}
+                                   type={'number'}
+                                   margin={'dense'}
+                                   label="Price"/>
+                        </div>
+                    </div>
+                    <div className="formFlex">
                         <div className={'formGroup'}>
                             <Field fullWidth={true} name="tagline" component={renderOutlinedTextField}
                                 // multiline
@@ -350,14 +361,6 @@ class Product extends Component {
                                 // maxLimit={50}
                                    normalize={taglineNormalize}
                                    label="Tagline"/>
-                        </div>
-                        <div className={'formGroup'}>
-                            <Field fullWidth={true}
-                                   name="list_price"
-                                   component={renderOutlinedTextField}
-                                   type={'number'}
-                                   margin={'dense'}
-                                   label="Price"/>
                         </div>
                     </div>
 

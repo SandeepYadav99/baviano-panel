@@ -33,6 +33,7 @@ const DetailDialog = ({isOpen, handleClose, data}) => {
                                 <TableRow>
                                     <TableCell>Product</TableCell>
                                     <TableCell>Qty (Unit)</TableCell>
+                                    <TableCell>Status</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -41,6 +42,7 @@ const DetailDialog = ({isOpen, handleClose, data}) => {
                                         return (<TableRow>
                                             <TableCell>{val.name}</TableCell>
                                             <TableCell>{val.qty} ({val.unit})</TableCell>
+                                            <TableCell>{val.status}</TableCell>
                                         </TableRow>)
                                     })
                                 }
