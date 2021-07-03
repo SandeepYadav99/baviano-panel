@@ -48,8 +48,7 @@
     right: 0px;
 }
 .approveCont {
-    display: inline-flex;
-    flex-direction: column;
+    display: flex;
 }
 .assignToDriver{
 font-size: 10px;
@@ -57,7 +56,7 @@ font-size: 10px;
 }
 .infoContainer {
     position: relative;
-    padding-top: 70px;
+    /*padding-top: 70px;*/
 }
 .infoWindow {
     display: flex;
@@ -127,4 +126,8 @@ font-size: 10px;
 }
 .productQty {
 
+}
+.cancelBtnCont {
+ text-align: right;
+    margin: 10px 0px;
 }

@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer, Views  } from 'react-big-calendar'
 import moment from 'moment'
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import {
-    serviceCustomerDeliveryDetail,
+    serviceCustomerDeliveryDetail, serviceCustomerFutureDeliveryDetail,
     serviceCustomerGetMonthOrders
 } from "../../../../services/CustomersRequest.service";
 import DetailDialog from './DetailDialog';
@@ -117,7 +117,7 @@ class OrderCalendarComponent extends Component {
         }
         else if (e.title == 'Undelivered') {
             return {
-                className: 'vacationSlot',
+                className: 'undeliveredSlot',
                 style: {
 
                 },
@@ -134,6 +134,15 @@ class OrderCalendarComponent extends Component {
                 this.setState({
                     isOpen: true,
                     detailData: req.data
+                });
+            }
+        } else if (e.title === 'Delivery') {
+            const { userId } = this.props;
+            const req = await serviceCustomerFutureDeliveryDetail({ user_id: userId,date: moment(e.start).format('YYYY-MM-DD') });
+            if (!req.error) {
+                this.setState({
+                    isOpen: true,
+                    detailData: req.data.map((val) => {return {...val, name: val.product_name, status: 'DELIVERY'}})
                 });
             }
         }

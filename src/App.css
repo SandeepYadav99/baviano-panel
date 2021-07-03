@@ -85,14 +85,18 @@ body{
     border-bottom: 1px solid black;
 }
 .deliveredSlot {
-    background-color: green !important;
+    background-color: #0DA000 !important;
     font-size: 12px;
 }
 .deliverySlot {
-    background-color: orange !important;
+    background-color: #0762BE !important;
     font-size: 12px;
 }
 .vacationSlot {
-    background-color: red !important;
+    background-color: #F47A00 !important;
+    font-size: 12px;
+}
+.undeliveredSlot {
+    background-color: #CB2525 !important;
     font-size: 12px;
 }

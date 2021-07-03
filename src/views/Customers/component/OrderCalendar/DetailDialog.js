@@ -40,7 +40,7 @@ const DetailDialog = ({isOpen, handleClose, data}) => {
                                 {
                                     data.map((val) => {
                                         return (<TableRow>
-                                            <TableCell>{val.name}</TableCell>
+                                            <TableCell>{val.name} - {val.delivery_type}</TableCell>
                                             <TableCell>{val.qty} ({val.unit})</TableCell>
                                             <TableCell>{val.status}</TableCell>
                                         </TableRow>)

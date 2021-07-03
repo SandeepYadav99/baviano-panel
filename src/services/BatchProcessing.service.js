@@ -22,3 +22,11 @@ export async function serviceGetFreeDrivers(params) {
 export async function serviceGetBatchDriverAssigned(params) {
     return await postRequest('batch/assigned/driver', params);
 }
+
+export async function serviceCancelBatchJob(params) {
+    return await postRequest('batch/cancel/job', params);
+}
+
+export async function serviceReassignBatchJob(params) {
+    return await postRequest('batch/reassign/job', params);
+}

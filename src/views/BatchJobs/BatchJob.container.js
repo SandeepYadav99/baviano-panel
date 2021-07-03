@@ -1,23 +1,37 @@
 import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {
-    Button, withStyles,
-    ButtonBase, Paper,
-    Card, CardHeader,
-    Divider, Table,
-    TableBody, TableCell,
-    TableContainer, TableRow,
-    Tabs, Tab,
+    Button,
+    Card,
+    CardHeader,
+    Divider,
+    Paper,
+    Tab,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    Tabs,
+    withStyles,
 } from "@material-ui/core";
 import styles from './styles.module.css'
-import {serviceGetOnlineDrivers} from "../../services/Driver.service";
 import Constants from '../../config/constants';
 import GoogleMap from './components/googlemap/GoogleMapHtml.component';
 import BatchJobList from './components/DeliveryList/DeliveryList.component';
 import {serviceGetBatchJobDetail} from "../../services/BatchJob.service";
 import {WaitingComponent} from "../../components/index.component";
+import DriverReassign from "./components/DriverReassign/DriverReassign";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class Order extends Component {
     constructor(props) {
@@ -29,6 +43,7 @@ class Order extends Component {
             is_reject_dialog: false,
             batchJobs: [],
             isCalling: true,
+            showDialog: false,
         };
         this.googleMap = null;
         this._handleReject = this._handleReject.bind(this);
@@ -36,10 +51,14 @@ class Order extends Component {
         this._handleTabChange = this._handleTabChange.bind(this);
         this._handleRejectDialogClose = this._handleRejectDialogClose.bind(this);
         this._handleRejectDialog = this._handleRejectDialog.bind(this);
+        this._btnCancel = this._btnCancel.bind(this);
+        this._jobReassignCallback = this._jobReassignCallback.bind(this);
+        this._handleCancel = this._handleCancel.bind(this);
+        this._handleClose = this._handleClose.bind(this);
     }
 
     async componentDidMount() {
-        const { data } = this.props;
+        const {data} = this.props;
         const req = await serviceGetBatchJobDetail({job_id: data.id});
         if (!req.error) {
             const data = req.data;
@@ -49,6 +68,7 @@ class Order extends Component {
             });
         }
     }
+
     _handleApprove() {
         const {data} = this.props;
         this.props.changeStatus({order_id: data.id, id: data.id, status: Constants.ORDER_STATUS.ACCEPTED}, 'ACCEPT');
@@ -110,6 +130,30 @@ class Order extends Component {
         }
     }
 
+    _btnCancel() {
+        this.setState({
+            showDialog: true,
+        });
+    }
+
+    _jobReassignCallback(driverId) {
+        const { data } = this.props;
+
+    }
+
+    _handleCancel() {
+        this.setState({
+            showDialog: false,
+        });
+
+    }
+
+    _handleClose() {
+        this.setState({
+            showDialog: false,
+        });
+
+    }
 
     _renderStatus(val) {
         const status = val.status;
@@ -140,16 +184,16 @@ class Order extends Component {
         if (tab_value == 0) {
             return (
                 <div className={styles.infoContainer}>
-
-                    {/*<div className={styles.processButtons}>*/}
-                    {/*    {this._renderApprove()}*/}
-                    {/*    {this._renderReject()}*/}
-                    {/*</div>*/}
-                    {/*<h3>Order Details</h3>*/}
-                    {/*<hr/>*/}
-
+                    <div className={styles.cancelBtnCont}>
+                        <Button variant={'contained'} className={this.props.classes.btnError}
+                                onClick={this._btnCancel}
+                                type="button">
+                            Cancel Job
+                        </Button>
+                    </div>
                     <div className={styles.infoWindow}>
                         <div className={styles.detailsWindow}>
+
                             <Paper>
                                 <Card className={classes.root}>
                                     <CardHeader
@@ -206,13 +250,24 @@ class Order extends Component {
                             <div className={'formFlex'}>
                                 <div className={'formGroup'} style={{padding: '0px 10px'}}>
                                     <div>
-                                        <BatchJobList isCalling={isCalling} data={batchJobs} jobId={data.id} />
+                                        <BatchJobList isCalling={isCalling} data={batchJobs} jobId={data.id}/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div className={styles.approveCont}>
 
+                        <div>
+                        <h5 style={{margin: '0px'}}>Reassign Job</h5>
+                        <DriverReassign
+                            driver_id={data.driver_id}
+                            batch_id={data.batch_id}
+                            handleAssign={this._jobReassignCallback}
+                        />
+                        </div>
+
+                    </div>
                 </div>
             )
         }
@@ -226,7 +281,7 @@ class Order extends Component {
         if (tab_value == 1) {
             if (isCalling) {
                 return (
-                    <WaitingComponent />
+                    <WaitingComponent/>
                 );
             }
             return (
@@ -259,15 +314,39 @@ class Order extends Component {
     render() {
         const {data, classes} = this.props;
         const {user} = data;
-        const {tab_value} = this.state;
+        const {tab_value, showDialog} = this.state;
         return (
             <div className={styles.mainContainer}>
                 <Tabs value={tab_value} onChange={this._handleTabChange} aria-label="simple tabs example">
                     <Tab label="Order Details" {...this.a11yProps(0)} />
-                    {data.status == 'IN_PROCESS' && ( <Tab label="Map" {...this.a11yProps(1)} />)}
+                    {data.status == 'IN_PROCESS' && (<Tab label="Map" {...this.a11yProps(1)} />)}
                 </Tabs>
                 {this._renderInformation()}
                 {this._renderMap()}
+                <Dialog
+                    open={showDialog}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={this._handleClose}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title">{"Are You Sure?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Do you really want to perform the action?
+                            <br/>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this._handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={this._handleCancel} color="primary">
+                            Ok
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     }
