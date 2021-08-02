@@ -19,6 +19,11 @@ import VerificationList from '../views/Verification/VerificationList.container';
 import BatchJobList from '../views/BatchJobs/BatchJobsList.container';
 import MinBalanceList from "../views/MinBalance/MinBalanceList.container";
 import MonthlyBillsList from "../views/MonthlyBills/MonthlyBillsList.container";
+
+import RechargeList from "../views/Recharge/RechargeList.container"
+import OrderReportList from "../views/OrderReport/OrderReportList.container"
+import SalesList from "../views/Sales/SalesList.container";
+import CustomerDropReportList from "../views/CustomerDropReport/CustomerDropReportList.container";
 // import TableList from "views/TableList/TableList.jsx";
 // import Typography from "views/Typography/Typography.jsx";
 // import Icons from "views/Icons/Icons.jsx";
@@ -231,6 +236,47 @@ const dashboardRoutes = [
         is_protect: true,
         roles: [roles.CEO, roles.MANAGER]
     },
+    {
+        path: "/recharge",
+        sidebarName: "Recharge",
+        navbarName: "Recharge",
+        icon: Dashboard,
+        component: RechargeList,
+        is_sidebar: true,
+        is_protect: true,
+        roles: [roles.CEO]
+    },
+    {
+        path: "/order/report",
+        sidebarName: "Order Report",
+        navbarName: "Order Report",
+        icon: Dashboard,
+        component: OrderReportList,
+        is_sidebar: true,
+        is_protect: true,
+        roles: [roles.CEO]
+    },
+    {
+        path: "/sales",
+        sidebarName: "Sales",
+        navbarName: "Sales",
+        icon: Dashboard,
+        component: SalesList,
+        is_sidebar: true,
+        is_protect: true,
+        roles: [roles.CEO]
+    },
+    {
+        path: "/customerdrop/report",
+        sidebarName: "Customer Drop ",
+        navbarName: "Customer Drop ",
+        icon: Dashboard,
+        component: CustomerDropReportList,
+        is_sidebar: true,
+        is_protect: true,
+        roles: [roles.CEO]
+    },
+
 
 
 
