@@ -79,7 +79,6 @@ class BatchJobList extends Component {
         this._handleDataSave = this._handleDataSave.bind(this);
         this._handleCheckbox = this._handleCheckbox.bind(this);
         this._handleSelectAll = this._handleSelectAll.bind(this);
-
     }
 
     componentDidMount() {
@@ -176,6 +175,7 @@ class BatchJobList extends Component {
         });
     }
 
+
     _renderCreateForm() {
         if (CreateProvider == null) {
             // import CreateProvider from './Create.container';
@@ -185,6 +185,7 @@ class BatchJobList extends Component {
             const {id} = this.props.match.params;
             return (<CreateProvider data={this.state.edit_data}
                                     listData={this.state.listData}
+                                    handleClose={this._handleSideToggle}
                                     changeStatus={this._handleDataSave}></CreateProvider>);
         }
         return null;

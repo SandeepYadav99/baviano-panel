@@ -83,7 +83,7 @@ class TableTask extends Component {
                         {this.props.data.map((row) => {
                             const qty = row.quantity ? row.quantity : (row.qty ? row.qty : 0);
                             return (<TableRow key={row.desc}>
-                                <TableCell>{row.name} { row.is_trial ? ('(TRIAL PRODUCT)') : '' }
+                                <TableCell>{row.name} { row.is_trial ? ('(TRIAL PRODUCT)') : '' } {row.status === 'SKIPPED' ? 'SKIPPED' : ''}
 
                                 </TableCell>
                                 <TableCell align="right">{this._renderDelivery(row)}</TableCell>

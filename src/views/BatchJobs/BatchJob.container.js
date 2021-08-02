@@ -28,6 +28,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Slide from "@material-ui/core/Slide";
+import {serviceCancelBatchJob, serviceReassignBatchJob} from "../../services/BatchProcessing.service";
+import {actionUpdateBatchJob} from "../../actions/BatchJob.action";
+import EventEmitter from "../../libs/Events.utils";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -44,6 +47,7 @@ class Order extends Component {
             batchJobs: [],
             isCalling: true,
             showDialog: false,
+            isUpdating: false,
         };
         this.googleMap = null;
         this._handleReject = this._handleReject.bind(this);
@@ -136,16 +140,47 @@ class Order extends Component {
         });
     }
 
-    _jobReassignCallback(driverId) {
+    async _jobReassignCallback(driverId) {
         const { data } = this.props;
-
+        const { isUpdating } = this.state;
+        if (!isUpdating) {
+            this.setState({
+                isUpdating: true
+            });
+            const req = await serviceReassignBatchJob({job_id: data.id, driver_id: driverId});
+            if (!req.error) {
+                this.props.handleClose();
+                this.props.actionUpdate(req.data);
+            } else {
+                EventEmitter.dispatch(EventEmitter.THROW_ERROR, {error: req.message, type: 'error'});
+            }
+            this.setState({
+                isUpdating: false
+            });
+        }
     }
 
-    _handleCancel() {
+    async _handleCancel() {
         this.setState({
             showDialog: false,
         });
-
+        const { data } = this.props;
+        const { isUpdating } = this.state;
+        if (!isUpdating) {
+            this.setState({
+                isUpdating: true
+            });
+            const req = await serviceCancelBatchJob({job_id: data.id});
+            if (!req.error) {
+                this.props.handleClose();
+                this.props.actionUpdate(req.data);
+            } else {
+                EventEmitter.dispatch(EventEmitter.THROW_ERROR, {error: req.message, type: 'error'});
+            }
+            this.setState({
+                isUpdating: false
+            });
+        }
     }
 
     _handleClose() {
@@ -184,13 +219,13 @@ class Order extends Component {
         if (tab_value == 0) {
             return (
                 <div className={styles.infoContainer}>
-                    <div className={styles.cancelBtnCont}>
+                    {data.status === 'PENDING' && (<div className={styles.cancelBtnCont}>
                         <Button variant={'contained'} className={this.props.classes.btnError}
                                 onClick={this._btnCancel}
                                 type="button">
                             Cancel Job
                         </Button>
-                    </div>
+                    </div>)}
                     <div className={styles.infoWindow}>
                         <div className={styles.detailsWindow}>
 
@@ -256,8 +291,8 @@ class Order extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.approveCont}>
-
+                    <br/>
+                    {[Constants.DRIVER_JOB_STATUS.IN_PROCESS, Constants.DRIVER_JOB_STATUS.PENDING].indexOf(data.status) >= 0 && (<div className={styles.approveCont}>
                         <div>
                         <h5 style={{margin: '0px'}}>Reassign Job</h5>
                         <DriverReassign
@@ -266,8 +301,7 @@ class Order extends Component {
                             handleAssign={this._jobReassignCallback}
                         />
                         </div>
-
-                    </div>
+                    </div>)}
                 </div>
             )
         }
@@ -400,7 +434,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({
+        actionUpdate: actionUpdateBatchJob,
+    }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)((withStyles(useStyle, {withTheme: true})(Order)));

@@ -3,12 +3,8 @@
  */
 import React, { PureComponent } from "react";
 import { Grid, Select, MenuItem, Input, withStyles, Typography } from "@material-ui/core";
-import { ArrowForward as ArrowForwardIcon } from "@material-ui/icons";
-import { BarChart, Bar } from "recharts";
-import classnames from "classnames";
 import { Line } from 'react-chartjs-2';
 
-import Widget from "../../components/Widget/WidgetView";
 // import { Typography } from "../../../../components/Wrappers/Wrappers";
 
 const getRandomData = () =>
@@ -73,7 +69,7 @@ class LineStat extends PureComponent {
         gradient.addColorStop(1, 'rgba(88,80,236,0)');
 
         return {
-            labels: data.map((val) => {  return val.value; }),
+            labels: Object.keys(data),
             datasets: [
                 {
                     label: 'My First dataset',
@@ -95,7 +91,7 @@ class LineStat extends PureComponent {
                     pointHoverBorderWidth: 2,
                     pointRadius: 7,
                     pointHitRadius: 10,
-                    data: data.map((val) => { return val.value; })
+                    data: Object.keys(data).map((val) => data[val])
                 }
             ],
         };
@@ -107,7 +103,6 @@ class LineStat extends PureComponent {
             classes
         } = this.props;
         return (
-
                 <Line ref="chart" data={this._getData} options={this.options} height={80} />
         );
     }

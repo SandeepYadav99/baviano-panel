@@ -13,7 +13,7 @@ function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
 
-const DetailDialog = ({isOpen, handleClose, data}) => {
+const DetailDialog = ({isOpen, handleClose, data, type}) => {
     return (
         <Dialog
             open={isOpen}
@@ -40,7 +40,7 @@ const DetailDialog = ({isOpen, handleClose, data}) => {
                                 {
                                     data.map((val) => {
                                         return (<TableRow>
-                                            <TableCell>{val.name} - {val.delivery_type}</TableCell>
+                                            <TableCell>{val.name} - {val.delivery_type} {type==='Delivery' ? (val.is_skipped ? '(SKIPPED)' : '') : ''}</TableCell>
                                             <TableCell>{val.qty} ({val.unit})</TableCell>
                                             <TableCell>{val.status}</TableCell>
                                         </TableRow>)

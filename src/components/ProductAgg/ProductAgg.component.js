@@ -11,7 +11,7 @@ class ProductAggComponent extends Component {
         const productsObj = {};
         data.forEach((dt) => {
             dt.products.forEach((p) => {
-                if (!(p.product_id in productsObj)) {
+                if (!(p.product_id in productsObj) && p.status !== 'SKIPPED') {
                     productsObj[p.product_id] = {
                         name: p.name,
                         product_id: p.product_id,

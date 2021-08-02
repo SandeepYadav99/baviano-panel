@@ -2,42 +2,33 @@
  * Created by charnjeetelectrovese@gmail.com on 12/3/2019.
  */
 import React, {Component} from 'react';
-import {Button, FormControl, InputLabel, Paper, Select} from '@material-ui/core';
 
 import classNames from 'classnames';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {
-    red as redColor,
-} from '@material-ui/core/colors';
-import { Add } from '@material-ui/icons';
 import PageBox from '../../components/PageBox/PageBox.component';
-import SidePanelComponent from '../../components/SidePanel/SidePanel.component';
 // import CreateProvider from './Create.container';
 import styles from './Style.module.css';
 import DataTables from '../../Datatables/Datatable.table';
 import Constants from '../../config/constants';
 import ReduxDatePicker from "../../components/ReduxDatePicker/ReduxDatePicker.component";
-import DateUtils from "../../libs/DateUtils.lib";
 import LineStat from './LineStat.component';
+import {serviceGetNewCustomers, serviceOrderCancelReport} from "../../services/Analytics.service";
 
-const PieChartData = [
-    {name: "Group A", value: 400, color: "primary"},
-    {name: "Group B", value: 300, color: "secondary"},
-    {name: "Group C", value: 300, color: "warning"},
-    {name: "Group D", value: 200, color: "success"}
-];
 
-let CreateProvider = null;
+const TOTAL_SHOW = 50;
 
-class CustomerDropReportList extends Component {
+class CustomerDropReport extends Component {
     constructor(props) {
         super(props);
         this.state = {
             dialogState: false,
             point_selected: null,
             data: [],
-            page: 1,
+            all_data: [],
+            graph_data: {},
+            total_count: 0,
+            total_value: 0,
+            currentPage: 1,
             total: Constants.DEFAULT_PAGE_VALUE + 1,
             side_panel: false,
             edit_data: null,
@@ -46,21 +37,38 @@ class CustomerDropReportList extends Component {
             minDate: null,
             maxDate: new Date()
         };
-        this.configFilter = [
-           
-        ];
+        this.configFilter = [];
 
         this._handleFilterDataChange = this._handleFilterDataChange.bind(this);
         this._queryFilter = this._queryFilter.bind(this);
         this._handleSearchValueChange = this._handleSearchValueChange.bind(this);
-        this._handleSideToggle = this._handleSideToggle.bind(this);
         this._handleSortOrderChange = this._handleSortOrderChange.bind(this);
         this._handleRowSize = this._handleRowSize.bind(this);
         this._handlePageChange = this._handlePageChange.bind(this);
-        this._handleEdit = this._handleEdit.bind(this);
         this._handleStatusChange = this._handleStatusChange.bind(this);
-        this._handleBatchChange = this._handleBatchChange.bind(this);
         this._handleDateChange = this._handleDateChange.bind(this);
+        this._initializeData = this._initializeData.bind(this);
+        this._changePageData = this._changePageData.bind(this);
+        this._processData = this._processData.bind(this);
+    }
+
+    _initializeData() {
+        const {start_date, end_date} = this.state;
+        const req = serviceOrderCancelReport(start_date, end_date);
+        req.then((res) => {
+            if (!res.error) {
+                const resData = res.data;
+                this.setState({
+                    all_data: resData.data,
+                    total_value: resData.totalValue,
+                    total_count: resData.totalCount,
+                    graph_data: resData.graphData,
+                    currentPage: 1,
+                }, () => {
+                    this._processData()
+                })
+            }
+        })
     }
 
     componentDidMount() {
@@ -73,6 +81,7 @@ class CustomerDropReportList extends Component {
             minDate: date,
             maxDate: maxDate
         });
+        this._initializeData();
         // if (this.props.total_count <= 0) {
         // this.props.actionFetchData();
         // }
@@ -84,8 +93,36 @@ class CustomerDropReportList extends Component {
     }
 
     _handlePageChange(type) {
-        console.log('_handlePageChange', type);
-        this.props.actionSetPage(type);
+        const {all_data} = this.state;
+        if (Math.ceil(all_data.length / TOTAL_SHOW) >= (type + 1)) {
+            this.setState({
+                currentPage: type + 1
+            }, () => {
+                this._processData();
+            });
+
+        }
+    }
+
+    _processData() {
+        const {all_data, currentPage} = this.state;
+        const from = (((currentPage) * TOTAL_SHOW) - TOTAL_SHOW);
+        let to = (((currentPage) * TOTAL_SHOW));
+        // all.filter((val, index) => {
+        //     if (index >= (((currentPage) * totalShow) - totalShow) && index < (((currentPage) * totalShow))) {
+        //         return val;
+        //     }
+        // });
+        if (from <= all_data.length) {
+            to = to <= all_data.length ? to : all_data.length;
+            this.setState({
+                data: all_data.slice(from, to),
+            });
+        }
+    }
+    _changePageData(type) {
+
+
     }
 
 
@@ -145,141 +182,60 @@ class CustomerDropReportList extends Component {
     }
 
 
-
     _handleDateChange(type, date) {
         this.setState({
             [type]: date,
         }, () => {
             const {start_date, end_date} = this.state;
+            const prop = this;
             if (new Date(start_date).getTime() > new Date(end_date).getTime()) {
                 this.setState({
                     end_date: start_date,
+                }, () => {
+                    prop._initializeData();
                 });
+            } else {
+                prop._initializeData();
             }
         });
         // this.props.actionChangeForecasting({ [type]: DateUtils.changeTimeStamp(date, 'YYYY-MM-DD') });
     }
 
-    _handleBatchChange(e) {
-        const batchId = e.target.value;
-        this.setState({
-            batch_id: batchId,
-            selected: [],
-        });
-        const  { selectedDate } = this.state;
-        // this.props.actionCleanBatchForecasting();
-        // this.props.actionChangeBatchId(batchId);
-    }
 
-
-    renderStatus(status) {
-        if (status === 'ACTIVE') {
-            return (
-                <span style={{
-                    fontSize: '12px',
-                    color: 'white',
-                    background: 'green',
-                    padding: '3px 10px',
-                    borderRadius: '20px',
-                    textTransform: 'capitalize'
-                }}>
-                    {(status)}
-                </span>
-            );
-        }
-        return (<span style={{
-            ...styles.spanFont,
-            fontSize: '12px',
-            color: 'white',
-            background: `${status == 'REJECTED' ? 'red' : 'orange'}`,
-            padding: '3px 10px',
-            borderRadius: '20px',
-            textTransform: 'capitalize'
-        }}>{(status)}</span>);
-    }
-
-    renderFirstCell(user) {
-        // const tempEmailRender = user.email ? (<span style={{textTransform: 'lowercase'}}>{(user.email)}</span>) : null;
-        return (
-            <div className={'userDetailLeague'} title={user.otp}>
-                <div className={classNames('userDetailLeagueText', 'openSans')}>
-                    <span><strong>{`${user.name}`}</strong></span> <br/>
-                    {/*{tempEmailRender}*/}
-                </div>
-            </div>
-        );
-    }
-
-
-    _handleEdit(data) {
-        this.setState({
-            side_panel: !this.state.side_panel,
-            edit_data: data,
-        })
-    }
-
-    _handleSideToggle() {
-        this.setState({
-            side_panel: !this.state.side_panel,
-            edit_data: null,
-        });
-    }
-
-    _renderCreateForm () {
-        if (CreateProvider == null) {
-            // import CreateProvider from './Create.container';
-            CreateProvider = require('./CustomerDropReport.view').default;
-        }
-        if (this.state.side_panel) {
-            return (<CreateProvider changeStatus={this._handleStatusChange} data={this.state.edit_data}></CreateProvider>);
-        } return null;
-    }
-
-    _renderUserInfo (data) {
-        return (
-            <div className={classNames('userDetailLeagueText', 'openSans')}>
-                    <span><strong>
-                        {data.name}
-                        </strong></span> <br/>
-                {data.representative_name}
-                {/*{tempEmailRender}*/}
-            </div>
-        )
-    }
     render() {
-        const { maxDate } = this.state;
+        const {graph_data} = this.state;
         const tableStructure = [
             {
                 key: 'name',
                 label: 'Name',
-                sortable: true,
-                render: (temp, all) => <div></div>,
+                sortable: false,
+                render: (temp, all) => <div>{all.user.name}</div>,
             },
             {
                 key: 'number',
                 label: 'Number',
-                sortable: true,
-                render: (temp, all) => <div></div>,
+                sortable: false,
+                render: (temp, all) => <div>{all.user.contact}</div>,
             },
             {
-                key: 'cancel_date',
-                label: 'Date of Cancel',
-                sortable: true,
-                render: (temp, all) => <div>{'asdsad'}</div>,
+                key: 'suspendedAt',
+                label: 'Date of Cancelling',
+                sortable: false,
+                render: (temp, all) => <div>{all.suspendedAt}</div>,
             },
             {
-                key: 'plan_value',
+                key: 'value',
                 label: 'Plan Value',
-                sortable: true,
-                render: (temp, all) => <div></div>,
+                sortable: false,
+                render: (temp, all) => <div>{all.value}</div>,
             },
+
             {
                 key: 'status',
                 label: 'Status',
-                sortable: true,
-                render: (temp, all) => <div>{this.renderStatus(all.status)}</div>,
+                sortable: false,
+                render: (temp, all) => <div>{all.status}</div>,
             },
-
         ];
         const datatableFunctions = {
             onCellClick: this.handleCellClick,
@@ -295,9 +251,9 @@ class CustomerDropReportList extends Component {
             ...Constants.DATATABLE_PROPERTIES,
             columns: tableStructure,
             data: this.state.data,
-            count: this.state.data.length,
-            page: 1, // this.props.currentPage,
-            rowsPerPage: 10,
+            count: this.state.all_data.length,
+            page: this.state.currentPage - 1,
+            rowsPerPage: 50,
             // allRowSelected: (this.state.data.length == this.props.selected.length)
         };
         return (
@@ -305,10 +261,10 @@ class CustomerDropReportList extends Component {
                 <PageBox>
                     <div className={styles.headerContainer}>
                         <span className={styles.title}>
-                            {/*CustomerDropReport List*/}
+                            {/*OrderReport List*/}
                         </span>
                         <div className={styles.forecastCont}>
-                            <div style={{ marginRight: '10px' }}>
+                            <div style={{marginRight: '10px'}}>
                                 <ReduxDatePicker
                                     // minDate={minDate}
                                     maxDate={new Date()}
@@ -317,7 +273,7 @@ class CustomerDropReportList extends Component {
                                     label={'Start Date'}
                                 />
                             </div>
-                            <div style={{ marginRight: '10px' }}>
+                            <div style={{marginRight: '10px'}}>
                                 <ReduxDatePicker
                                     // minDate={minDate}
                                     maxDate={new Date()}
@@ -330,7 +286,7 @@ class CustomerDropReportList extends Component {
                         </div>
                     </div>
                     <br/>
-                    <LineStat data={PieChartData}></LineStat>
+                    <LineStat data={graph_data}></LineStat>
 
                     <div>
                         <div>
@@ -343,9 +299,9 @@ class CustomerDropReportList extends Component {
                         </div>
                     </div>
 
-                    <div style={{textAlign:'center'}}>
-                        <div>Total User Drop: </div>
-                        <div>Amount Lost: </div>
+                    <div style={{textAlign: 'center'}}>
+                        <div>Total Orders: {this.state.total_count}</div>
+                        <div>Plan Value: {this.state.total_value}</div>
                     </div>
 
                 </PageBox>
@@ -355,4 +311,4 @@ class CustomerDropReportList extends Component {
 }
 
 
-export default connect(null, null)(CustomerDropReportList);
+export default connect(null, null)(CustomerDropReport);

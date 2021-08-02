@@ -65,6 +65,7 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
         case SET_SORTING: {
             return {...state, sorting_data: action.payload};
         }
+
         case CHANGE_STATUS: {
             if (action.payload) {
                 let tempIndex = null;
@@ -133,7 +134,7 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
         }
         case UPDATE_DATA: {
             if (action.payload) {
-                const prevState = state.all;
+                const prevState = JSON.parse(JSON.stringify(state.all));
                 let tIndex = null;
                 prevState.some((val, index) => {
                     if (val.id == action.payload.id) {
@@ -144,11 +145,11 @@ export default function (state = JSON.parse(JSON.stringify(initialState)), actio
                 if (tIndex != null) {
                     const newData = action.payload;
                     const oldData = prevState[tIndex];
-                    if (newData.type == 'STATUS_UPDATE') {
-                        const timeStamps = oldData.timestamps;
-                        timeStamps[newData.status] = newData.current_timestamp;
-                        newData.timestamps = timeStamps;
-                    }
+                    // if (newData.type == 'STATUS_UPDATE') {
+                    //     const timeStamps = oldData.timestamps;
+                    //     timeStamps[newData.status] = newData.current_timestamp;
+                    //     newData.timestamps = timeStamps;
+                    // }
                     prevState[tIndex] = {
                         ...oldData,
                         ...newData,

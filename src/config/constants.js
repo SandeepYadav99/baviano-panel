@@ -37,7 +37,7 @@ export default {
         showCheckboxes: false,
         // showHeaderToolbar: true,
         rowsPerPage: TABLE_LIMIT,
-        rowsPerPageOptions: [10, 15, 25],
+        rowsPerPageOptions: [],
     },
     PRODUCT_TAGS: ['VEG', 'VEGAN', 'GLUTEN FREE', 'DIARY'],
     CURRENCY: 'RS.',

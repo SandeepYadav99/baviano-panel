@@ -24,6 +24,7 @@ class OrderCalendarComponent extends Component {
             events: [],
             isOpen: false,
             detailData: [],
+            type: '',
         };
         this._handleNavigation = this._handleNavigation.bind(this);
         this._getData = this._getData.bind(this);
@@ -133,6 +134,7 @@ class OrderCalendarComponent extends Component {
             if (!req.error) {
                 this.setState({
                     isOpen: true,
+                    type: e.title,
                     detailData: req.data
                 });
             }
@@ -142,6 +144,7 @@ class OrderCalendarComponent extends Component {
             if (!req.error) {
                 this.setState({
                     isOpen: true,
+                    type: e.title,
                     detailData: req.data.map((val) => {return {...val, name: val.product_name, status: 'DELIVERY'}})
                 });
             }
@@ -155,7 +158,7 @@ class OrderCalendarComponent extends Component {
     }
 
     render () {
-        const { events, isOpen, detailData } = this.state;
+        const { events, isOpen, detailData, type } = this.state;
         const localizer = momentLocalizer(moment);
         return (
             <div style={{ background: 'white', color: 'black' }}>
@@ -177,6 +180,7 @@ class OrderCalendarComponent extends Component {
                     isOpen={isOpen}
                     handleClose={this._handleClose}
                     data={detailData}
+                    type={type}
                 ></DetailDialog>
             </div>
         )

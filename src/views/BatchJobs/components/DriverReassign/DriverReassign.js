@@ -68,7 +68,7 @@ class DriverReassign extends Component{
         const { batch_id } = this.props;
         const time = moment(tData.taken_time);
         tData.taken_time = time.format('HH:mm');
-        this.props.handleAssign({...tData, batch_id: batch_id});
+        this.props.handleAssign(tData.driver_id);
     }
 
     _handleDialog() {

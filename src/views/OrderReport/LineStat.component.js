@@ -73,7 +73,7 @@ class LineStat extends PureComponent {
         gradient.addColorStop(1, 'rgba(88,80,236,0)');
 
         return {
-            labels: data.map((val) => {  return val.value; }),
+            labels: Object.keys(data),
             datasets: [
                 {
                     label: 'My First dataset',
@@ -95,7 +95,7 @@ class LineStat extends PureComponent {
                     pointHoverBorderWidth: 2,
                     pointRadius: 7,
                     pointHitRadius: 10,
-                    data: data.map((val) => { return val.value; })
+                    data: Object.keys(data).map((val) => data[val])
                 }
             ],
         };
@@ -107,7 +107,6 @@ class LineStat extends PureComponent {
             classes
         } = this.props;
         return (
-
                 <Line ref="chart" data={this._getData} options={this.options} height={80} />
         );
     }
