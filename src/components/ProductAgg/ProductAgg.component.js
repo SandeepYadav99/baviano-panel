@@ -20,7 +20,9 @@ class ProductAggComponent extends Component {
                         quantity: 0,
                     }
                 }
-                (productsObj[p.product_id]).quantity += p.quantity;
+                if ((p.product_id in productsObj)) {
+                    (productsObj[p.product_id]).quantity += p.quantity;
+                }
             });
         });
         console.log('dataObject', productsObj);

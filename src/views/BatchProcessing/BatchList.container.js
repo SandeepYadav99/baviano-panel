@@ -325,6 +325,10 @@ class BatchProcessingList extends Component {
     }
 
     _renderOrderId(data) {
+        if (typeof data.user === "undefined") {
+            console.log(data);
+            return null;
+        }
         const isDisabled = ([Constants.JOB_STATUS.NOT_ASSIGNED]).indexOf(data.status) < 0;
         let isChecked = ([Constants.JOB_STATUS.NOT_ASSIGNED]).indexOf(data.status) < 0;
         if (Constants.JOB_STATUS.NO_CASH == data.status) {
