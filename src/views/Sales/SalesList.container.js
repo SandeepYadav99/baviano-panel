@@ -239,7 +239,6 @@ class SalesList extends Component {
                 sortable: true,
                 render: (temp, all) => <div>Rs. {all.total_sum}</div>,
             },
-
         ];
         const datatableFunctions = {
             onCellClick: this.handleCellClick,
