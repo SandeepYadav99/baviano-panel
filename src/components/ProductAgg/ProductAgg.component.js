@@ -20,7 +20,7 @@ class ProductAggComponent extends Component {
                         quantity: 0,
                     }
                 }
-                if ((p.product_id in productsObj)) {
+                if ((p.product_id in productsObj) && p.status !== 'SKIPPED') {
                     (productsObj[p.product_id]).quantity += p.quantity;
                 }
             });

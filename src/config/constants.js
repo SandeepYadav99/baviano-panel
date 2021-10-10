@@ -1,7 +1,7 @@
 /* eslint-disable indent,linebreak-style */
 const TABLE_LIMIT = 50;
-const isDev = true;
-const tempLevel = true //!(!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
+const isDev = false;
+const tempLevel = !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development');
 const tempDate = new Date();
 const SOCKET_PROJECT = 'BAVIANO_';
 let url  = 'http://91.205.173.97:2306/api/company/';
