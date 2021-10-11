@@ -247,6 +247,26 @@ class Promotion extends Component {
                     {menu}
                 </Field>
             )
+        } else if (type == 'PRODUCT') {
+            let label = 'Select ' + ' Product';
+            const list = listData.products;
+            const menu = list.map((val) => {
+                return (
+                    <MenuItem value={val.id}>{val.name}</MenuItem>
+                );
+            });
+            return (
+                <Field
+                    inputId={'type'}
+                    fullWidth={true}
+                    name="ref_id"
+                    component={renderOutlinedSelectField}
+                    margin={'dense'}
+                    label={label}
+                >
+                    {menu}
+                </Field>
+            )
         }
         return null;
 
@@ -311,10 +331,18 @@ class Promotion extends Component {
                                 onChange={this._handleType}
                             >
                                 <MenuItem value={'GENERAL'}>General</MenuItem>
+                                <MenuItem value={'CATEGORY'}>Category</MenuItem>
+                                <MenuItem value={'PRODUCT'}>Product</MenuItem>
                                 <MenuItem value={'OTHER'}>Other</MenuItem>
                             </Field>
                         </div>
 
+                        <div className={'formGroup'}>
+                            {this._renderTypeRef()}
+                        </div>
+                    </div>
+
+                    <div className={'formFlex'}>
                         <div className="formGroup">
                             <Field fullWidth={true}
                                    name="start_date"
@@ -325,9 +353,6 @@ class Promotion extends Component {
                                    minDate={new Date()}
                             />
                         </div>
-                        {/*<div className={'formGroup'}>*/}
-                        {/*    {this._renderTypeRef()}*/}
-                        {/*</div>*/}
                     </div>
 
                     <div className={'formFlex'}>

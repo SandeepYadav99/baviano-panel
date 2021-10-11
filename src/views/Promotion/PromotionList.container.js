@@ -71,7 +71,7 @@ class PromotionList extends Component {
         this.props.actionFetchData();
         // }
 
-        const request = serviceGetCustomList(['CATEGORY']);
+        const request = serviceGetCustomList(['CATEGORY','PRODUCT']);
         request.then((data)=> {
             if(!data.error){
                 this.setState({

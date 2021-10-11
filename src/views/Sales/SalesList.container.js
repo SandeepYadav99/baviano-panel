@@ -211,32 +211,32 @@ class SalesList extends Component {
             {
                 key: 'product_name',
                 label: 'Product Name',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>{all.name}</div>,
             },
             {
                 key: 'qty',
                 label: 'Total Qty',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>{all.total_qty}</div>,
             },
 
             {
                 key: 'price',
                 label: 'Price Per Unit',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>Rs. {all.price}</div>,
             },
             {
                 key: 'type',
                 label: 'Product type (Regular/OT)',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>{all.type}</div>,
             },
             {
                 key: 'total_price',
                 label: 'Total Price',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>Rs. {all.total_sum}</div>,
             },
         ];

@@ -208,32 +208,32 @@ class RechargeList extends Component {
             {
                 key: 'createdAt',
                 label: 'Date',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>{all.order_created_at}</div>,
             },
             {
                 key: 'name',
                 label: 'User Name',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>{all.user.name}</div>,
             },
 
             {
                 key: 'number',
                 label: 'Number',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>{all.user.contact}</div>,
             },
             {
                 key: 'payment_mode',
                 label: 'Mode',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>{all.transaction_type}</div>,
             },
             {
                 key: 'total_amount',
                 label: 'Amount',
-                sortable: true,
+                sortable: false,
                 render: (temp, all) => <div>Rs. {all.amount}</div>,
             },
 
