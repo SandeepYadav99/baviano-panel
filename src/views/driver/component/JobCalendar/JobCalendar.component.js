@@ -31,9 +31,10 @@ class JobCalendarComponent extends Component {
         const { driverId } = this.props;
         const month = moment(new Date(date)).format('MM');
         const year = moment(new Date(date)).format('YYYY');
-        const req = await serviceGetDriverMonthJobs({ driver_id: driverId, month, year });
+        const req = await serviceGetDriverMonthJobs({ employee_id: driverId, month, year, start_date:"start_date" , end_date:"end" });
         if (!req.error) {
             const data = req.data;
+            console.log(data)
             const events = [];
             data.forEach((val) => {
                 events.push( {
