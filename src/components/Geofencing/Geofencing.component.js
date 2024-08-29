@@ -224,6 +224,7 @@ class Geofencing extends Component {
 
         }
     }
+    
 
 
     _smoothZoom(map, max, cnt) {
